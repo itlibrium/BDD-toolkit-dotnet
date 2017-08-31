@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.3</TargetFramework>
+    <Authors>Marcin Markowski</Authors>
+    <Company>ITLibrium</Company>
+    <Description>Shouldly extensions for itlibrium.Bdd</Description>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <FileVersion>1.0.0</FileVersion>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/itlibrium/BDD</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/itlibrium/BDD</RepositoryUrl>
+    <PackageTags>BDD, Tests, Shouldly, .Net Core</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Shouldly" Version="2.8.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ITLibrium.BDD\ITLibrium.BDD.csproj" />
+  </ItemGroup>
+
+</Project>
