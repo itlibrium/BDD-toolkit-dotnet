@@ -8,42 +8,18 @@ namespace ITLibrium.BDD.Shouldly.Tests
     public class ShouldlyThenBuilderTests
     {
         [Fact]
-        public void ThrowsAssertPassWhenExceptionTypeIsEqualToExpected()
+        public void AssertPassWhenExceptionTypeIsEqualToExpected()
         {
             Should.NotThrow(() => BddScenario
+                .ExcludeFromReports()
                 .Given<Fixture>()
                 .GivenNoAction()
                 .When(f => f.BusinessRuleWasBroken())
                 .Then().Throws<BusinessException>()
                 .Test());
-        }
-
-        [Fact]
-        public void ThrowsAssertPassWhenExceptionTypeIsAssignableToExpected()
-        {
+            
             Should.NotThrow(() => BddScenario
-                .Given<Fixture>()
-                .GivenNoAction()
-                .When(f => f.BusinessRuleWasBroken())
-                .Then().Throws<Exception>()
-                .Test());
-        }
-
-        [Fact]
-        public void ThrowsAssertFailWhenExceptionTypeIsNotAssignableToExpected()
-        {
-            Should.Throw<AggregateAssertException>(() => BddScenario
-                .Given<Fixture>()
-                .GivenNoAction()
-                .When(f => f.BusinessRuleWasBroken())
-                .Then().Throws<InvalidOperationException>()
-                .Test());
-        }
-
-        [Fact]
-        public void ThrowsExactlyAssertPassWhenExceptionTypeIsEqualToExpected()
-        {
-            Should.NotThrow(() => BddScenario
+                .ExcludeFromReports()
                 .Given<Fixture>()
                 .GivenNoAction()
                 .When(f => f.BusinessRuleWasBroken())
@@ -52,9 +28,34 @@ namespace ITLibrium.BDD.Shouldly.Tests
         }
 
         [Fact]
-        public void ThrowsExactlyAssertFailWhenExceptionTypeIsNotEqualToExpected()
+        public void AssertPassWhenExceptionTypeIsAssignableToExpected()
+        {
+            Should.NotThrow(() => BddScenario
+                .ExcludeFromReports()
+                .Given<Fixture>()
+                .GivenNoAction()
+                .When(f => f.BusinessRuleWasBroken())
+                .Then().Throws<Exception>()
+                .Test());
+        }
+
+        [Fact]
+        public void AssertFailWhenExceptionTypeIsNotAssignableToExpected()
         {
             Should.Throw<AggregateAssertException>(() => BddScenario
+                .ExcludeFromReports()
+                .Given<Fixture>()
+                .GivenNoAction()
+                .When(f => f.BusinessRuleWasBroken())
+                .Then().Throws<InvalidOperationException>()
+                .Test());
+        }
+
+        [Fact]
+        public void AssertFailWhenExceptionTypeIsNotEqualToExpected()
+        {
+            Should.Throw<AggregateAssertException>(() => BddScenario
+                .ExcludeFromReports()
                 .Given<Fixture>()
                 .GivenNoAction()
                 .When(f => f.BusinessRuleWasBroken())

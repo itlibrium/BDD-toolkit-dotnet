@@ -4,14 +4,16 @@
     {
         private readonly string _wholeText;
 
+        public string TestedComponent { get; }
         public string Title { get; }
         public string Given { get; }
         public string When { get; }
         public string Then { get; }
 
-        public BddScenarioDescription(string title, string given, string when, string then, string wholeText)
+        public BddScenarioDescription(string testedComponent, string title, string given, string when, string then, string wholeText)
         {
             _wholeText = wholeText;
+            TestedComponent = testedComponent;
             Title = title;
             Given = given;
             When = when;

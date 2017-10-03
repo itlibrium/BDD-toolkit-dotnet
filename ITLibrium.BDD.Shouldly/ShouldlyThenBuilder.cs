@@ -19,12 +19,12 @@ namespace ITLibrium.BDD.Shouldly
 
         public IThenContinuationBuilder<TFixture> Throws<TException>()
         {
-            return _thenContinuationBuilder.And((f, e) => e.ShouldBeAssignableTo<TException>());
+            return _thenContinuationBuilder.And((f, e) => e.ShouldBeAssignableTo<TException>(), $"Exception type is assignable to {typeof(TException).Name}");
         }
 
         public IThenContinuationBuilder<TFixture> ThrowsExactly<TException>()
         {
-            return _thenContinuationBuilder.And((f, e) => e.ShouldBeOfType<TException>());
+            return _thenContinuationBuilder.And((f, e) => e.ShouldBeOfType<TException>(), $"Exception type is exactly {typeof(TException).Name}");
         }
     }
 }

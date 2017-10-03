@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFramework>netstandard1.0</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Marcin Markowski</Authors>
     <Company>ITLibrium</Company>
     <PackageProjectUrl>https://github.com/itlibrium/BDD</PackageProjectUrl>
@@ -17,10 +16,10 @@
     <PackageId>ITLibrium.BDD</PackageId>
     <Product>ITLibrium.BDD</Product>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Humanizer.Core" Version="2.2.0" />
-    <PackageReference Include="itlibrium.Reflection" Version="1.0.0" />
+    <PackageReference Include="ITLibrium.Reflection" Version="1.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
   </ItemGroup>
-
 </Project>

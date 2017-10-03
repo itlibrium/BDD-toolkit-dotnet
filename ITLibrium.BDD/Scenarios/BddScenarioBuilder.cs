@@ -3,27 +3,38 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using Humanizer;
+using ITLibrium.Bdd.Reports;
 using ITLibrium.Reflection;
 
 namespace ITLibrium.Bdd.Scenarios
 {
     internal class BddScenarioBuilder<TFixture> :
-        IGivenBuilder<TFixture>, 
+        IGivenBuilder<TFixture>,
         IGivenContinuationBuilder<TFixture>,
-        IThenBuilder<TFixture>, 
+        IThenBuilder<TFixture>,
         IThenContinuationBuilder<TFixture>
     {
-        private readonly TFixture _fixture;
+        private readonly string _testedComponent;
         private readonly string _title;
+        
+        private readonly TFixture _fixture;
+        
+        private readonly bool _excludeFromReport;
+        private readonly IReadOnlyList<IBddReport> _reports;
 
         private readonly List<GivenAction<TFixture>> _givenActions = new List<GivenAction<TFixture>>();
         private WhenAction<TFixture> _whenAction;
         private readonly List<ThenAction<TFixture>> _thenActions = new List<ThenAction<TFixture>>();
 
-        public BddScenarioBuilder(TFixture fixture, string title = null)
+        public BddScenarioBuilder(string testedComponent, string title, TFixture fixture, bool excludeFromReports, IReadOnlyList<IBddReport> reports)
         {
-            _fixture = fixture;
+            _testedComponent = testedComponent;
             _title = title;
+            
+            _fixture = fixture;
+            
+            _excludeFromReport = excludeFromReports;
+            _reports = reports;
         }
 
         public IGivenContinuationBuilder<TFixture> Given(Expression<Action<TFixture>> givenAction)
@@ -89,7 +100,8 @@ namespace ITLibrium.Bdd.Scenarios
             return Then(thenAction);
         }
 
-        IThenContinuationBuilder<TFixture> IThenContinuationBuilder<TFixture>.And(Action<TFixture> thenAction, string name)
+        IThenContinuationBuilder<TFixture> IThenContinuationBuilder<TFixture>.And(Action<TFixture> thenAction,
+            string name)
         {
             return Then(thenAction, name);
         }
@@ -121,7 +133,8 @@ namespace ITLibrium.Bdd.Scenarios
 
         private IBddScenario CreateInternal(string title)
         {
-            return new BddScenarioImpl<TFixture>(_title ?? title, _fixture, _givenActions, _whenAction, _thenActions);
+            return new BddScenarioImpl<TFixture>(_testedComponent, _title ?? title, _fixture, 
+                _excludeFromReport, _reports, _givenActions, _whenAction, _thenActions);
         }
     }
 }

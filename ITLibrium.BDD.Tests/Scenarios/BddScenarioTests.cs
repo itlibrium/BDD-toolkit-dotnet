@@ -24,6 +24,7 @@ namespace ITLibrium.BDD.Tests.Scenarios
         {
             var fixtureMock = new Mock<IFixture>();
             BddScenario
+                .ExcludeFromReports()
                 .Given(fixtureMock.Object)
                 .GivenNoAction()
                 .When(f => f.SomethingIsDone())
@@ -92,6 +93,7 @@ namespace ITLibrium.BDD.Tests.Scenarios
         {
             var fixtureMock = new Mock<IFixture>();
             IBddScenario scenario = BddScenario
+                .ExcludeFromReports()
                 .Given(fixtureMock.Object)
                 .Given(f => f.FirstFact())
                     .And(f => f.SecondFact())
@@ -148,7 +150,7 @@ namespace ITLibrium.BDD.Tests.Scenarios
 
             IBddScenarioDescription description = scenario.GetDescription();
             string newLine = Environment.NewLine;
-            description.ToString().ShouldBe($"{description.Title}{newLine}{description.Given}{newLine}{description.When}{newLine}{description.Then}{newLine}");
+            description.ToString().ShouldBe($"Scenario: {description.Title}{newLine}{newLine}{description.Given}{newLine}{description.When}{newLine}{description.Then}{newLine}");
         }
 
         private static void TestScenarion(IFixture fixture)
@@ -160,6 +162,7 @@ namespace ITLibrium.BDD.Tests.Scenarios
         {
             return BddScenario
                 .Title(title)
+                .ExcludeFromReports()
                 .Given(fixture)
                 .Given(f => f.FirstFact())
                     .And(f => f.SecondFact())
