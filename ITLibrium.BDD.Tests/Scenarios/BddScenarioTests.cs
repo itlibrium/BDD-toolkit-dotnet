@@ -13,7 +13,7 @@ namespace ITLibrium.BDD.Tests.Scenarios
         {
             var fixtureMock = new Mock<IFixture>();
 
-            TestScenarion(fixtureMock.Object);
+            TestScenario(fixtureMock.Object);
 
             fixtureMock.Verify(f => f.FirstFact(), Times.Once);
             fixtureMock.Verify(f => f.SecondFact(), Times.Once);
@@ -37,7 +37,7 @@ namespace ITLibrium.BDD.Tests.Scenarios
         {
             var fixtureMock = new Mock<IFixture>();
 
-            TestScenarion(fixtureMock.Object);
+            TestScenario(fixtureMock.Object);
 
             fixtureMock.Verify(f => f.SomethingIsDone(), Times.Once);
         }
@@ -47,7 +47,7 @@ namespace ITLibrium.BDD.Tests.Scenarios
         {
             var fixtureMock = new Mock<IFixture>();
 
-            TestScenarion(fixtureMock.Object);
+            TestScenario(fixtureMock.Object);
 
             fixtureMock.Verify(f => f.CreateSut(), Times.Once);
         }
@@ -57,7 +57,7 @@ namespace ITLibrium.BDD.Tests.Scenarios
         {
             var fixtureMock = new Mock<IFixture>();
 
-            TestScenarion(fixtureMock.Object);
+            TestScenario(fixtureMock.Object);
 
             fixtureMock.Verify(f => f.Result1IsAsExpected(), Times.Once);
             fixtureMock.Verify(f => f.Result2IsAsExpected(), Times.Once);
@@ -69,7 +69,7 @@ namespace ITLibrium.BDD.Tests.Scenarios
             var fixtureMock = new Mock<IFixture>();
             fixtureMock.Setup(f => f.SomethingIsDone()).Throws<Exception>();
 
-            TestScenarion(fixtureMock.Object);
+            TestScenario(fixtureMock.Object);
 
             fixtureMock.Verify(f => f.Result1IsAsExpected(), Times.Once);
             fixtureMock.Verify(f => f.Result2IsAsExpected(), Times.Once);
@@ -81,7 +81,7 @@ namespace ITLibrium.BDD.Tests.Scenarios
             var fixtureMock = new Mock<IFixture>();
             fixtureMock.Setup(f => f.Result1IsAsExpected()).Throws<Exception>();
 
-            void Test() => TestScenarion(fixtureMock.Object);
+            void Test() => TestScenario(fixtureMock.Object);
 
             Assert.Throws<AggregateAssertException>((Action)Test);
             fixtureMock.Verify(f => f.Result1IsAsExpected(), Times.Once);
@@ -153,7 +153,7 @@ namespace ITLibrium.BDD.Tests.Scenarios
             description.ToString().ShouldBe($"Scenario: {description.Title}{newLine}{newLine}{description.Given}{newLine}{description.When}{newLine}{description.Then}{newLine}");
         }
 
-        private static void TestScenarion(IFixture fixture)
+        private static void TestScenario(IFixture fixture)
         {
             CreateScenario(fixture).Test();
         }
