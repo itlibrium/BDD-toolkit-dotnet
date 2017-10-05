@@ -26,7 +26,6 @@ namespace ITLibrium.BDD.Tests.Scenarios
             BddScenario
                 .ExcludeFromReports()
                 .Given(fixtureMock.Object)
-                .GivenNoAction()
                 .When(f => f.SomethingIsDone())
                 .Then(f => f.Result1IsAsExpected())
                 .Test();
@@ -95,7 +94,7 @@ namespace ITLibrium.BDD.Tests.Scenarios
             IBddScenario scenario = BddScenario
                 .ExcludeFromReports()
                 .Given(fixtureMock.Object)
-                .Given(f => f.FirstFact())
+                .And(f => f.FirstFact())
                     .And(f => f.SecondFact())
                 .When(f => f.SomethingIsDone())
                 .Then(f => f.Result1IsAsExpected())
@@ -164,7 +163,7 @@ namespace ITLibrium.BDD.Tests.Scenarios
                 .Title(title)
                 .ExcludeFromReports()
                 .Given(fixture)
-                .Given(f => f.FirstFact())
+                .And(f => f.FirstFact())
                     .And(f => f.SecondFact())
                 .When(f => f.SomethingIsDone())
                 .Then(f => f.Result1IsAsExpected())

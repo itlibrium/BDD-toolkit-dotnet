@@ -9,7 +9,7 @@ namespace ITLibrium.Bdd.Scenarios
         IFixtureBuilder ReportTo(IBddReport report);
         IFixtureBuilder ExcludeFromReports();
         
-        IGivenBuilder<TFixture> Given<TFixture>() where TFixture : class, new();
-        IGivenBuilder<TFixture> Given<TFixture>(TFixture fixture);
+        IGivenContinuationBuilder<TFixture> Given<TFixture>() where TFixture : class, new();
+        IGivenContinuationBuilder<TFixture> Given<TFixture>(TFixture fixture);
     }
 }
