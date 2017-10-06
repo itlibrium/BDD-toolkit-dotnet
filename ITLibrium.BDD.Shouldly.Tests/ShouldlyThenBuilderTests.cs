@@ -13,7 +13,6 @@ namespace ITLibrium.BDD.Shouldly.Tests
             Should.NotThrow(() => BddScenario
                 .ExcludeFromReports()
                 .Given<Fixture>()
-                .GivenNoAction()
                 .When(f => f.BusinessRuleWasBroken())
                 .Then().Throws<BusinessException>()
                 .Test());
@@ -21,7 +20,6 @@ namespace ITLibrium.BDD.Shouldly.Tests
             Should.NotThrow(() => BddScenario
                 .ExcludeFromReports()
                 .Given<Fixture>()
-                .GivenNoAction()
                 .When(f => f.BusinessRuleWasBroken())
                 .Then().ThrowsExactly<BusinessException>()
                 .Test());
@@ -33,7 +31,6 @@ namespace ITLibrium.BDD.Shouldly.Tests
             Should.NotThrow(() => BddScenario
                 .ExcludeFromReports()
                 .Given<Fixture>()
-                .GivenNoAction()
                 .When(f => f.BusinessRuleWasBroken())
                 .Then().Throws<Exception>()
                 .Test());
@@ -45,7 +42,6 @@ namespace ITLibrium.BDD.Shouldly.Tests
             Should.Throw<AggregateAssertException>(() => BddScenario
                 .ExcludeFromReports()
                 .Given<Fixture>()
-                .GivenNoAction()
                 .When(f => f.BusinessRuleWasBroken())
                 .Then().Throws<InvalidOperationException>()
                 .Test());
@@ -57,7 +53,6 @@ namespace ITLibrium.BDD.Shouldly.Tests
             Should.Throw<AggregateAssertException>(() => BddScenario
                 .ExcludeFromReports()
                 .Given<Fixture>()
-                .GivenNoAction()
                 .When(f => f.BusinessRuleWasBroken())
                 .Then().ThrowsExactly<Exception>()
                 .Test());

@@ -7,7 +7,5 @@ namespace ITLibrium.Bdd.Scenarios
     {
         IGivenContinuationBuilder<TFixture> Given(Expression<Action<TFixture>> givenAction);
         IGivenContinuationBuilder<TFixture> Given(Action<TFixture> givenAction, string name);
-
-        IWhenBuilder<TFixture> GivenNoAction();
     }
 }

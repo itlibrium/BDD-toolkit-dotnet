@@ -58,11 +58,6 @@ namespace ITLibrium.Bdd.Scenarios
             return Given(givenAction, name);
         }
 
-        public IWhenBuilder<TFixture> GivenNoAction()
-        {
-            return this;
-        }
-
         public IThenBuilder<TFixture> When(Expression<Action<TFixture>> whenAction)
         {
             return When(whenAction.Compile(), whenAction.GetName());

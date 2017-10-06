@@ -53,12 +53,12 @@ namespace ITLibrium.Bdd.Scenarios
             return this;
         }
 
-        public IGivenBuilder<TFixture> Given<TFixture>() where TFixture : class, new()
+        public IGivenContinuationBuilder<TFixture> Given<TFixture>() where TFixture : class, new()
         {
             return new BddScenarioBuilder<TFixture>(_testedComponent, _title, new TFixture(), _excludeFromReports, _reports);
         }
 
-        public IGivenBuilder<TFixture> Given<TFixture>(TFixture fixture)
+        public IGivenContinuationBuilder<TFixture> Given<TFixture>(TFixture fixture)
         {
             return new BddScenarioBuilder<TFixture>(_testedComponent, _title, fixture, _excludeFromReports, _reports);
         }
