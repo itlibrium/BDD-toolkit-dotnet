@@ -127,13 +127,13 @@ namespace ITLibrium.BDD.Tests.Scenarios
         public void GivenLabelPrintedEvenWhenNoGivenBlocks()
         {
             var fixtureMock = new Mock<IFixture>();
-            var scenario = BddScenario
+            IBddScenario scenario = BddScenario
                 .Given(fixtureMock.Object)
                 .When(f => f.SomethingIsDone())
                 .Then(f => f.Result1IsAsExpected())
                 .Create();
 
-            scenario.GetDescription().Given.ShouldBe($"Given no action");
+            scenario.GetDescription().Given.ShouldBe("Given no action");
         }
 
         [Fact]
