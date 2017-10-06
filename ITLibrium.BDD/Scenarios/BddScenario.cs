@@ -24,13 +24,13 @@ namespace ITLibrium.Bdd.Scenarios
             return new FixtureBuilder(null, null, true, null);
         }
 
-        public static IGivenBuilder<TFixture> Given<TFixture>()
+        public static IGivenContinuationBuilder<TFixture> Given<TFixture>()
             where TFixture : class, new()
         {
             return new BddScenarioBuilder<TFixture>(null, null, new TFixture(), false,  null);
         }
 
-        public static IGivenBuilder<TFixture> Given<TFixture>(TFixture fixture)
+        public static IGivenContinuationBuilder<TFixture> Given<TFixture>(TFixture fixture)
         {
             return new BddScenarioBuilder<TFixture>(null, null, fixture, false, null);
         }
