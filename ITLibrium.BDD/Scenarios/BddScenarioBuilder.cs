@@ -26,6 +26,8 @@ namespace ITLibrium.Bdd.Scenarios
         private WhenAction<TFixture> _whenAction;
         private readonly List<ThenAction<TFixture>> _thenActions = new List<ThenAction<TFixture>>();
 
+        private bool _testCreated;
+        
         public BddScenarioBuilder(string testedComponent, string title, TFixture fixture, bool excludeFromReports, IReadOnlyList<IBddReport> reports)
         {
             _testedComponent = testedComponent;
@@ -35,6 +37,12 @@ namespace ITLibrium.Bdd.Scenarios
             
             _excludeFromReport = excludeFromReports;
             _reports = reports;
+        }
+
+        ~BddScenarioBuilder()
+        {
+            if(!_testCreated)
+                throw new InvalidOperationException("BddScenarioBuilder should create scenario. Call Create or Test method afther Then section");
         }
 
         public IGivenContinuationBuilder<TFixture> Given(Expression<Action<TFixture>> givenAction)
@@ -128,6 +136,7 @@ namespace ITLibrium.Bdd.Scenarios
 
         private IBddScenario CreateInternal(string title)
         {
+            _testCreated = true;
             return new BddScenarioImpl<TFixture>(_testedComponent, _title ?? title, _fixture, 
                 _excludeFromReport, _reports, _givenActions, _whenAction, _thenActions);
         }
