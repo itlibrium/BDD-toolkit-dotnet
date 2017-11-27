@@ -7,18 +7,20 @@
     <RepositoryUrl>https://github.com/itlibrium/BDD</RepositoryUrl>
     <PackageTags>Bdd, Tests, .Net Core</PackageTags>
     <Description>Simple BDD syntax for writing domain model tests</Description>
-    <PackageReleaseNotes>Given - When - Then syntax, auto-generated humanized BDD scenario description</PackageReleaseNotes>
+    <PackageReleaseNotes>Simplified syntax for Given section</PackageReleaseNotes>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <AssemblyVersion>1.0.0</AssemblyVersion>
-    <FileVersion>1.0.0</FileVersion>
+    <AssemblyVersion>1.1.0</AssemblyVersion>
+    <FileVersion>1.1.0</FileVersion>
     <AssemblyName>ITLibrium.Bdd</AssemblyName>
     <RootNamespace>ITLibrium.Bdd</RootNamespace>
     <PackageId>ITLibrium.BDD</PackageId>
     <Product>ITLibrium.BDD</Product>
+    <Version>1.1.0</Version>
+    <Copyright>ITLIBRIUM</Copyright>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Humanizer.Core" Version="2.2.0" />
-    <PackageReference Include="ITLibrium.Reflection" Version="1.0.1" />
+    <PackageReference Include="ITLibrium.Reflection" Version="1.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
   </ItemGroup>
