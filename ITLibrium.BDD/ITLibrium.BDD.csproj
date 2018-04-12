@@ -1,25 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Authors>Marcin Markowski</Authors>
     <Company>ITLibrium</Company>
+    <Description>Simple BDD syntax for writing domain model tests</Description>
     <PackageProjectUrl>https://github.com/itlibrium/BDD</PackageProjectUrl>
     <RepositoryUrl>https://github.com/itlibrium/BDD</RepositoryUrl>
     <PackageTags>Bdd, Tests, .Net Core</PackageTags>
-    <Description>Simple BDD syntax for writing domain model tests</Description>
-    <PackageReleaseNotes>Given - When - Then syntax, auto-generated humanized BDD scenario description</PackageReleaseNotes>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <AssemblyVersion>1.0.0</AssemblyVersion>
-    <FileVersion>1.0.0</FileVersion>
+    <PackageReleaseNotes>Fixed bug with reports under .NET Framework</PackageReleaseNotes>
+    <AssemblyVersion>1.1.1</AssemblyVersion>
+    <FileVersion>1.1.1</FileVersion>
+    <PackageVersion>1.1.1</PackageVersion>
     <AssemblyName>ITLibrium.Bdd</AssemblyName>
     <RootNamespace>ITLibrium.Bdd</RootNamespace>
     <PackageId>ITLibrium.BDD</PackageId>
     <Product>ITLibrium.BDD</Product>
+    <Copyright>ITLIBRIUM</Copyright>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Humanizer.Core" Version="2.2.0" />
     <PackageReference Include="ITLibrium.Reflection" Version="1.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
-    <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
   </ItemGroup>
 </Project>
