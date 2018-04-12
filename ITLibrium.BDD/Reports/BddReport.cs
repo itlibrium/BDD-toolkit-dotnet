@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
-using System.Runtime.Loader;
 using ITLibrium.Bdd.Scenarios;
 
 namespace ITLibrium.Bdd.Reports
@@ -13,12 +13,15 @@ namespace ITLibrium.Bdd.Reports
 
         private static readonly List<IBddReportWriter> _writers = new List<IBddReportWriter>();
         
+        private static bool _isFinished;
+        
         static BddReport()
         {
             _defaultReport = new BddReportImpl($"BDD Report for {Assembly.GetCallingAssembly().GetName().Name}");
             _reports.Add(_defaultReport);
             
-            AssemblyLoadContext.Default.Unloading += c => WriteReports();
+            AppDomain.CurrentDomain.ProcessExit += OnExit;
+            AppDomain.CurrentDomain.DomainUnload += OnExit;
         }
 
         public static void AddWriter(IBddReportWriter writer)
@@ -36,6 +39,19 @@ namespace ITLibrium.Bdd.Reports
         public static void AddScenarioResult(IBddScenarioResult result)
         {
             _defaultReport.AddScenarioResult(result);
+        }
+        
+        private static void OnExit(object sender, EventArgs args)
+        {
+            lock (_reports)
+            {
+                if (_isFinished)
+                    return;
+
+                WriteReports();
+
+                _isFinished = true;
+            }
         }
 
         private static void WriteReports()

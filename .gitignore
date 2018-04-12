@@ -271,3 +271,7 @@ __pycache__/
 
 # VS Code
 .vscode
+
+#NextCloud
+._sync*
+.owncloud*
