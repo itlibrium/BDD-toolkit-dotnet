@@ -68,8 +68,9 @@ namespace ITLibrium.BDD.Tests.Scenarios
             var fixtureMock = new Mock<IFixture>();
             fixtureMock.Setup(f => f.SomethingIsDone()).Throws<Exception>();
 
-            TestScenario(fixtureMock.Object);
+            void Test() => TestScenario(fixtureMock.Object);
 
+            Assert.Throws<AggregateAssertException>((Action)Test);
             fixtureMock.Verify(f => f.Result1IsAsExpected(), Times.Once);
             fixtureMock.Verify(f => f.Result2IsAsExpected(), Times.Once);
         }
@@ -85,6 +86,45 @@ namespace ITLibrium.BDD.Tests.Scenarios
             Assert.Throws<AggregateAssertException>((Action)Test);
             fixtureMock.Verify(f => f.Result1IsAsExpected(), Times.Once);
             fixtureMock.Verify(f => f.Result2IsAsExpected(), Times.Once);
+        }
+        
+        [Fact]
+        public void TestPassesWhenExceptionIsThrownAndExplicitAssertionIsMade()
+        {
+            var fixtureMock = new Mock<IFixture>();
+            fixtureMock.Setup(f => f.SomethingIsDone()).Throws<Exception>();
+
+            BddScenario
+                .ExcludeFromReports()
+                .Given(fixtureMock.Object)
+                .When(f => f.SomethingIsDone())
+                .Then((f, e) => f.ExceptionIsThrown(e))
+                .Test();
+            
+            BddScenario
+                .ExcludeFromReports()
+                .Given(fixtureMock.Object)
+                .When(f => f.SomethingIsDone())
+                .Then(f => f.Result1IsAsExpected())
+                    .And((f, e) => f.ExceptionIsThrown(e))
+                .Test();
+        }
+        
+        [Fact]
+        public void TestFailsWhenExceptionIsThrownAndNoExplicitAssertionIsMade()
+        {
+            var fixtureMock = new Mock<IFixture>();
+            fixtureMock.Setup(f => f.SomethingIsDone()).Throws<Exception>();
+
+            void Test() => BddScenario
+                .ExcludeFromReports()
+                .Given(fixtureMock.Object)
+                .And(f => f.FirstFact())
+                .When(f => f.SomethingIsDone())
+                .Then(f => f.Result1IsAsExpected())
+                .Test();
+            
+            Assert.Throws<AggregateAssertException>((Action)Test);
         }
 
         [Fact]
@@ -194,6 +234,8 @@ namespace ITLibrium.BDD.Tests.Scenarios
 
             void Result1IsAsExpected();
             void Result2IsAsExpected();
+
+            void ExceptionIsThrown(Exception exception);
         }
     }
 }

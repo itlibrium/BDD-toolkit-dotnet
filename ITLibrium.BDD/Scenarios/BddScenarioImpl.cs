@@ -20,9 +20,12 @@ namespace ITLibrium.Bdd.Scenarios
         private readonly WhenAction<TFixture> _whenAction;
         private readonly IReadOnlyList<ThenAction<TFixture>> _thenActions;
 
+        private readonly bool _exceptionsAreExplicitlyChecked;
+
         public BddScenarioImpl(string testedComponent, string title, TFixture fixture,
             bool excludeFromReport, IReadOnlyList<IBddReport> reports,
-            IReadOnlyList<GivenAction<TFixture>> givenActions, WhenAction<TFixture> whenAction, IReadOnlyList<ThenAction<TFixture>> thenActions)
+            IReadOnlyList<GivenAction<TFixture>> givenActions, WhenAction<TFixture> whenAction, IReadOnlyList<ThenAction<TFixture>> thenActions,
+            bool exceptionsAreExplicitlyChecked)
         {
             _testedComponent = testedComponent;
             _title = title;
@@ -32,6 +35,7 @@ namespace ITLibrium.Bdd.Scenarios
             _givenActions = givenActions;
             _whenAction = whenAction;
             _thenActions = thenActions;
+            _exceptionsAreExplicitlyChecked = exceptionsAreExplicitlyChecked;
         }
 
         public IBddScenarioDescription GetDescription()
@@ -77,22 +81,41 @@ namespace ITLibrium.Bdd.Scenarios
 
         public void Test()
         {
+            ExecuteGivenSection();
+            Exception whenException = ExecuteWhenSection();
+            IReadOnlyList<Exception> thenExceptions = ExecuteThenSection(whenException);
+            TestResult testResult = CreateResult(whenException, thenExceptions);
+            
+            AddToReports(testResult);
+            
+            if (!testResult.Passed)
+                throw new AggregateAssertException(testResult.Exceptions);
+        }
+
+        private void ExecuteGivenSection()
+        {
             foreach (GivenAction<TFixture> givenAction in _givenActions)
                 givenAction.Execute(_fixture);
+        }
 
-            Exception whenException = null;
+        private Exception ExecuteWhenSection()
+        {
             try
             {
                 var sutCreator = _fixture as ISutCreator;
                 sutCreator?.CreateSut();
 
                 _whenAction.Execute(_fixture);
+                return null;
             }
             catch (Exception e)
             {
-                whenException = e;
+                return e;
             }
+        }
 
+        private IReadOnlyList<Exception> ExecuteThenSection(Exception whenException)
+        {
             List<Exception> thenExceptions = null;
             foreach (ThenAction<TFixture> thenAction in _thenActions)
             {
@@ -108,27 +131,67 @@ namespace ITLibrium.Bdd.Scenarios
                     thenExceptions.Add(e);
                 }
             }
-            bool testPassed = thenExceptions == null;
-
-            if (!_excludeFromReport)
-            {
-                IBddScenarioDescription description = GetDescription();
-                var result = new BddScenarioResult(description, testPassed);
-                if (_reports != null && _reports.Count > 0)
-                {
-                    foreach (IBddReport report in _reports)
-                        report.AddScenarioResult(result);
-                }
-                else
-                {
-                    BddReport.AddScenarioResult(result);
-                }
-            }
-            
-            if (!testPassed)
-                throw new AggregateAssertException(thenExceptions);
+            return thenExceptions;
         }
 
+        private TestResult CreateResult(Exception whenException, IReadOnlyList<Exception> thenExceptions)
+        {
+            var result = new TestResult();
+            if (whenException != null && !_exceptionsAreExplicitlyChecked)
+                result.AddException(whenException);
+            
+            result.AddExceptions(thenExceptions);
+            return result;
+        }
+
+        private void AddToReports(TestResult testResult)
+        {
+            if (_excludeFromReport) 
+                return;
+            
+            IBddScenarioDescription description = GetDescription();
+            var scenarioResult = new BddScenarioResult(description, testResult.Passed);
+            if (_reports != null && _reports.Count > 0)
+            {
+                foreach (IBddReport report in _reports)
+                    report.AddScenarioResult(scenarioResult);
+            }
+            else
+            {
+                BddReport.AddScenarioResult(scenarioResult);
+            }
+        } 
+
         public override string ToString() => GetDescription().ToString();
+        
+        private struct TestResult
+        {
+            private List<Exception> _exceptions;
+            public IEnumerable<Exception> Exceptions => _exceptions;
+
+            public bool Passed => _exceptions == null;
+
+            public void AddException(Exception exception)
+            {
+                if (exception == null)
+                    return;
+                
+                if (_exceptions == null)
+                    _exceptions = new List<Exception>();
+                
+                _exceptions.Add(exception);
+            }
+            
+            public void AddExceptions(IEnumerable<Exception> exceptions)
+            {
+                if (exceptions == null)
+                    return;
+                
+                if (_exceptions == null)
+                    _exceptions = new List<Exception>();
+                
+                _exceptions.AddRange(exceptions);
+            }
+        }
     }
 }

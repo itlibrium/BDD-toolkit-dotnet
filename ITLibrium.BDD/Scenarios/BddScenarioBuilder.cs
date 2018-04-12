@@ -26,6 +26,8 @@ namespace ITLibrium.Bdd.Scenarios
         private WhenAction<TFixture> _whenAction;
         private readonly List<ThenAction<TFixture>> _thenActions = new List<ThenAction<TFixture>>();
 
+        private bool _exceptionsAreExplicitlyChecked;
+
         private bool _testCreated;
         
         public BddScenarioBuilder(string testedComponent, string title, TFixture fixture, bool excludeFromReports, IReadOnlyList<IBddReport> reports)
@@ -84,7 +86,7 @@ namespace ITLibrium.Bdd.Scenarios
 
         public IThenContinuationBuilder<TFixture> Then(Action<TFixture> thenAction, string name)
         {
-            return Then((f, e) => thenAction(f), name);
+            return Then((f, e) => thenAction(f), name, false);
         }
 
         public IThenContinuationBuilder<TFixture> Then(Expression<Action<TFixture, Exception>> thenAction)
@@ -94,7 +96,13 @@ namespace ITLibrium.Bdd.Scenarios
 
         public IThenContinuationBuilder<TFixture> Then(Action<TFixture, Exception> thenAction, string name)
         {
+            return Then(thenAction, name, true);
+        }
+
+        private IThenContinuationBuilder<TFixture> Then(Action<TFixture, Exception> thenAction, string name, bool exceptionsAreExplicitlyChecked)
+        {
             _thenActions.Add(new ThenAction<TFixture>(thenAction, name));
+            _exceptionsAreExplicitlyChecked = exceptionsAreExplicitlyChecked;
             return this;
         }
 
@@ -103,8 +111,7 @@ namespace ITLibrium.Bdd.Scenarios
             return Then(thenAction);
         }
 
-        IThenContinuationBuilder<TFixture> IThenContinuationBuilder<TFixture>.And(Action<TFixture> thenAction,
-            string name)
+        IThenContinuationBuilder<TFixture> IThenContinuationBuilder<TFixture>.And(Action<TFixture> thenAction, string name)
         {
             return Then(thenAction, name);
         }
@@ -138,7 +145,8 @@ namespace ITLibrium.Bdd.Scenarios
         {
             _testCreated = true;
             return new BddScenarioImpl<TFixture>(_testedComponent, _title ?? title, _fixture, 
-                _excludeFromReport, _reports, _givenActions, _whenAction, _thenActions);
+                _excludeFromReport, _reports, _givenActions, _whenAction, _thenActions,
+                _exceptionsAreExplicitlyChecked);
         }
     }
 }

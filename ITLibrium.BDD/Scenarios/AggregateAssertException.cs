@@ -13,6 +13,8 @@ namespace ITLibrium.Bdd.Scenarios
         
         public AggregateAssertException(IEnumerable<Exception> exceptions)
         {
+            if (exceptions == null) throw new ArgumentNullException(nameof(exceptions));
+            
             IReadOnlyList<Exception> exceptionsList = exceptions.ToList();
             if(exceptionsList.Count == 0)
                 throw new ArgumentException("Exceptions collection can not be empty.", nameof(exceptions));

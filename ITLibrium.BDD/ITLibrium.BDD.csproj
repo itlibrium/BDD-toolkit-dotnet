@@ -8,10 +8,10 @@
     <PackageProjectUrl>https://github.com/itlibrium/BDD</PackageProjectUrl>
     <RepositoryUrl>https://github.com/itlibrium/BDD</RepositoryUrl>
     <PackageTags>Bdd, Tests, .Net Core</PackageTags>
-    <PackageReleaseNotes>Fixed bug with reports under .NET Framework</PackageReleaseNotes>
-    <AssemblyVersion>1.1.1</AssemblyVersion>
-    <FileVersion>1.1.1</FileVersion>
-    <PackageVersion>1.1.1</PackageVersion>
+    <PackageReleaseNotes>Fixed test result when exception in "When" section is thrown and no explicit exception check is made in "Then" section</PackageReleaseNotes>
+    <AssemblyVersion>1.1.2</AssemblyVersion>
+    <FileVersion>1.1.2</FileVersion>
+    <PackageVersion>1.1.2</PackageVersion>
     <AssemblyName>ITLibrium.Bdd</AssemblyName>
     <RootNamespace>ITLibrium.Bdd</RootNamespace>
     <PackageId>ITLibrium.BDD</PackageId>
