@@ -3,26 +3,26 @@ using Shouldly;
 
 namespace ITLibrium.BDD.Shouldly
 {
-    public class ShouldlyThenBuilder<TFixture>
+    public class ShouldlyThenBuilder<TContext>
     {
-        private readonly IThenContinuationBuilder<TFixture> _thenContinuationBuilder;
+        private readonly IThenContinuationBuilder<TContext> _thenContinuationBuilder;
 
-        public ShouldlyThenBuilder(IThenBuilder<TFixture> thenBuilder)
+        public ShouldlyThenBuilder(IThenBuilder<TContext> thenBuilder)
         {
             _thenContinuationBuilder = thenBuilder.GetContinuationBuilder();
         }
 
-        public ShouldlyThenBuilder(IThenContinuationBuilder<TFixture> thenContinuationBuilder)
+        public ShouldlyThenBuilder(IThenContinuationBuilder<TContext> thenContinuationBuilder)
         {
             _thenContinuationBuilder = thenContinuationBuilder;
         }
 
-        public IThenContinuationBuilder<TFixture> Throws<TException>()
+        public IThenContinuationBuilder<TContext> Throws<TException>()
         {
             return _thenContinuationBuilder.And((f, e) => e.ShouldBeAssignableTo<TException>(), $"Exception type is assignable to {typeof(TException).Name}");
         }
 
-        public IThenContinuationBuilder<TFixture> ThrowsExactly<TException>()
+        public IThenContinuationBuilder<TContext> ThrowsExactly<TException>()
         {
             return _thenContinuationBuilder.And((f, e) => e.ShouldBeOfType<TException>(), $"Exception type is exactly {typeof(TException).Name}");
         }

@@ -3,9 +3,9 @@ using System.Linq.Expressions;
 
 namespace ITLibrium.Bdd.Scenarios
 {
-    public interface IGivenBuilder<TFixture>
+    public interface IGivenBuilder<TContext> : IWhenBuilder<TContext>
     {
-        IGivenContinuationBuilder<TFixture> Given(Expression<Action<TFixture>> givenAction);
-        IGivenContinuationBuilder<TFixture> Given(Action<TFixture> givenAction, string name);
+        IGivenContinuationBuilder<TContext> Given(Expression<Action<TContext>> givenAction);
+        IGivenContinuationBuilder<TContext> Given(Action<TContext> givenAction, string name);
     }
 }

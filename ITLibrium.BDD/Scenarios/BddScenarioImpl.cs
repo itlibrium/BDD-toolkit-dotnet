@@ -6,25 +6,25 @@ using ITLibrium.Bdd.Reports;
 
 namespace ITLibrium.Bdd.Scenarios
 {
-    internal class BddScenarioImpl<TFixture> : IBddScenario
+    internal class BddScenarioImpl<TContext> : IBddScenario
     {
         private readonly string _testedComponent;
         private readonly string _title;
         
-        private readonly TFixture _fixture;
+        private readonly TContext _fixture;
         
         private readonly bool _excludeFromReport;
         private readonly IReadOnlyList<IBddReport> _reports;
 
-        private readonly IReadOnlyList<GivenAction<TFixture>> _givenActions;
-        private readonly WhenAction<TFixture> _whenAction;
-        private readonly IReadOnlyList<ThenAction<TFixture>> _thenActions;
+        private readonly IReadOnlyList<GivenAction<TContext>> _givenActions;
+        private readonly WhenAction<TContext> _whenAction;
+        private readonly IReadOnlyList<ThenAction<TContext>> _thenActions;
 
         private readonly bool _exceptionsAreExplicitlyChecked;
 
-        public BddScenarioImpl(string testedComponent, string title, TFixture fixture,
+        public BddScenarioImpl(string testedComponent, string title, TContext fixture,
             bool excludeFromReport, IReadOnlyList<IBddReport> reports,
-            IReadOnlyList<GivenAction<TFixture>> givenActions, WhenAction<TFixture> whenAction, IReadOnlyList<ThenAction<TFixture>> thenActions,
+            IReadOnlyList<GivenAction<TContext>> givenActions, WhenAction<TContext> whenAction, IReadOnlyList<ThenAction<TContext>> thenActions,
             bool exceptionsAreExplicitlyChecked)
         {
             _testedComponent = testedComponent;
@@ -94,7 +94,7 @@ namespace ITLibrium.Bdd.Scenarios
 
         private void ExecuteGivenSection()
         {
-            foreach (GivenAction<TFixture> givenAction in _givenActions)
+            foreach (GivenAction<TContext> givenAction in _givenActions)
                 givenAction.Execute(_fixture);
         }
 
@@ -117,7 +117,7 @@ namespace ITLibrium.Bdd.Scenarios
         private IReadOnlyList<Exception> ExecuteThenSection(Exception whenException)
         {
             List<Exception> thenExceptions = null;
-            foreach (ThenAction<TFixture> thenAction in _thenActions)
+            foreach (ThenAction<TContext> thenAction in _thenActions)
             {
                 try
                 {

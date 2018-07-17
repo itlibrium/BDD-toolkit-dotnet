@@ -1,38 +1,52 @@
-﻿using ITLibrium.Bdd.Reports;
+﻿using System;
+using ITLibrium.Bdd.Reports;
 
 namespace ITLibrium.Bdd.Scenarios
 {
     public static class BddScenario
     {
-        public static IFixtureBuilder TestedComponent(string testedComponent)
+        public static IScenarioMetadataBuilder TestedComponent(string testedComponent)
         {
-            return new FixtureBuilder(testedComponent, null, false, null);
+            return new ScenarioMetadataBuilder(testedComponent, null, false, null);
         }
 
-        public static IFixtureBuilder Title(string title)
+        public static IScenarioMetadataBuilder Title(string title)
         {
-            return new FixtureBuilder(null, title, false, null);
+            return new ScenarioMetadataBuilder(null, title, false, null);
         }
 
-        public static IFixtureBuilder ReportTo(IBddReport report)
+        public static IScenarioMetadataBuilder ReportTo(IBddReport report)
         {
-            return new FixtureBuilder(null, null, false, report);
+            return new ScenarioMetadataBuilder(null, null, false, report);
         }
         
-        public static IFixtureBuilder ExcludeFromReports()
+        public static IScenarioMetadataBuilder ExcludeFromReports()
         {
-            return new FixtureBuilder(null, null, true, null);
+            return new ScenarioMetadataBuilder(null, null, true, null);
+        }
+        
+        public static IGivenBuilder<TContext> Using<TContext>()
+            where TContext : class, new()
+        {
+            return new BddScenarioBuilder<TContext>(null, null, new TContext(), false,  null);
         }
 
-        public static IGivenContinuationBuilder<TFixture> Given<TFixture>()
-            where TFixture : class, new()
+        public static IGivenBuilder<TContext> Using<TContext>(TContext fixture)
         {
-            return new BddScenarioBuilder<TFixture>(null, null, new TFixture(), false,  null);
+            return new BddScenarioBuilder<TContext>(null, null, fixture, false, null);
         }
 
-        public static IGivenContinuationBuilder<TFixture> Given<TFixture>(TFixture fixture)
+        [Obsolete]
+        public static IGivenContinuationBuilder<TContext> Given<TContext>()
+            where TContext : class, new()
         {
-            return new BddScenarioBuilder<TFixture>(null, null, fixture, false, null);
+            return new BddScenarioBuilder<TContext>(null, null, new TContext(), false,  null);
+        }
+
+        [Obsolete]
+        public static IGivenContinuationBuilder<TContext> Given<TContext>(TContext fixture)
+        {
+            return new BddScenarioBuilder<TContext>(null, null, fixture, false, null);
         }
     }
 }

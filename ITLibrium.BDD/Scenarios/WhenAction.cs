@@ -2,17 +2,17 @@
 
 namespace ITLibrium.Bdd.Scenarios
 {
-    internal class WhenAction<TFixture> : BddAction
+    internal class WhenAction<TContext> : BddAction
     {
-        private readonly Action<TFixture> _action;
+        private readonly Action<TContext> _action;
 
-        public WhenAction(Action<TFixture> action, string name) 
+        public WhenAction(Action<TContext> action, string name) 
             : base(name)
         {
             _action = action;
         }
 
-        public void Execute(TFixture fixture)
+        public void Execute(TContext fixture)
         {
             _action(fixture);
         }

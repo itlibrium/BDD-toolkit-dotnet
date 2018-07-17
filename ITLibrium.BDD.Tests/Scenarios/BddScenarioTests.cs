@@ -25,7 +25,7 @@ namespace ITLibrium.BDD.Tests.Scenarios
             var fixtureMock = new Mock<IFixture>();
             BddScenario
                 .ExcludeFromReports()
-                .Given(fixtureMock.Object)
+                .Using(fixtureMock.Object)
                 .When(f => f.SomethingIsDone())
                 .Then(f => f.Result1IsAsExpected())
                 .Test();
@@ -96,14 +96,14 @@ namespace ITLibrium.BDD.Tests.Scenarios
 
             BddScenario
                 .ExcludeFromReports()
-                .Given(fixtureMock.Object)
+                .Using(fixtureMock.Object)
                 .When(f => f.SomethingIsDone())
                 .Then((f, e) => f.ExceptionIsThrown(e))
                 .Test();
             
             BddScenario
                 .ExcludeFromReports()
-                .Given(fixtureMock.Object)
+                .Using(fixtureMock.Object)
                 .When(f => f.SomethingIsDone())
                 .Then(f => f.Result1IsAsExpected())
                     .And((f, e) => f.ExceptionIsThrown(e))
@@ -118,8 +118,8 @@ namespace ITLibrium.BDD.Tests.Scenarios
 
             void Test() => BddScenario
                 .ExcludeFromReports()
-                .Given(fixtureMock.Object)
-                .And(f => f.FirstFact())
+                .Using(fixtureMock.Object)
+                .Given(f => f.FirstFact())
                 .When(f => f.SomethingIsDone())
                 .Then(f => f.Result1IsAsExpected())
                 .Test();
@@ -131,10 +131,10 @@ namespace ITLibrium.BDD.Tests.Scenarios
         public void DefaultTitleIsEqualToHumanizedMethodName()
         {
             var fixtureMock = new Mock<IFixture>();
-            IBddScenario scenario = BddScenario
+            var scenario = BddScenario
                 .ExcludeFromReports()
-                .Given(fixtureMock.Object)
-                .And(f => f.FirstFact())
+                .Using(fixtureMock.Object)
+                .Given(f => f.FirstFact())
                     .And(f => f.SecondFact())
                 .When(f => f.SomethingIsDone())
                 .Then(f => f.Result1IsAsExpected())
@@ -145,11 +145,11 @@ namespace ITLibrium.BDD.Tests.Scenarios
         }
 
         [Fact]
-        public void CustomTitleIsCorrect()
+        public void CustomTitleIsAsConfigured()
         {
             var fixtureMock = new Mock<IFixture>();
             const string title = "Custom title";
-            IBddScenario scenario = CreateScenario(fixtureMock.Object, title);
+            var scenario = CreateScenario(fixtureMock.Object, title);
 
             scenario.GetDescription().Title.ShouldBe(title);
         }
@@ -158,7 +158,7 @@ namespace ITLibrium.BDD.Tests.Scenarios
         public void GivenSectionTextIsCorrect()
         {
             var fixtureMock = new Mock<IFixture>();
-            IBddScenario scenario = CreateScenario(fixtureMock.Object);
+            var scenario = CreateScenario(fixtureMock.Object);
 
             scenario.GetDescription().Given.ShouldBe($"Given first fact{Environment.NewLine}\tAnd second fact");
         }
@@ -167,8 +167,8 @@ namespace ITLibrium.BDD.Tests.Scenarios
         public void GivenLabelPrintedEvenWhenNoGivenBlocks()
         {
             var fixtureMock = new Mock<IFixture>();
-            IBddScenario scenario = BddScenario
-                .Given(fixtureMock.Object)
+            var scenario = BddScenario
+                .Using(fixtureMock.Object)
                 .When(f => f.SomethingIsDone())
                 .Then(f => f.Result1IsAsExpected())
                 .Create();
@@ -180,7 +180,7 @@ namespace ITLibrium.BDD.Tests.Scenarios
         public void WhenSectionTextIsCorrect()
         {
             var fixtureMock = new Mock<IFixture>();
-            IBddScenario scenario = CreateScenario(fixtureMock.Object);
+            var scenario = CreateScenario(fixtureMock.Object);
 
             scenario.GetDescription().When.ShouldBe("When something is done");
         }
@@ -189,7 +189,7 @@ namespace ITLibrium.BDD.Tests.Scenarios
         public void ThenSectionTextIsCorrect()
         {
             var fixtureMock = new Mock<IFixture>();
-            IBddScenario scenario = CreateScenario(fixtureMock.Object);
+            var scenario = CreateScenario(fixtureMock.Object);
 
             scenario.GetDescription().Then.ShouldBe($"Then result 1 is as expected{Environment.NewLine}\tAnd result 2 is as expected");
         }
@@ -198,9 +198,9 @@ namespace ITLibrium.BDD.Tests.Scenarios
         public void DescriptionIsCorrectlyComposedFromSections()
         {
             var fixtureMock = new Mock<IFixture>();
-            IBddScenario scenario = CreateScenario(fixtureMock.Object);
+            var scenario = CreateScenario(fixtureMock.Object);
 
-            IBddScenarioDescription description = scenario.GetDescription();
+            var description = scenario.GetDescription();
             string newLine = Environment.NewLine;
             description.ToString().ShouldBe($"Scenario: {description.Title}{newLine}{newLine}{description.Given}{newLine}{description.When}{newLine}{description.Then}{newLine}");
         }
@@ -215,8 +215,8 @@ namespace ITLibrium.BDD.Tests.Scenarios
             return BddScenario
                 .Title(title)
                 .ExcludeFromReports()
-                .Given(fixture)
-                .And(f => f.FirstFact())
+                .Using(fixture)
+                .Given(f => f.FirstFact())
                     .And(f => f.SecondFact())
                 .When(f => f.SomethingIsDone())
                 .Then(f => f.Result1IsAsExpected())
