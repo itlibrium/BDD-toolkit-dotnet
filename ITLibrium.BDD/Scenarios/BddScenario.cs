@@ -36,14 +36,14 @@ namespace ITLibrium.Bdd.Scenarios
             return new BddScenarioBuilder<TContext>(null, null, fixture, false, null);
         }
 
-        [Obsolete]
+        [Obsolete("Use 'Using' method instead")]
         public static IGivenContinuationBuilder<TContext> Given<TContext>()
             where TContext : class, new()
         {
             return new BddScenarioBuilder<TContext>(null, null, new TContext(), false,  null);
         }
 
-        [Obsolete]
+        [Obsolete("Use 'Using' method instead")]
         public static IGivenContinuationBuilder<TContext> Given<TContext>(TContext fixture)
         {
             return new BddScenarioBuilder<TContext>(null, null, fixture, false, null);

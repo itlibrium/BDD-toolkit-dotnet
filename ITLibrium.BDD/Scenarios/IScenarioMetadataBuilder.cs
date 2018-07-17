@@ -13,9 +13,9 @@ namespace ITLibrium.Bdd.Scenarios
         IGivenBuilder<TContext> Using<TContext>() where TContext : class, new();
         IGivenBuilder<TContext> Using<TContext>(TContext context);
         
-        [Obsolete]
+        [Obsolete("Use 'Using' method instead")]
         IGivenContinuationBuilder<TContext> Given<TContext>() where TContext : class, new();
-        [Obsolete]
+        [Obsolete("Use 'Using' method instead")]
         IGivenContinuationBuilder<TContext> Given<TContext>(TContext fixture);
     }
 }
