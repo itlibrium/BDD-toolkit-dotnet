@@ -1,6 +1,6 @@
 ﻿using System;
+using FluentAssertions;
 using ITLibrium.Bdd.Scenarios;
-using Shouldly;
 using Xunit;
 
 namespace ITLibrium.BDD.Tests.Scenarios
@@ -12,7 +12,7 @@ namespace ITLibrium.BDD.Tests.Scenarios
         {
             var exception = new Exception("Custom message");
             var aggregateException = new AggregateAssertException(new[]{exception});
-            aggregateException.Message.ShouldBe(exception.Message);
+            aggregateException.Message.Should().Be(exception.Message);
         }
         
         [Fact]
@@ -20,7 +20,7 @@ namespace ITLibrium.BDD.Tests.Scenarios
         {
             var exception = new Exception("Custom message");
             var aggregateException = new AggregateAssertException(new[]{exception});
-            aggregateException.ToString().ShouldBe(exception.ToString());
+            aggregateException.ToString().Should().Be(exception.ToString());
         }
         
         [Fact]
@@ -29,7 +29,7 @@ namespace ITLibrium.BDD.Tests.Scenarios
             var exception1 = new Exception("Custom message 1");
             var exception2 = new Exception("Custom message 2");
             var aggregateException = new AggregateAssertException(new[]{exception1, exception2});
-            aggregateException.Message.ShouldBe(
+            aggregateException.Message.Should().Be(
                 $"More than one assert failed.{Environment.NewLine}" +
                 $"{Environment.NewLine}" +
                 $"1) {exception1.Message}{Environment.NewLine}" +
@@ -43,7 +43,7 @@ namespace ITLibrium.BDD.Tests.Scenarios
             var exception1 = new Exception("Custom message 1");
             var exception2 = new Exception("Custom message 2");
             var aggregateException = new AggregateAssertException(new[]{exception1, exception2});
-            aggregateException.ToString().ShouldBe(
+            aggregateException.ToString().Should().Be(
                 $"More than one assert failed.{Environment.NewLine}" +
                 $"{Environment.NewLine}" +
                 $"1) {exception1}{Environment.NewLine}" +

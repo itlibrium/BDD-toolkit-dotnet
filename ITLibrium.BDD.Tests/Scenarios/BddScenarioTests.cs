@@ -1,7 +1,7 @@
 ﻿using System;
+using FluentAssertions;
 using ITLibrium.Bdd.Scenarios;
 using Moq;
-using Shouldly;
 using Xunit;
 
 namespace ITLibrium.BDD.Tests.Scenarios
@@ -23,12 +23,13 @@ namespace ITLibrium.BDD.Tests.Scenarios
         public void GivenActionsAreNotRequired()
         {
             var fixtureMock = new Mock<IFixture>();
-            BddScenario
+            Action test = () => BddScenario
                 .ExcludeFromReports()
                 .Using(fixtureMock.Object)
                 .When(f => f.SomethingIsDone())
                 .Then(f => f.Result1IsAsExpected())
                 .Test();
+            test.Should().NotThrow();
         }
 
         [Fact]
@@ -68,9 +69,9 @@ namespace ITLibrium.BDD.Tests.Scenarios
             var fixtureMock = new Mock<IFixture>();
             fixtureMock.Setup(f => f.SomethingIsDone()).Throws<Exception>();
 
-            void Test() => TestScenario(fixtureMock.Object);
+            Action test = () => TestScenario(fixtureMock.Object);
 
-            Assert.Throws<AggregateAssertException>((Action)Test);
+            test.Should().Throw<AggregateAssertException>();
             fixtureMock.Verify(f => f.Result1IsAsExpected(), Times.Once);
             fixtureMock.Verify(f => f.Result2IsAsExpected(), Times.Once);
         }
@@ -81,50 +82,52 @@ namespace ITLibrium.BDD.Tests.Scenarios
             var fixtureMock = new Mock<IFixture>();
             fixtureMock.Setup(f => f.Result1IsAsExpected()).Throws<Exception>();
 
-            void Test() => TestScenario(fixtureMock.Object);
+            Action test = () => TestScenario(fixtureMock.Object);
 
-            Assert.Throws<AggregateAssertException>((Action)Test);
+            test.Should().Throw<AggregateAssertException>();
             fixtureMock.Verify(f => f.Result1IsAsExpected(), Times.Once);
             fixtureMock.Verify(f => f.Result2IsAsExpected(), Times.Once);
         }
-        
+
         [Fact]
         public void TestPassesWhenExceptionIsThrownAndExplicitAssertionIsMade()
         {
             var fixtureMock = new Mock<IFixture>();
             fixtureMock.Setup(f => f.SomethingIsDone()).Throws<Exception>();
 
-            BddScenario
+            Action test = () => BddScenario
                 .ExcludeFromReports()
                 .Using(fixtureMock.Object)
                 .When(f => f.SomethingIsDone())
                 .Then((f, e) => f.ExceptionIsThrown(e))
                 .Test();
-            
-            BddScenario
+            test.Should().NotThrow();
+
+            Action test2 = () => BddScenario
                 .ExcludeFromReports()
                 .Using(fixtureMock.Object)
                 .When(f => f.SomethingIsDone())
                 .Then(f => f.Result1IsAsExpected())
-                    .And((f, e) => f.ExceptionIsThrown(e))
+                .And((f, e) => f.ExceptionIsThrown(e))
                 .Test();
+            test2.Should().NotThrow();
         }
-        
+
         [Fact]
         public void TestFailsWhenExceptionIsThrownAndNoExplicitAssertionIsMade()
         {
             var fixtureMock = new Mock<IFixture>();
             fixtureMock.Setup(f => f.SomethingIsDone()).Throws<Exception>();
 
-            void Test() => BddScenario
+            Action test = () => BddScenario
                 .ExcludeFromReports()
                 .Using(fixtureMock.Object)
                 .Given(f => f.FirstFact())
                 .When(f => f.SomethingIsDone())
                 .Then(f => f.Result1IsAsExpected())
                 .Test();
-            
-            Assert.Throws<AggregateAssertException>((Action)Test);
+
+            test.Should().Throw<AggregateAssertException>();
         }
 
         [Fact]
@@ -135,13 +138,13 @@ namespace ITLibrium.BDD.Tests.Scenarios
                 .ExcludeFromReports()
                 .Using(fixtureMock.Object)
                 .Given(f => f.FirstFact())
-                    .And(f => f.SecondFact())
+                .And(f => f.SecondFact())
                 .When(f => f.SomethingIsDone())
                 .Then(f => f.Result1IsAsExpected())
-                    .And(f => f.Result2IsAsExpected())
+                .And(f => f.Result2IsAsExpected())
                 .Create();
-            
-            scenario.GetDescription().Title.ShouldBe("Default title is equal to humanized method name");
+
+            scenario.GetDescription().Title.Should().Be("Default title is equal to humanized method name");
         }
 
         [Fact]
@@ -151,7 +154,7 @@ namespace ITLibrium.BDD.Tests.Scenarios
             const string title = "Custom title";
             var scenario = CreateScenario(fixtureMock.Object, title);
 
-            scenario.GetDescription().Title.ShouldBe(title);
+            scenario.GetDescription().Title.Should().Be(title);
         }
 
         [Fact]
@@ -160,7 +163,7 @@ namespace ITLibrium.BDD.Tests.Scenarios
             var fixtureMock = new Mock<IFixture>();
             var scenario = CreateScenario(fixtureMock.Object);
 
-            scenario.GetDescription().Given.ShouldBe($"Given first fact{Environment.NewLine}\tAnd second fact");
+            scenario.GetDescription().Given.Should().Be($"Given first fact{Environment.NewLine}\tAnd second fact");
         }
 
         [Fact]
@@ -173,7 +176,7 @@ namespace ITLibrium.BDD.Tests.Scenarios
                 .Then(f => f.Result1IsAsExpected())
                 .Create();
 
-            scenario.GetDescription().Given.ShouldBe("Given no action");
+            scenario.GetDescription().Given.Should().Be("Given no action");
         }
 
         [Fact]
@@ -182,7 +185,7 @@ namespace ITLibrium.BDD.Tests.Scenarios
             var fixtureMock = new Mock<IFixture>();
             var scenario = CreateScenario(fixtureMock.Object);
 
-            scenario.GetDescription().When.ShouldBe("When something is done");
+            scenario.GetDescription().When.Should().Be("When something is done");
         }
 
         [Fact]
@@ -191,7 +194,8 @@ namespace ITLibrium.BDD.Tests.Scenarios
             var fixtureMock = new Mock<IFixture>();
             var scenario = CreateScenario(fixtureMock.Object);
 
-            scenario.GetDescription().Then.ShouldBe($"Then result 1 is as expected{Environment.NewLine}\tAnd result 2 is as expected");
+            scenario.GetDescription().Then.Should()
+                .Be($"Then result 1 is as expected{Environment.NewLine}\tAnd result 2 is as expected");
         }
 
         [Fact]
@@ -202,7 +206,8 @@ namespace ITLibrium.BDD.Tests.Scenarios
 
             var description = scenario.GetDescription();
             string newLine = Environment.NewLine;
-            description.ToString().ShouldBe($"Scenario: {description.Title}{newLine}{newLine}{description.Given}{newLine}{description.When}{newLine}{description.Then}{newLine}");
+            description.ToString().Should()
+                .Be($"Scenario: {description.Title}{newLine}{newLine}{description.Given}{newLine}{description.When}{newLine}{description.Then}{newLine}");
         }
 
         private static void TestScenario(IFixture fixture)
@@ -217,10 +222,10 @@ namespace ITLibrium.BDD.Tests.Scenarios
                 .ExcludeFromReports()
                 .Using(fixture)
                 .Given(f => f.FirstFact())
-                    .And(f => f.SecondFact())
+                .And(f => f.SecondFact())
                 .When(f => f.SomethingIsDone())
                 .Then(f => f.Result1IsAsExpected())
-                    .And(f => f.Result2IsAsExpected())
+                .And(f => f.Result2IsAsExpected())
                 .Create();
         }
 
