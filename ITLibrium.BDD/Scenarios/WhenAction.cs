@@ -6,15 +6,8 @@ namespace ITLibrium.Bdd.Scenarios
     {
         private readonly Action<TContext> _action;
 
-        public WhenAction(Action<TContext> action, string name) 
-            : base(name)
-        {
-            _action = action;
-        }
+        public WhenAction(Action<TContext> action, string name) : base(name) => _action = action;
 
-        public void Execute(TContext fixture)
-        {
-            _action(fixture);
-        }
+        public void Execute(TContext fixture) => _action(fixture);
     }
 }

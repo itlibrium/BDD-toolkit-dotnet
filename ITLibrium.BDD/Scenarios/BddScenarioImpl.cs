@@ -40,9 +40,9 @@ namespace ITLibrium.Bdd.Scenarios
 
         public IBddScenarioDescription GetDescription()
         {
-            string givenText = CreateSectionText("Given", _givenActions, "no action");
-            string whenText = $"When {_whenAction.Name}".Humanize();
-            string thenText = CreateSectionText("Then", _thenActions, "nothing heppened");
+            var givenText = CreateSectionText("Given", _givenActions, "no action");
+            var whenText = $"When {_whenAction.Name}".Humanize();
+            var thenText = CreateSectionText("Then", _thenActions, "nothing happened");
 
             var builder = new StringBuilder();
             builder.Append("Scenario: ");
@@ -51,15 +51,15 @@ namespace ITLibrium.Bdd.Scenarios
             builder.AppendLine(givenText);
             builder.AppendLine(whenText);
             builder.AppendLine(thenText);
-
-            return new BddScenarioDescription(_testedComponent, _title, givenText, whenText, thenText, builder.ToString());
+            var wholeText = builder.ToString();
+            
+            return new BddScenarioDescription(_testedComponent, _title, givenText, whenText, thenText, wholeText);
         }
 
         private static string CreateSectionText(string sectionName, IReadOnlyList<BddAction> actions, string noActionText)
         {
             var builder = new StringBuilder();
-
-            int actionsCount = actions.Count;
+            var actionsCount = actions.Count;
             if (actionsCount == 0)
             {
                 builder.Append($"{sectionName} {noActionText}");
@@ -68,33 +68,30 @@ namespace ITLibrium.Bdd.Scenarios
             {
                 builder.Append($"{sectionName} {actions[0].Name}".Humanize());
 
-                for (int i = 1; i < actionsCount; i++)
+                for (var i = 1; i < actionsCount; i++)
                 {
                     builder.AppendLine();
                     builder.Append('\t');
                     builder.Append($"And {actions[i].Name}".Humanize());
                 }               
             }
-            
             return builder.ToString();
         }
 
         public void Test()
         {
             ExecuteGivenSection();
-            Exception whenException = ExecuteWhenSection();
-            IReadOnlyList<Exception> thenExceptions = ExecuteThenSection(whenException);
-            TestResult testResult = CreateResult(whenException, thenExceptions);
-            
+            var whenException = ExecuteWhenSection();
+            var thenExceptions = ExecuteThenSection(whenException);
+            var testResult = CreateResult(whenException, thenExceptions);
             AddToReports(testResult);
-            
             if (!testResult.Passed)
                 throw new AggregateAssertException(testResult.Exceptions);
         }
 
         private void ExecuteGivenSection()
         {
-            foreach (GivenAction<TContext> givenAction in _givenActions)
+            foreach (var givenAction in _givenActions)
                 givenAction.Execute(_fixture);
         }
 
@@ -114,10 +111,10 @@ namespace ITLibrium.Bdd.Scenarios
             }
         }
 
-        private IReadOnlyList<Exception> ExecuteThenSection(Exception whenException)
+        private IEnumerable<Exception> ExecuteThenSection(Exception whenException)
         {
             List<Exception> thenExceptions = null;
-            foreach (ThenAction<TContext> thenAction in _thenActions)
+            foreach (var thenAction in _thenActions)
             {
                 try
                 {
@@ -134,7 +131,7 @@ namespace ITLibrium.Bdd.Scenarios
             return thenExceptions;
         }
 
-        private TestResult CreateResult(Exception whenException, IReadOnlyList<Exception> thenExceptions)
+        private TestResult CreateResult(Exception whenException, IEnumerable<Exception> thenExceptions)
         {
             var result = new TestResult();
             if (whenException != null && !_exceptionsAreExplicitlyChecked)
@@ -149,11 +146,11 @@ namespace ITLibrium.Bdd.Scenarios
             if (_excludeFromReport) 
                 return;
             
-            IBddScenarioDescription description = GetDescription();
+            var description = GetDescription();
             var scenarioResult = new BddScenarioResult(description, testResult.Passed);
             if (_reports != null && _reports.Count > 0)
             {
-                foreach (IBddReport report in _reports)
+                foreach (var report in _reports)
                     report.AddScenarioResult(scenarioResult);
             }
             else

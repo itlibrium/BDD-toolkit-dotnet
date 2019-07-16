@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using ITLibrium.Bdd.Scenarios;
+using JetBrains.Annotations;
 
 namespace ITLibrium.Bdd.Reports
 {
@@ -24,11 +25,10 @@ namespace ITLibrium.Bdd.Reports
             AppDomain.CurrentDomain.DomainUnload += OnExit;
         }
 
-        public static void AddWriter(IBddReportWriter writer)
-        {
-            _writers.Add(writer);
-        }
+        [PublicAPI]
+        public static void AddWriter(IBddReportWriter writer) => _writers.Add(writer);
 
+        [PublicAPI]
         public static IBddReport Create(string name)
         {
             var report = new BddReportImpl(name);
@@ -36,11 +36,9 @@ namespace ITLibrium.Bdd.Reports
             return report;
         }
         
-        public static void AddScenarioResult(IBddScenarioResult result)
-        {
-            _defaultReport.AddScenarioResult(result);
-        }
-        
+        [PublicAPI]
+        public static void AddScenarioResult(IBddScenarioResult result) => _defaultReport.AddScenarioResult(result);
+
         private static void OnExit(object sender, EventArgs args)
         {
             lock (_reports)
@@ -56,8 +54,8 @@ namespace ITLibrium.Bdd.Reports
 
         private static void WriteReports()
         {
-            foreach (IBddReport report in _reports)
-            foreach (IBddReportWriter writer in _writers)
+            foreach (var report in _reports)
+            foreach (var writer in _writers)
                 writer.Write(report);
         }
     }

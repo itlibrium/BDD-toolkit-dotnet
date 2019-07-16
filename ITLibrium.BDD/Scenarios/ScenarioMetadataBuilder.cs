@@ -7,11 +7,8 @@ namespace ITLibrium.Bdd.Scenarios
     internal class ScenarioMetadataBuilder : IScenarioMetadataBuilder
     {
         private string _testedComponent;
-        
         private readonly string _title;
-
         private List<IBddReport> _reports;
-
         private bool _excludeFromReports;
 
         public ScenarioMetadataBuilder(string testedComponent, string title, bool excludeFromReports, IBddReport report)
@@ -21,7 +18,6 @@ namespace ITLibrium.Bdd.Scenarios
 
             _testedComponent = testedComponent;
             _title = title;
-
             if (report != null)
                 ReportTo(report);
         }
@@ -36,10 +32,8 @@ namespace ITLibrium.Bdd.Scenarios
         {
             if (_excludeFromReports)
                 throw new InvalidOperationException();
-
             if (_reports == null)
                 _reports = new List<IBddReport>();
-
             _reports.Add(report);
             return this;
         }
@@ -48,31 +42,22 @@ namespace ITLibrium.Bdd.Scenarios
         {
             if (_reports != null && _reports.Count > 0)
                 throw new InvalidOperationException();
-
             _excludeFromReports = true;
             return this;
         }
 
-        public IGivenBuilder<TContext> Using<TContext>() where TContext : class, new()
-        {
-            return new BddScenarioBuilder<TContext>(_testedComponent, _title, new TContext(), _excludeFromReports, _reports);
-        }
+        public IGivenBuilder<TContext> Using<TContext>() where TContext : class, new() => 
+            new BddScenarioBuilder<TContext>(_testedComponent, _title, new TContext(), _excludeFromReports, _reports);
 
-        public IGivenBuilder<TContext> Using<TContext>(TContext context)
-        {
-            return new BddScenarioBuilder<TContext>(_testedComponent, _title, context, _excludeFromReports, _reports);
-        }
+        public IGivenBuilder<TContext> Using<TContext>(TContext context) => 
+            new BddScenarioBuilder<TContext>(_testedComponent, _title, context, _excludeFromReports, _reports);
 
         [Obsolete("Use 'Using' method instead")]
-        public IGivenContinuationBuilder<TContext> Given<TContext>() where TContext : class, new()
-        {
-            return new BddScenarioBuilder<TContext>(_testedComponent, _title, new TContext(), _excludeFromReports, _reports);
-        }
+        public IGivenContinuationBuilder<TContext> Given<TContext>() where TContext : class, new() => 
+            new BddScenarioBuilder<TContext>(_testedComponent, _title, new TContext(), _excludeFromReports, _reports);
 
         [Obsolete("Use 'Using' method instead")]
-        public IGivenContinuationBuilder<TContext> Given<TContext>(TContext fixture)
-        {
-            return new BddScenarioBuilder<TContext>(_testedComponent, _title, fixture, _excludeFromReports, _reports);
-        }
+        public IGivenContinuationBuilder<TContext> Given<TContext>(TContext fixture) => 
+            new BddScenarioBuilder<TContext>(_testedComponent, _title, fixture, _excludeFromReports, _reports);
     }
 }

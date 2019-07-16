@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Text;
-using ITLibrium.Bdd.Scenarios;
 
 namespace ITLibrium.Bdd.Reports
 {
@@ -19,14 +18,14 @@ namespace ITLibrium.Bdd.Reports
 
         protected override void Write(IBddReport report, StreamWriter writer)
         {
-            string reportName = report.Name;
+            var reportName = report.Name;
             if (reportName != null)
             {
                 writer.WriteLine(reportName);
                 writer.WriteLine();
             }
                     
-            foreach (IGrouping<string, IBddScenarioResult> grouping in report.ScenarioResults.GroupBy(r => r.Description.TestedComponent))
+            foreach (var grouping in report.ScenarioResults.GroupBy(r => r.Description.TestedComponent))
             {
                 if (grouping.Key == null)
                 {
@@ -40,7 +39,7 @@ namespace ITLibrium.Bdd.Reports
                     writer.WriteLine();
                 }
 
-                foreach (IBddScenarioResult result in grouping)
+                foreach (var result in grouping)
                 {
                     writer.Write(result.Description);
                     writer.WriteLine();

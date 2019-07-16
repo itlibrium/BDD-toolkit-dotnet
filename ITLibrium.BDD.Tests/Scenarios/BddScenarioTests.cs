@@ -205,7 +205,7 @@ namespace ITLibrium.BDD.Tests.Scenarios
             var scenario = CreateScenario(fixtureMock.Object);
 
             var description = scenario.GetDescription();
-            string newLine = Environment.NewLine;
+            var newLine = Environment.NewLine;
             description.ToString().Should()
                 .Be($"Scenario: {description.Title}{newLine}{newLine}{description.Given}{newLine}{description.When}{newLine}{description.Then}{newLine}");
         }

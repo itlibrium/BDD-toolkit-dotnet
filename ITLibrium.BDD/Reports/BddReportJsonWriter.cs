@@ -18,7 +18,7 @@ namespace ITLibrium.Bdd.Reports
 
         protected override void Write(IBddReport report, StreamWriter writer)
         {
-            string json = JsonConvert.SerializeObject(report);
+            var json = JsonConvert.SerializeObject(report);
             writer.Write(json);
         }
     }

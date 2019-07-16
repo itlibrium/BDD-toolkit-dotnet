@@ -11,14 +11,8 @@ namespace ITLibrium.Bdd.Reports
         private readonly List<IBddScenarioResult> _scenarioResults = new List<IBddScenarioResult>();
         public IEnumerable<IBddScenarioResult> ScenarioResults => _scenarioResults;
 
-        public BddReportImpl(string name)
-        {
-            Name = name ?? throw new ArgumentNullException(nameof(name));
-        }
+        public BddReportImpl(string name) => Name = name ?? throw new ArgumentNullException(nameof(name));
 
-        public void AddScenarioResult(IBddScenarioResult result)
-        {
-            _scenarioResults.Add(result);
-        }
+        public void AddScenarioResult(IBddScenarioResult result) => _scenarioResults.Add(result);
     }
 }

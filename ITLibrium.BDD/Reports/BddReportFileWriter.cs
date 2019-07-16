@@ -20,20 +20,18 @@ namespace ITLibrium.Bdd.Reports
         
         protected BddReportFileWriter(string outputPath, Encoding encoding)
         {
-            _outputPath = outputPath ?? Environment.GetEnvironmentVariable("BddReportsOutputPath") ?? AppContext.BaseDirectory;
+            _outputPath = outputPath 
+                ?? Environment.GetEnvironmentVariable("BddReportsOutputPath") 
+                ?? AppContext.BaseDirectory;
             _encoding = encoding;
         }
 
         public void Write(IBddReport report)
         {
-            string fileName = Extension == null ? report.Name : $"{report.Name}.{Extension}";
-            using (FileStream file = File.Create(Path.Combine(_outputPath, fileName)))
-            {
-                using (var writer = new StreamWriter(file, _encoding))
-                {
-                    Write(report, writer);
-                }
-            }
+            var fileName = Extension == null ? report.Name : $"{report.Name}.{Extension}";
+            using (var file = File.Create(Path.Combine(_outputPath, fileName)))
+            using (var writer = new StreamWriter(file, _encoding))
+                Write(report, writer);
         }
 
         protected abstract void Write(IBddReport report, StreamWriter writer);

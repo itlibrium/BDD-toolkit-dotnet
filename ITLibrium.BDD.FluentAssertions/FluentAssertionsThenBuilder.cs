@@ -1,5 +1,6 @@
 using FluentAssertions;
 using ITLibrium.Bdd.Scenarios;
+using JetBrains.Annotations;
 
 namespace ITLibrium.BDD.FluentAssertions
 {
@@ -7,24 +8,20 @@ namespace ITLibrium.BDD.FluentAssertions
     {
         private readonly IThenContinuationBuilder<TContext> _thenContinuationBuilder;
 
-        public FluentAssertionsThenBuilder(IThenBuilder<TContext> thenBuilder)
-        {
+        protected internal FluentAssertionsThenBuilder(IThenBuilder<TContext> thenBuilder) => 
             _thenContinuationBuilder = thenBuilder.GetContinuationBuilder();
-        }
 
-        public FluentAssertionsThenBuilder(IThenContinuationBuilder<TContext> thenContinuationBuilder)
-        {
+        protected internal FluentAssertionsThenBuilder(IThenContinuationBuilder<TContext> thenContinuationBuilder) => 
             _thenContinuationBuilder = thenContinuationBuilder;
-        }
 
-        public IThenContinuationBuilder<TContext> Throws<TException>()
-        {
-            return _thenContinuationBuilder.And((f, e) => e.Should().BeAssignableTo<TException>(), $"Exception type is assignable to {typeof(TException).Name}");
-        }
+        [PublicAPI]
+        public IThenContinuationBuilder<TContext> Throws<TException>() => 
+            _thenContinuationBuilder.And((f, e) => e.Should().BeAssignableTo<TException>(), 
+                $"Exception type is assignable to {typeof(TException).Name}");
 
-        public IThenContinuationBuilder<TContext> ThrowsExactly<TException>()
-        {
-            return _thenContinuationBuilder.And((f, e) => e.Should().BeOfType<TException>(), $"Exception type is exactly {typeof(TException).Name}");
-        }
+        [PublicAPI]
+        public IThenContinuationBuilder<TContext> ThrowsExactly<TException>() => 
+            _thenContinuationBuilder.And((f, e) => e.Should().BeOfType<TException>(), 
+                $"Exception type is exactly {typeof(TException).Name}");
     }
 }

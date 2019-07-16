@@ -4,9 +4,6 @@
     {
         public string Name { get; }
 
-        protected BddAction(string name)
-        {
-            Name = name;
-        }
+        protected BddAction(string name) => Name = name;
     }
 }

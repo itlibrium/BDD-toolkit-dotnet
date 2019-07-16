@@ -29,7 +29,7 @@ namespace ITLibrium.Bdd.Scenarios
 
         private string GetAggregatedInfo(Func<Exception, string> infoFactory)
         {
-            int exceptionsCount = _exceptions.Count;
+            var exceptionsCount = _exceptions.Count;
             if (exceptionsCount == 1)
                 return infoFactory(_exceptions[0]);
             
@@ -38,11 +38,11 @@ namespace ITLibrium.Bdd.Scenarios
             builder.AppendLine();
             for (var i = 0; i < exceptionsCount; i++)
             {
-                Exception exception = _exceptions[i];
+                var exception = _exceptions[i];
                 
-                builder.Append($"{i + 1}) ");
+                builder.Append($"{(i + 1).ToString()}) ");
                 
-                string info = infoFactory(exception);
+                var info = infoFactory(exception);
                 builder.AppendLine(info);
                 if (!info.EndsWith(Environment.NewLine) && i != exceptionsCount - 1)
                     builder.AppendLine();

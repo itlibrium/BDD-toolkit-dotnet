@@ -1,17 +1,18 @@
 using ITLibrium.Bdd.Scenarios;
+using JetBrains.Annotations;
 
 namespace ITLibrium.BDD.FluentAssertions
 {
     public static class ThenBuilderExtensions
     {
-        public static FluentAssertionsThenBuilder<TContext> Then<TContext>(this IThenBuilder<TContext> thenBuilder)
-        {
-            return new FluentAssertionsThenBuilder<TContext>(thenBuilder);
-        }
+        [PublicAPI]
+        public static FluentAssertionsThenBuilder<TContext> Then<TContext>(
+            this IThenBuilder<TContext> thenBuilder) => 
+            new FluentAssertionsThenBuilder<TContext>(thenBuilder);
 
-        public static FluentAssertionsThenBuilder<TContext> And<TContext>(this IThenContinuationBuilder<TContext> thenBuilder)
-        {
-            return new FluentAssertionsThenBuilder<TContext>(thenBuilder);
-        }
+        [PublicAPI]
+        public static FluentAssertionsThenBuilder<TContext> And<TContext>(
+            this IThenContinuationBuilder<TContext> thenBuilder) => 
+            new FluentAssertionsThenBuilder<TContext>(thenBuilder);
     }
 }

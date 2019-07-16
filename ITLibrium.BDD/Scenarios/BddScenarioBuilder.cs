@@ -46,13 +46,11 @@ namespace ITLibrium.Bdd.Scenarios
         {
             if (!_testCreated)
                 throw new InvalidOperationException(
-                    "BddScenarioBuilder should create scenario. Call Create or Test method afther Then section");
+                    "BddScenarioBuilder should create scenario. Call Create or Test method after Then section");
         }
 
-        public IGivenContinuationBuilder<TContext> Given(Expression<Action<TContext>> givenAction)
-        {
-            return Given(givenAction.Compile(), givenAction.GetName());
-        }
+        public IGivenContinuationBuilder<TContext> Given(Expression<Action<TContext>> givenAction) => 
+            Given(givenAction.Compile(), givenAction.GetName());
 
         public IGivenContinuationBuilder<TContext> Given(Action<TContext> givenAction, string name)
         {
@@ -61,21 +59,15 @@ namespace ITLibrium.Bdd.Scenarios
         }
 
         IGivenContinuationBuilder<TContext> IGivenContinuationBuilder<TContext>.And(
-            Expression<Action<TContext>> givenAction)
-        {
-            return Given(givenAction);
-        }
+            Expression<Action<TContext>> givenAction) =>
+            Given(givenAction);
 
-        IGivenContinuationBuilder<TContext> IGivenContinuationBuilder<TContext>.And(Action<TContext> givenAction,
-            string name)
-        {
-            return Given(givenAction, name);
-        }
+        IGivenContinuationBuilder<TContext> IGivenContinuationBuilder<TContext>.And(
+            Action<TContext> givenAction, string name) =>
+            Given(givenAction, name);
 
-        public IThenBuilder<TContext> When(Expression<Action<TContext>> whenAction)
-        {
-            return When(whenAction.Compile(), whenAction.GetName());
-        }
+        public IThenBuilder<TContext> When(Expression<Action<TContext>> whenAction) => 
+            When(whenAction.Compile(), whenAction.GetName());
 
         public IThenBuilder<TContext> When(Action<TContext> whenAction, string name)
         {
@@ -83,25 +75,17 @@ namespace ITLibrium.Bdd.Scenarios
             return this;
         }
 
-        public IThenContinuationBuilder<TContext> Then(Expression<Action<TContext>> thenAction)
-        {
-            return Then(thenAction.Compile(), thenAction.GetName());
-        }
+        public IThenContinuationBuilder<TContext> Then(Expression<Action<TContext>> thenAction) => 
+            Then(thenAction.Compile(), thenAction.GetName());
 
-        public IThenContinuationBuilder<TContext> Then(Action<TContext> thenAction, string name)
-        {
-            return Then((f, e) => thenAction(f), name, false);
-        }
+        public IThenContinuationBuilder<TContext> Then(Action<TContext> thenAction, string name) => 
+            Then((f, e) => thenAction(f), name, false);
 
-        public IThenContinuationBuilder<TContext> Then(Expression<Action<TContext, Exception>> thenAction)
-        {
-            return Then(thenAction.Compile(), thenAction.GetName());
-        }
+        public IThenContinuationBuilder<TContext> Then(Expression<Action<TContext, Exception>> thenAction) => 
+            Then(thenAction.Compile(), thenAction.GetName());
 
-        public IThenContinuationBuilder<TContext> Then(Action<TContext, Exception> thenAction, string name)
-        {
-            return Then(thenAction, name, true);
-        }
+        public IThenContinuationBuilder<TContext> Then(Action<TContext, Exception> thenAction, string name) => 
+            Then(thenAction, name, true);
 
         private IThenContinuationBuilder<TContext> Then(Action<TContext, Exception> thenAction, string name,
             bool exceptionsAreExplicitlyChecked)
@@ -112,42 +96,25 @@ namespace ITLibrium.Bdd.Scenarios
         }
 
         IThenContinuationBuilder<TContext> IThenContinuationBuilder<TContext>.And(
-            Expression<Action<TContext>> thenAction)
-        {
-            return Then(thenAction);
-        }
-
-        IThenContinuationBuilder<TContext> IThenContinuationBuilder<TContext>.And(Action<TContext> thenAction,
-            string name)
-        {
-            return Then(thenAction, name);
-        }
+            Expression<Action<TContext>> thenAction) =>
+            Then(thenAction);
 
         IThenContinuationBuilder<TContext> IThenContinuationBuilder<TContext>.And(
-            Expression<Action<TContext, Exception>> thenAction)
-        {
-            return Then(thenAction);
-        }
+            Action<TContext> thenAction, string name) =>
+            Then(thenAction, name);
 
-        public IThenContinuationBuilder<TContext> And(Action<TContext, Exception> thenAction, string name)
-        {
-            return Then(thenAction, name);
-        }
+        IThenContinuationBuilder<TContext> IThenContinuationBuilder<TContext>.And(
+            Expression<Action<TContext, Exception>> thenAction) =>
+            Then(thenAction);
 
-        public IThenContinuationBuilder<TContext> GetContinuationBuilder()
-        {
-            return this;
-        }
+        public IThenContinuationBuilder<TContext> And(Action<TContext, Exception> thenAction, string name) => 
+            Then(thenAction, name);
 
-        public IBddScenario Create([CallerMemberName] string title = null)
-        {
-            return CreateInternal(title.Humanize());
-        }
+        public IThenContinuationBuilder<TContext> GetContinuationBuilder() => this;
 
-        public void Test([CallerMemberName] string title = null)
-        {
-            CreateInternal(title.Humanize()).Test();
-        }
+        public IBddScenario Create([CallerMemberName] string title = null) => CreateInternal(title.Humanize());
+
+        public void Test([CallerMemberName] string title = null) => CreateInternal(title.Humanize()).Test();
 
         private IBddScenario CreateInternal(string title)
         {

@@ -65,15 +65,11 @@ namespace ITLibrium.BDD.FluentAssertions.Tests
 
         private class Fixture
         {
-            public void BusinessRuleWasBroken()
-            {
-                throw new BusinessException();
-            }
+            public void BusinessRuleWasBroken() => throw new BusinessException();
         }
 
         private class BusinessException : Exception
         {
-            
         }
     }
 }
