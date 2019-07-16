@@ -20,11 +20,5 @@ namespace ITLIBRIUM.BddToolkit.Scenarios
         
         [PublicAPI]
         IGivenBuilder<TContext> Using<TContext>(TContext context);
-        
-        [Obsolete("Use 'Using' method instead")]
-        IGivenContinuationBuilder<TContext> Given<TContext>() where TContext : class, new();
-        
-        [Obsolete("Use 'Using' method instead")]
-        IGivenContinuationBuilder<TContext> Given<TContext>(TContext fixture);
     }
 }
