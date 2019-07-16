@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Marcin Markowski</Authors>
+    <Company>ITLibrium</Company>
+    <Description>FluentAssertions extensions for ITLibrium.Bdd</Description>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <FileVersion>1.0.0</FileVersion>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/itlibrium/BDD</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/itlibrium/BDD</RepositoryUrl>
+    <PackageTags>BDD, Tests, FluentAssertions, .Net Core</PackageTags>
+    <AssemblyName>ITLIBRIUM.BddToolkit.FluentAssertions</AssemblyName>
+    <RootNamespace>ITLIBRIUM.BddToolkit.FluentAssertions</RootNamespace>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="5.4.1" />
+    <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BddToolkit\BddToolkit.csproj" />
+  </ItemGroup>
+</Project>
