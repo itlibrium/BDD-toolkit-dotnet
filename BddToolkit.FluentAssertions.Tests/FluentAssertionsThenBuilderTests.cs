@@ -1,6 +1,6 @@
 using System;
 using FluentAssertions;
-using ITLIBRIUM.BddToolkit.Scenarios;
+using ITLIBRIUM.BddToolkit.Execution;
 using Xunit;
 
 namespace ITLIBRIUM.BddToolkit.FluentAssertions.Tests
@@ -10,17 +10,13 @@ namespace ITLIBRIUM.BddToolkit.FluentAssertions.Tests
         [Fact]
         public void AssertPassWhenExceptionTypeIsEqualToExpected()
         {
-            Action test = () => BddScenario
-                .ExcludeFromReports()
-                .Using<Fixture>()
+            Action test = () => Bdd.Scenario<Context>()
                 .When(f => f.BusinessRuleWasBroken())
                 .Then().Throws<BusinessException>()
                 .Test();
             test.Should().NotThrow();
             
-            Action test2 = () => BddScenario
-                .ExcludeFromReports()
-                .Using<Fixture>()
+            Action test2 = () => Bdd.Scenario<Context>()
                 .When(f => f.BusinessRuleWasBroken())
                 .Then().ThrowsExactly<BusinessException>()
                 .Test();
@@ -30,9 +26,7 @@ namespace ITLIBRIUM.BddToolkit.FluentAssertions.Tests
         [Fact]
         public void AssertPassWhenExceptionTypeIsAssignableToExpected()
         {
-            Action test = () => BddScenario
-                .ExcludeFromReports()
-                .Using<Fixture>()
+            Action test = () => Bdd.Scenario<Context>()
                 .When(f => f.BusinessRuleWasBroken())
                 .Then().Throws<Exception>()
                 .Test();
@@ -42,9 +36,7 @@ namespace ITLIBRIUM.BddToolkit.FluentAssertions.Tests
         [Fact]
         public void AssertFailWhenExceptionTypeIsNotAssignableToExpected()
         {
-            Action test = () => BddScenario
-                .ExcludeFromReports()
-                .Using<Fixture>()
+            Action test = () => Bdd.Scenario<Context>()
                 .When(f => f.BusinessRuleWasBroken())
                 .Then().Throws<InvalidOperationException>()
                 .Test();
@@ -54,16 +46,14 @@ namespace ITLIBRIUM.BddToolkit.FluentAssertions.Tests
         [Fact]
         public void AssertFailWhenExceptionTypeIsNotEqualToExpected()
         {
-            Action test = () => BddScenario
-                .ExcludeFromReports()
-                .Using<Fixture>()
+            Action test = () => Bdd.Scenario<Context>()
                 .When(f => f.BusinessRuleWasBroken())
                 .Then().ThrowsExactly<Exception>()
                 .Test();
             test.Should().Throw<AggregateAssertException>();
         }
 
-        private class Fixture
+        private class Context
         {
             public void BusinessRuleWasBroken() => throw new BusinessException();
         }

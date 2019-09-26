@@ -1,4 +1,4 @@
-using ITLIBRIUM.BddToolkit.Scenarios;
+using ITLIBRIUM.BddToolkit.Builders;
 using JetBrains.Annotations;
 using Shouldly;
 

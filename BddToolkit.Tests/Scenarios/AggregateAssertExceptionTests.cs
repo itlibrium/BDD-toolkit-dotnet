@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Collections.Immutable;
 using FluentAssertions;
-using ITLIBRIUM.BddToolkit.Scenarios;
+using ITLIBRIUM.BddToolkit.Execution;
 using Xunit;
 
 namespace ITLIBRIUM.BddToolkit.Tests.Scenarios
@@ -11,7 +12,7 @@ namespace ITLIBRIUM.BddToolkit.Tests.Scenarios
         public void MessageEqualsSingleExceptionMessage()
         {
             var exception = new Exception("Custom message");
-            var aggregateException = new AggregateAssertException(new[]{exception});
+            var aggregateException = new AggregateAssertException(ImmutableArray.Create(exception));
             aggregateException.Message.Should().Be(exception.Message);
         }
         
@@ -19,7 +20,7 @@ namespace ITLIBRIUM.BddToolkit.Tests.Scenarios
         public void ToStringEqualsSingleExceptionToString()
         {
             var exception = new Exception("Custom message");
-            var aggregateException = new AggregateAssertException(new[]{exception});
+            var aggregateException = new AggregateAssertException(ImmutableArray.Create(exception));
             aggregateException.ToString().Should().Be(exception.ToString());
         }
         
@@ -28,7 +29,7 @@ namespace ITLIBRIUM.BddToolkit.Tests.Scenarios
         {
             var exception1 = new Exception("Custom message 1");
             var exception2 = new Exception("Custom message 2");
-            var aggregateException = new AggregateAssertException(new[]{exception1, exception2});
+            var aggregateException = new AggregateAssertException(ImmutableArray.Create(exception1, exception2));
             aggregateException.Message.Should().Be(
                 $"More than one assert failed.{Environment.NewLine}" +
                 $"{Environment.NewLine}" +
@@ -42,7 +43,7 @@ namespace ITLIBRIUM.BddToolkit.Tests.Scenarios
         {
             var exception1 = new Exception("Custom message 1");
             var exception2 = new Exception("Custom message 2");
-            var aggregateException = new AggregateAssertException(new[]{exception1, exception2});
+            var aggregateException = new AggregateAssertException(ImmutableArray.Create(exception1, exception2));
             aggregateException.ToString().Should().Be(
                 $"More than one assert failed.{Environment.NewLine}" +
                 $"{Environment.NewLine}" +

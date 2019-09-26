@@ -1,5 +1,5 @@
 using System;
-using ITLIBRIUM.BddToolkit.Scenarios;
+using ITLIBRIUM.BddToolkit.Execution;
 using Shouldly;
 using Xunit;
 
@@ -10,16 +10,12 @@ namespace ITLIBRIUM.BddToolkit.Shouldly.Tests
         [Fact]
         public void AssertPassWhenExceptionTypeIsEqualToExpected()
         {
-            Should.NotThrow(() => BddScenario
-                .ExcludeFromReports()
-                .Using<Fixture>()
+            Should.NotThrow(() => Bdd.Scenario<Context>()
                 .When(f => f.BusinessRuleWasBroken())
                 .Then().Throws<BusinessException>()
                 .Test());
             
-            Should.NotThrow(() => BddScenario
-                .ExcludeFromReports()
-                .Using<Fixture>()
+            Should.NotThrow(() => Bdd.Scenario<Context>()
                 .When(f => f.BusinessRuleWasBroken())
                 .Then().ThrowsExactly<BusinessException>()
                 .Test());
@@ -28,9 +24,7 @@ namespace ITLIBRIUM.BddToolkit.Shouldly.Tests
         [Fact]
         public void AssertPassWhenExceptionTypeIsAssignableToExpected()
         {
-            Should.NotThrow(() => BddScenario
-                .ExcludeFromReports()
-                .Using<Fixture>()
+            Should.NotThrow(() => Bdd.Scenario<Context>()
                 .When(f => f.BusinessRuleWasBroken())
                 .Then().Throws<Exception>()
                 .Test());
@@ -39,9 +33,7 @@ namespace ITLIBRIUM.BddToolkit.Shouldly.Tests
         [Fact]
         public void AssertFailWhenExceptionTypeIsNotAssignableToExpected()
         {
-            Should.Throw<AggregateAssertException>(() => BddScenario
-                .ExcludeFromReports()
-                .Using<Fixture>()
+            Should.Throw<AggregateAssertException>(() => Bdd.Scenario<Context>()
                 .When(f => f.BusinessRuleWasBroken())
                 .Then().Throws<InvalidOperationException>()
                 .Test());
@@ -50,15 +42,13 @@ namespace ITLIBRIUM.BddToolkit.Shouldly.Tests
         [Fact]
         public void AssertFailWhenExceptionTypeIsNotEqualToExpected()
         {
-            Should.Throw<AggregateAssertException>(() => BddScenario
-                .ExcludeFromReports()
-                .Using<Fixture>()
+            Should.Throw<AggregateAssertException>(() => Bdd.Scenario<Context>()
                 .When(f => f.BusinessRuleWasBroken())
                 .Then().ThrowsExactly<Exception>()
                 .Test());
         }
 
-        private class Fixture
+        private class Context
         {
             public void BusinessRuleWasBroken() => throw new BusinessException();
         }
