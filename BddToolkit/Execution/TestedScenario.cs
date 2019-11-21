@@ -1,3 +1,4 @@
+using System.Threading;
 using ITLIBRIUM.BddToolkit.Docs;
 using ITLIBRIUM.BddToolkit.Syntax.Scenarios;
 using ITLIBRIUM.BddToolkit.Tests;
@@ -15,9 +16,9 @@ namespace ITLIBRIUM.BddToolkit.Execution
             TestResult = testResult;
         }
 
-        public TestedScenario PublishDoc(DocPublisher docPublisher)
+        public TestedScenario PublishDoc(DocPublisher docPublisher, CancellationToken cancellationToken)
         {
-            docPublisher.Publish(Scenario, TestResult.IsSuccessful ? TestStatus.Passed : TestStatus.Failed);
+            docPublisher.Append(Scenario, TestResult.ToTestStatus(), cancellationToken);
             return this;
         }
 

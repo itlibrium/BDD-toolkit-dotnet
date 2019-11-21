@@ -27,7 +27,8 @@ namespace ITLIBRIUM.BddToolkit.Tests.Scenarios
                 .When(c => c.SomethingIsDone())
                 .Then(c => c.Result1IsAsExpected())
                 .Create()
-                .RunTest();
+                .RunTest()
+                .ThrowOnErrors();
             test.Should().NotThrow();
         }
 
@@ -86,7 +87,8 @@ namespace ITLIBRIUM.BddToolkit.Tests.Scenarios
                 .When(c => c.SomethingIsDone())
                 .Then((c, r) => c.ExceptionIsThrown(r))
                 .Create()
-                .RunTest();
+                .RunTest()
+                .ThrowOnErrors();
             test.Should().NotThrow();
 
             Action test2 = () => Bdd.Scenario(contextMock.Object)
@@ -94,7 +96,8 @@ namespace ITLIBRIUM.BddToolkit.Tests.Scenarios
                 .Then(c => c.Result1IsAsExpected())
                 .And((c, r) => c.ExceptionIsThrown(r))
                 .Create()
-                .RunTest();
+                .RunTest()
+                .ThrowOnErrors();
             test2.Should().NotThrow();
         }
 

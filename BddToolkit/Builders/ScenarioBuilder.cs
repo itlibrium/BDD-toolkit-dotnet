@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using ITLIBRIUM.BddToolkit.Docs;
 using ITLIBRIUM.BddToolkit.Execution;
 using ITLIBRIUM.BddToolkit.Syntax.Features;
@@ -138,14 +139,14 @@ namespace ITLIBRIUM.BddToolkit.Builders
 
         public IThenContinuationBuilder<TContext> GetContinuationBuilder() => this;
 
-        public TestableScenario Create([CallerMemberName] string name = null) => CreateInternal(name);
+        public TestableScenario Create([CallerMemberName] string name = null) => CreateTestableScenario(name);
 
-        public void Test([CallerMemberName] string name = null) => CreateInternal(name)
+        public void Test([CallerMemberName] string name = null) => CreateTestableScenario(name)
             .RunTest()
-            .PublishDoc(_docPublisher)
+            .PublishDoc(_docPublisher, CancellationToken.None)
             .ThrowOnErrors();
 
-        private TestableScenario CreateInternal(string defaultName)
+        private TestableScenario CreateTestableScenario(string defaultName)
         {
             _isCompleted = true;
             return new TestableScenario(

@@ -16,12 +16,12 @@ namespace ITLIBRIUM.BddToolkit.Shouldly
 
         [PublicAPI]
         public IThenContinuationBuilder<TContext> Throws<TException>() => 
-            _thenContinuationBuilder.And((f, e) => e.ShouldBeAssignableTo<TException>(), 
+            _thenContinuationBuilder.And((f, r) => r.Exception.ShouldBeAssignableTo<TException>(), 
                 $"Exception type is assignable to {typeof(TException).Name}");
 
         [PublicAPI]
         public IThenContinuationBuilder<TContext> ThrowsExactly<TException>() => 
-            _thenContinuationBuilder.And((f, e) => e.ShouldBeOfType<TException>(), 
+            _thenContinuationBuilder.And((f, r) => r.Exception.ShouldBeOfType<TException>(), 
                 $"Exception type is exactly {typeof(TException).Name}");
     }
 }

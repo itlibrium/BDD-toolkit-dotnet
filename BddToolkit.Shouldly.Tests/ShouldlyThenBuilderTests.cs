@@ -13,12 +13,16 @@ namespace ITLIBRIUM.BddToolkit.Shouldly.Tests
             Should.NotThrow(() => Bdd.Scenario<Context>()
                 .When(f => f.BusinessRuleWasBroken())
                 .Then().Throws<BusinessException>()
-                .Test());
+                .Create()
+                .RunTest()
+                .ThrowOnErrors());
             
             Should.NotThrow(() => Bdd.Scenario<Context>()
                 .When(f => f.BusinessRuleWasBroken())
                 .Then().ThrowsExactly<BusinessException>()
-                .Test());
+                .Create()
+                .RunTest()
+                .ThrowOnErrors());
         }
 
         [Fact]
@@ -27,7 +31,9 @@ namespace ITLIBRIUM.BddToolkit.Shouldly.Tests
             Should.NotThrow(() => Bdd.Scenario<Context>()
                 .When(f => f.BusinessRuleWasBroken())
                 .Then().Throws<Exception>()
-                .Test());
+                .Create()
+                .RunTest()
+                .ThrowOnErrors());
         }
 
         [Fact]
@@ -36,7 +42,9 @@ namespace ITLIBRIUM.BddToolkit.Shouldly.Tests
             Should.Throw<AggregateAssertException>(() => Bdd.Scenario<Context>()
                 .When(f => f.BusinessRuleWasBroken())
                 .Then().Throws<InvalidOperationException>()
-                .Test());
+                .Create()
+                .RunTest()
+                .ThrowOnErrors());
         }
 
         [Fact]
@@ -45,7 +53,9 @@ namespace ITLIBRIUM.BddToolkit.Shouldly.Tests
             Should.Throw<AggregateAssertException>(() => Bdd.Scenario<Context>()
                 .When(f => f.BusinessRuleWasBroken())
                 .Then().ThrowsExactly<Exception>()
-                .Test());
+                .Create()
+                .RunTest()
+                .ThrowOnErrors());
         }
 
         private class Context

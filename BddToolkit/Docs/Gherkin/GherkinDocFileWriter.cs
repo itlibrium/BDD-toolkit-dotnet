@@ -1,4 +1,4 @@
-namespace ITLIBRIUM.BddToolkit.Docs
+namespace ITLIBRIUM.BddToolkit.Docs.Gherkin
 {
     public class GherkinDocFileWriter : DocsFileWriter
     {

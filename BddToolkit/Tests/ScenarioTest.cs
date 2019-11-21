@@ -35,8 +35,8 @@ namespace ITLIBRIUM.BddToolkit.Tests
         public TestResult Run()
         {
             ExecuteGivenSection();
-            var whenException = ExecuteWhenSection();
-            return ExecuteThenSection(whenException);
+            var whenActionResult = ExecuteWhenSection();
+            return ExecuteThenSection(whenActionResult);
         }
 
         private void ExecuteGivenSection()
@@ -72,9 +72,15 @@ namespace ITLIBRIUM.BddToolkit.Tests
                     exceptions.Add(e);
                 }
             }
+            CheckExceptions(whenActionResult, exceptions);
+            return exceptions.Count == 0 ? TestResult.Passed() : TestResult.Failed(exceptions);
+        }
+
+        private void CheckExceptions(WhenActionResult whenActionResult, List<Exception> exceptions)
+        {
             if (_exceptionChecks.IsEmpty)
             {
-                if(!whenActionResult.IsSuccessful) exceptions.Add(whenActionResult.Exception);
+                if (!whenActionResult.IsSuccessful) exceptions.Add(whenActionResult.Exception);
             }
             else
             {
@@ -90,7 +96,6 @@ namespace ITLIBRIUM.BddToolkit.Tests
                     }
                 }
             }
-            return exceptions.Count == 0 ? TestResult.Passed() : TestResult.Failed(exceptions);
         }
     }
 }

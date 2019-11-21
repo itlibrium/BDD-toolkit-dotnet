@@ -23,5 +23,7 @@ namespace ITLIBRIUM.BddToolkit.Tests
             IsSuccessful = isSuccessful;
             Exceptions = exceptions;
         }
+
+        public TestStatus ToTestStatus() => IsSuccessful ? TestStatus.Passed : TestStatus.Failed;
     }
 }

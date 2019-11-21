@@ -13,13 +13,17 @@ namespace ITLIBRIUM.BddToolkit.FluentAssertions.Tests
             Action test = () => Bdd.Scenario<Context>()
                 .When(f => f.BusinessRuleWasBroken())
                 .Then().Throws<BusinessException>()
-                .Test();
+                .Create()
+                .RunTest()
+                .ThrowOnErrors();
             test.Should().NotThrow();
             
             Action test2 = () => Bdd.Scenario<Context>()
                 .When(f => f.BusinessRuleWasBroken())
                 .Then().ThrowsExactly<BusinessException>()
-                .Test();
+                .Create()
+                .RunTest()
+                .ThrowOnErrors();
             test2.Should().NotThrow();
         }
 
@@ -29,7 +33,9 @@ namespace ITLIBRIUM.BddToolkit.FluentAssertions.Tests
             Action test = () => Bdd.Scenario<Context>()
                 .When(f => f.BusinessRuleWasBroken())
                 .Then().Throws<Exception>()
-                .Test();
+                .Create()
+                .RunTest()
+                .ThrowOnErrors();
             test.Should().NotThrow();
         }
 
@@ -39,7 +45,9 @@ namespace ITLIBRIUM.BddToolkit.FluentAssertions.Tests
             Action test = () => Bdd.Scenario<Context>()
                 .When(f => f.BusinessRuleWasBroken())
                 .Then().Throws<InvalidOperationException>()
-                .Test();
+                .Create()
+                .RunTest()
+                .ThrowOnErrors();
             test.Should().Throw<AggregateAssertException>();
         }
 
@@ -49,7 +57,9 @@ namespace ITLIBRIUM.BddToolkit.FluentAssertions.Tests
             Action test = () => Bdd.Scenario<Context>()
                 .When(f => f.BusinessRuleWasBroken())
                 .Then().ThrowsExactly<Exception>()
-                .Test();
+                .Create()
+                .RunTest()
+                .ThrowOnErrors();
             test.Should().Throw<AggregateAssertException>();
         }
 

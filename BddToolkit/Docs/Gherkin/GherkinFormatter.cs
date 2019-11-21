@@ -1,18 +1,20 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Humanizer;
 using ITLIBRIUM.BddToolkit.Syntax.Scenarios;
 using ITLIBRIUM.BddToolkit.Tests;
 
-namespace ITLIBRIUM.BddToolkit.Docs
+namespace ITLIBRIUM.BddToolkit.Docs.Gherkin
 {
-    internal class GherkinDocsFormatter : DocFormatter
+    public readonly struct Line
     {
-        public Task Write(Scenario scenario, TestStatus testStatus, DocsWriter writer, 
-            CancellationToken cancellationToken)
+        
+    }
+    
+    internal class GherkinFormatter
+    {
+        public IEnumerable<Line> Format(Scenario scenario, TestStatus testStatus)
         {
             throw new NotImplementedException();
         }
