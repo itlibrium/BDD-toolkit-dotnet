@@ -10,6 +10,7 @@ using ITLIBRIUM.BddToolkit.Syntax.Rules;
 using ITLIBRIUM.BddToolkit.Syntax.Scenarios;
 using ITLIBRIUM.BddToolkit.Tests;
 using ITLibrium.Reflection;
+using JetBrains.Annotations;
 
 namespace ITLIBRIUM.BddToolkit.Builders
 {
@@ -18,6 +19,7 @@ namespace ITLIBRIUM.BddToolkit.Builders
         IGivenContinuationBuilder<TContext>,
         IThenBuilder<TContext>,
         IThenContinuationBuilder<TContext>
+        where TContext : class
     {
         private readonly TContext _context;
         private readonly DocPublisher _docPublisher;
@@ -36,17 +38,16 @@ namespace ITLIBRIUM.BddToolkit.Builders
         
         private bool _isCompleted;
 
-        internal ScenarioBuilder(TContext context, DocPublisher docPublisher)
+        internal ScenarioBuilder([NotNull] TContext context, [NotNull] DocPublisher docPublisher)
         {
-            _context = context;
-            _docPublisher = docPublisher;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _docPublisher = docPublisher ?? throw new ArgumentNullException(nameof(docPublisher));
         }
 
         ~ScenarioBuilder()
         {
             if (!_isCompleted)
-                throw new InvalidOperationException(
-                    "ScenarioBuilder should create scenario. Call Create or Test method after Then section");
+                throw new InvalidOperationException($"{nameof(ScenarioBuilder<TContext>)} should create scenario. Call Create or Test method after Then section");
         }
 
         public IScenarioDescriptionBuilder<TContext> Feature(Feature feature)
@@ -112,10 +113,10 @@ namespace ITLIBRIUM.BddToolkit.Builders
             return this;
         }
 
-        public IThenContinuationBuilder<TContext> Then(Expression<Action<TContext, WhenActionResult>> exceptionCheck) => 
+        public IThenContinuationBuilder<TContext> Then(Expression<Action<TContext, Result>> exceptionCheck) => 
             Then(exceptionCheck.Compile(), exceptionCheck.GetName());
 
-        public IThenContinuationBuilder<TContext> Then(Action<TContext, WhenActionResult> exceptionCheck, string name)
+        public IThenContinuationBuilder<TContext> Then(Action<TContext, Result> exceptionCheck, string name)
         {
             _thenSteps.Add(new ThenStep(name));
             _exceptionChecks.Add(new ExceptionCheck<TContext>(exceptionCheck));
@@ -131,10 +132,10 @@ namespace ITLIBRIUM.BddToolkit.Builders
             Then(thenAction, name);
 
         IThenContinuationBuilder<TContext> IThenContinuationBuilder<TContext>.And(
-            Expression<Action<TContext, WhenActionResult>> exceptionCheck) =>
+            Expression<Action<TContext, Result>> exceptionCheck) =>
             Then(exceptionCheck);
 
-        public IThenContinuationBuilder<TContext> And(Action<TContext, WhenActionResult> exceptionCheck, string name) => 
+        public IThenContinuationBuilder<TContext> And(Action<TContext, Result> exceptionCheck, string name) => 
             Then(exceptionCheck, name);
 
         public IThenContinuationBuilder<TContext> GetContinuationBuilder() => this;

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Immutable;
 using FluentAssertions;
-using ITLIBRIUM.BddToolkit.Execution;
 using Xunit;
 
-namespace ITLIBRIUM.BddToolkit.Tests.Scenarios
+namespace ITLIBRIUM.BddToolkit.Execution
 {
     public class AggregateAssertExceptionTests
     {

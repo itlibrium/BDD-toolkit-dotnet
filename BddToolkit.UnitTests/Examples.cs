@@ -2,7 +2,7 @@
 //using ITLIBRIUM.BddToolkit.Rules;
 //using Xunit;
 //
-//namespace ITLIBRIUM.BddToolkit.Tests
+//namespace ITLIBRIUM.BddToolkit.UnitTests
 //{
 //    public class Examples
 //    {

@@ -1,30 +1,37 @@
+using System;
 using System.Threading;
 using ITLIBRIUM.BddToolkit.Docs;
 using ITLIBRIUM.BddToolkit.Syntax.Scenarios;
 using ITLIBRIUM.BddToolkit.Tests;
+using JetBrains.Annotations;
 
 namespace ITLIBRIUM.BddToolkit.Execution
 {
     public readonly struct TestableScenario
     {
-        private readonly Scenario _scenario;
-        private readonly ScenarioTest _test;
+        [PublicAPI]
+        public Scenario Scenario { get; }
+        
+        [PublicAPI]
+        private ScenarioTest Test { get; }
 
-        public TestableScenario(Scenario scenario, ScenarioTest test)
+        public TestableScenario(Scenario scenario, [NotNull] ScenarioTest test)
         {
-            _scenario = scenario;
-            _test = test;
+            Scenario = scenario;
+            Test = test ?? throw new ArgumentNullException(nameof(test));
         }
 
+        [PublicAPI]
         public TestedScenario RunTest()
         {
-            var testResult = _test.Run();
-            return new TestedScenario(_scenario, testResult);
+            var testResult = Test.Run();
+            return new TestedScenario(Scenario, testResult);
         }
         
+        [PublicAPI]
         public TestableScenario PublishDoc(DocPublisher docPublisher, CancellationToken cancellationToken)
         {
-            docPublisher.Append(_scenario, TestStatus.Unknown, cancellationToken);
+            docPublisher.Append(Scenario, TestStatus.Unknown, cancellationToken);
             return this;
         }
     }

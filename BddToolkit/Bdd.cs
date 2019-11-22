@@ -1,7 +1,6 @@
 using System;
 using ITLIBRIUM.BddToolkit.Builders;
 using ITLIBRIUM.BddToolkit.Docs;
-using ITLIBRIUM.BddToolkit.Docs.Gherkin;
 using ITLIBRIUM.BddToolkit.Syntax.Features;
 using ITLIBRIUM.BddToolkit.Syntax.Rules;
 using JetBrains.Annotations;
@@ -27,14 +26,14 @@ namespace ITLIBRIUM.BddToolkit
         public static Rule Rule(Feature feature, string name) => new Rule(feature, name, default);
         
         [PublicAPI]
-        public static IScenarioDescriptionBuilder<TContext> Scenario<TContext>() where TContext : new() => 
+        public static IScenarioDescriptionBuilder<TContext> Scenario<TContext>() 
+            where TContext : class, new() => 
             new ScenarioBuilder<TContext>(new TContext(), _configuration.DocPublisher);
         
         [PublicAPI]
-        public static IScenarioDescriptionBuilder<TContext> Scenario<TContext>(TContext context) => 
+        public static IScenarioDescriptionBuilder<TContext> Scenario<TContext>(TContext context) 
+            where TContext : class => 
             new ScenarioBuilder<TContext>(context, _configuration.DocPublisher);
-
-        
 
         private static void OnExit(object sender, EventArgs e)
         {
@@ -52,7 +51,7 @@ namespace ITLIBRIUM.BddToolkit
             public DocPublisher DocPublisher { get; set; }
         
             public static Configuration Default() => new Configuration(
-                new GherkinFileDocPublisher());
+                new NullDocPublisher());
 
             private Configuration([NotNull] DocPublisher resultPublisher)
             {

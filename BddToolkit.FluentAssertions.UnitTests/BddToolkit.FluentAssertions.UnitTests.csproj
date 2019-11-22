@@ -2,8 +2,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <IsPackable>false</IsPackable>
-    <AssemblyName>ITLIBRIUM.BddToolkit.FluentAssertions.Tests</AssemblyName>
-    <RootNamespace>ITLIBRIUM.BddToolkit.FluentAssertions.Tests</RootNamespace>
+    <AssemblyName>ITLIBRIUM.BddToolkit.FluentAssertions.UnitTests</AssemblyName>
+    <RootNamespace>ITLIBRIUM.BddToolkit.FluentAssertions</RootNamespace>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>

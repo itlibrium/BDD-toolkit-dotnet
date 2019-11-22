@@ -14,69 +14,80 @@ namespace ITLIBRIUM.BddToolkit.Tests
         private readonly TContext _context;
         private readonly ImmutableArray<GivenAction<TContext>> _given;
         private readonly WhenAction<TContext> _when;
-        private readonly ImmutableArray<ThenAction<TContext>> _thenActions;
+        private readonly ImmutableArray<ThenAction<TContext>> _then;
         private readonly ImmutableArray<ExceptionCheck<TContext>> _exceptionChecks;
 
         public ScenarioTest(TContext context, IEnumerable<GivenAction<TContext>> given, WhenAction<TContext> @when, 
-            IEnumerable<ThenAction<TContext>> then, IEnumerable<ExceptionCheck<TContext>> thenException)
+            IEnumerable<ThenAction<TContext>> then, IEnumerable<ExceptionCheck<TContext>> exceptionChecks)
         {
             _context = context;
             _given = given.ToImmutableArray();
             _when = when;
-            _thenActions = then.ToImmutableArray();
-            _exceptionChecks = thenException.ToImmutableArray();
+            _then = then.ToImmutableArray();
+            _exceptionChecks = exceptionChecks.ToImmutableArray();
         }
-        
-        //DocBuilder
-        //    EnsureFeature / Rule
-        //    AddScenario
-
 
         public TestResult Run()
         {
-            ExecuteGivenSection();
-            var whenActionResult = ExecuteWhenSection();
-            return ExecuteThenSection(whenActionResult);
+            var givenActionsResult = ExecuteGivenActions();
+            if (!givenActionsResult.IsSuccessful)
+                return TestResult.Failed(givenActionsResult.Exception);
+                
+            var whenActionResult = ExecuteWhenAction();
+            
+            var exceptions = ImmutableArray.CreateBuilder<Exception>();
+            ExecuteThenActions(exceptions);
+            CheckExceptions(whenActionResult, exceptions);
+            return exceptions.Count == 0
+                ? TestResult.Passed()
+                : TestResult.Failed(exceptions.ToImmutable());
         }
 
-        private void ExecuteGivenSection()
+        private Result ExecuteGivenActions()
         {
             foreach (var action in _given)
-                action.Execute(_context);
-        }
-
-        private WhenActionResult ExecuteWhenSection()
-        {
-            try
-            {
-                _when.Execute(_context);
-                return WhenActionResult.Success();
-            }
-            catch (Exception e)
-            {
-                return WhenActionResult.Failure(e);
-            }
-        }
-
-        private TestResult ExecuteThenSection(WhenActionResult whenActionResult)
-        {
-            var exceptions = new List<Exception>();
-            foreach (var action in _thenActions)
             {
                 try
                 {
-                    action.Execute(_context);
+                    action(_context);
+                }
+                catch (Exception e)
+                {
+                    return Result.Failure(e);
+                }
+            }
+            return Result.Success();
+        }
+
+        private Result ExecuteWhenAction()
+        {
+            try
+            {
+                _when(_context);
+                return Result.Success();
+            }
+            catch (Exception e)
+            {
+                return Result.Failure(e);
+            }
+        }
+
+        private void ExecuteThenActions(ImmutableArray<Exception>.Builder exceptions)
+        {
+            foreach (var action in _then)
+            {
+                try
+                {
+                    action(_context);
                 }
                 catch (Exception e)
                 {
                     exceptions.Add(e);
                 }
             }
-            CheckExceptions(whenActionResult, exceptions);
-            return exceptions.Count == 0 ? TestResult.Passed() : TestResult.Failed(exceptions);
         }
 
-        private void CheckExceptions(WhenActionResult whenActionResult, List<Exception> exceptions)
+        private void CheckExceptions(Result whenActionResult, ImmutableArray<Exception>.Builder exceptions)
         {
             if (_exceptionChecks.IsEmpty)
             {
@@ -84,11 +95,11 @@ namespace ITLIBRIUM.BddToolkit.Tests
             }
             else
             {
-                foreach (var action in _exceptionChecks)
+                foreach (var check in _exceptionChecks)
                 {
                     try
                     {
-                        action.Execute(_context, whenActionResult);
+                        check(_context, whenActionResult);
                     }
                     catch (Exception e)
                     {

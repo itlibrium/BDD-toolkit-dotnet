@@ -3,7 +3,7 @@ using FluentAssertions;
 using ITLIBRIUM.BddToolkit.Execution;
 using Xunit;
 
-namespace ITLIBRIUM.BddToolkit.FluentAssertions.Tests
+namespace ITLIBRIUM.BddToolkit.FluentAssertions
 {
     public class FluentAssertionsThenBuilderTests
     {

@@ -1,10 +1,14 @@
 using System;
+using JetBrains.Annotations;
 
 namespace ITLIBRIUM.BddToolkit.Syntax.Features
 {
     public readonly struct Feature : IEquatable<Feature>
     {
+        [PublicAPI]
         public string Name { get; }
+        
+        [PublicAPI]
         public string Description { get; }
 
         public Feature(string name, string description)

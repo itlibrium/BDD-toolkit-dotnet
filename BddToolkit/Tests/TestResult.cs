@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 
 namespace ITLIBRIUM.BddToolkit.Tests
@@ -15,8 +14,8 @@ namespace ITLIBRIUM.BddToolkit.Tests
         public static TestResult Failed(Exception exception) => 
             new TestResult(false, ImmutableArray.Create(exception));
 
-        public static TestResult Failed(IEnumerable<Exception> exceptions) => 
-            new TestResult(false, exceptions.ToImmutableArray());
+        public static TestResult Failed(ImmutableArray<Exception> exceptions) => 
+            new TestResult(false, exceptions);
 
         private TestResult(bool isSuccessful, ImmutableArray<Exception> exceptions)
         {

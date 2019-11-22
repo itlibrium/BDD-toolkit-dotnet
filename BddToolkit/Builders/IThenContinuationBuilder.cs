@@ -2,7 +2,6 @@ using System;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using ITLIBRIUM.BddToolkit.Execution;
-using ITLIBRIUM.BddToolkit.Tests;
 using JetBrains.Annotations;
 
 namespace ITLIBRIUM.BddToolkit.Builders
@@ -16,10 +15,10 @@ namespace ITLIBRIUM.BddToolkit.Builders
         IThenContinuationBuilder<TContext> And(Action<TContext> thenAction, string name);
         
         [PublicAPI]
-        IThenContinuationBuilder<TContext> And(Expression<Action<TContext, WhenActionResult>> exceptionCheck);
+        IThenContinuationBuilder<TContext> And(Expression<Action<TContext, Result>> exceptionCheck);
         
         [PublicAPI]
-        IThenContinuationBuilder<TContext> And(Action<TContext, WhenActionResult> exceptionCheck, string name);
+        IThenContinuationBuilder<TContext> And(Action<TContext, Result> exceptionCheck, string name);
 
         [PublicAPI]
         TestableScenario Create([CallerMemberName] string name = null);

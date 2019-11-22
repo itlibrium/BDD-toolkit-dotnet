@@ -3,7 +3,7 @@ using ITLIBRIUM.BddToolkit.Execution;
 using Shouldly;
 using Xunit;
 
-namespace ITLIBRIUM.BddToolkit.Shouldly.Tests
+namespace ITLIBRIUM.BddToolkit.Shouldly
 {
     public class ShouldlyThenBuilderTests
     {

@@ -6,8 +6,8 @@
     <Description>Tests for ITLibrium.Bdd.Tests</Description>
     <AssemblyVersion>1.0.0</AssemblyVersion>
     <FileVersion>1.0.0</FileVersion>
-    <AssemblyName>ITLIBRIUM.BddToolkit.Tests</AssemblyName>
-    <RootNamespace>ITLIBRIUM.BddToolkit.Tests</RootNamespace>
+    <AssemblyName>ITLIBRIUM.BddToolkit.UnitTests</AssemblyName>
+    <RootNamespace>ITLIBRIUM.BddToolkit</RootNamespace>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
