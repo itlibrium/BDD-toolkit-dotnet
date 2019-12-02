@@ -13,7 +13,7 @@ namespace ITLIBRIUM.BddToolkit.Execution
         public Scenario Scenario { get; }
         
         [PublicAPI]
-        private ScenarioTest Test { get; }
+        public ScenarioTest Test { get; }
 
         public TestableScenario(Scenario scenario, [NotNull] ScenarioTest test)
         {
