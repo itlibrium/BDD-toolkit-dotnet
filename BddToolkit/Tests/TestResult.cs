@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 
 namespace ITLIBRIUM.BddToolkit.Tests
 {
-    public readonly struct TestResult
+    public readonly struct TestResult : IEquatable<TestResult>
     {
         public bool IsSuccessful { get; }
         public ImmutableArray<Exception> Exceptions { get; }
@@ -24,5 +25,11 @@ namespace ITLIBRIUM.BddToolkit.Tests
         }
 
         public TestStatus ToTestStatus() => IsSuccessful ? TestStatus.Passed : TestStatus.Failed;
+
+        public bool Equals(TestResult other) => 
+            IsSuccessful == other.IsSuccessful && 
+            Exceptions.SequenceEqual(other.Exceptions);
+        public override bool Equals(object obj) => obj is TestResult other && Equals(other);
+        public override int GetHashCode() => (IsSuccessful, HashCode.Combine(Exceptions)).GetHashCode();
     }
 }

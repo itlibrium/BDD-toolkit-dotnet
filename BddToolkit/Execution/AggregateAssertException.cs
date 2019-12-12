@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Immutable;
 using System.Text;
+using JetBrains.Annotations;
 
 namespace ITLIBRIUM.BddToolkit.Execution
 {
     public class AggregateAssertException : Exception
     {
-        private readonly ImmutableArray<Exception> _exceptions;
+        [PublicAPI]
+        public ImmutableArray<Exception> Exceptions { get; }
 
         public override string Message => GetAggregatedInfo(e => e.Message);
 
@@ -14,23 +16,23 @@ namespace ITLIBRIUM.BddToolkit.Execution
         {
             if (exceptions.Length == 0)
                 throw new ArgumentException("Exceptions collection can not be empty.", nameof(exceptions));
-            _exceptions = exceptions;
+            Exceptions = exceptions;
         }
 
         public override string ToString() => GetAggregatedInfo(e => e.ToString());
 
         private string GetAggregatedInfo(Func<Exception, string> infoFactory)
         {
-            var exceptionsCount = _exceptions.Length;
+            var exceptionsCount = Exceptions.Length;
             if (exceptionsCount == 1)
-                return infoFactory(_exceptions[0]);
+                return infoFactory(Exceptions[0]);
 
             var builder = new StringBuilder();
             builder.AppendLine("More than one assert failed.");
             builder.AppendLine();
             for (var i = 0; i < exceptionsCount; i++)
             {
-                var exception = _exceptions[i];
+                var exception = Exceptions[i];
 
                 builder.Append($"{(i + 1).ToString()}) ");
 

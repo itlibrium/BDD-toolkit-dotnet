@@ -35,6 +35,9 @@ namespace ITLIBRIUM.BddToolkit
             where TContext : class => 
             new ScenarioBuilder<TContext>(context, _configuration.DocPublisher);
 
+        [PublicAPI]
+        public static void Configure(Action<Configuration> setup) => setup(_configuration);
+
         private static void OnExit(object sender, EventArgs e)
         {
             lock (_configuration)

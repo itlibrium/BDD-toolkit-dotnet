@@ -47,7 +47,8 @@ namespace ITLIBRIUM.BddToolkit.Builders
         ~ScenarioBuilder()
         {
             if (!_isCompleted)
-                throw new InvalidOperationException($"{nameof(ScenarioBuilder<TContext>)} should create scenario. Call Create or Test method after Then section");
+                throw new InvalidOperationException(
+                    $"{nameof(ScenarioBuilder<TContext>)} should create scenario. Call Create or Test method after Then section");
         }
 
         public IScenarioDescriptionBuilder<TContext> Feature(Feature feature)

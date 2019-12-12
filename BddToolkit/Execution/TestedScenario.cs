@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using ITLIBRIUM.BddToolkit.Docs;
 using ITLIBRIUM.BddToolkit.Syntax.Scenarios;
@@ -6,7 +7,7 @@ using JetBrains.Annotations;
 
 namespace ITLIBRIUM.BddToolkit.Execution
 {
-    public readonly struct TestedScenario
+    public readonly struct TestedScenario : IEquatable<TestedScenario>
     {
         [PublicAPI]
         public Scenario Scenario { get; }
@@ -32,5 +33,9 @@ namespace ITLIBRIUM.BddToolkit.Execution
         {
             if (!TestResult.IsSuccessful) throw new AggregateAssertException(TestResult.Exceptions);
         }
+
+        public bool Equals(TestedScenario other) => (Scenario, TestResult).Equals((other.Scenario, other.TestResult));
+        public override bool Equals(object obj) => obj is TestedScenario other && Equals(other);
+        public override int GetHashCode() => (Scenario, TestResult).GetHashCode();
     }
 }

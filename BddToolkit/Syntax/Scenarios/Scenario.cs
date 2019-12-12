@@ -1,12 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using ITLIBRIUM.BddToolkit.Syntax.Features;
 using ITLIBRIUM.BddToolkit.Syntax.Rules;
 using JetBrains.Annotations;
 
 namespace ITLIBRIUM.BddToolkit.Syntax.Scenarios
 {
-    public readonly struct Scenario
+    public readonly struct Scenario : IEquatable<Scenario>
     {
         [PublicAPI]
         public Feature Feature { get; }
@@ -40,5 +42,18 @@ namespace ITLIBRIUM.BddToolkit.Syntax.Scenarios
             WhenStep = whenStep;
             ThenSteps = thenSteps.ToImmutableArray();
         }
+
+        public bool Equals(Scenario other) =>
+            Feature.Equals(other.Feature) && 
+            Rule.Equals(other.Rule) && 
+            Name == other.Name && 
+            Description == other.Description && 
+            GivenSteps.SequenceEqual(other.GivenSteps) &&
+            WhenStep.Equals(other.WhenStep) &&
+            ThenSteps.SequenceEqual(other.ThenSteps);
+        public override bool Equals(object obj) => obj is Scenario other && Equals(other);
+        public override int GetHashCode() => 
+            (Feature, Name, Description, HashCode.Combine(GivenSteps), WhenStep, HashCode.Combine(ThenSteps))
+            .GetHashCode();
     }
 }
