@@ -6,16 +6,12 @@ using Xunit;
 
 namespace ITLIBRIUM.BddToolkit.Tests
 {
-    public class ScenarioTestTests
+    public class ScenarioTestTests : TestsBase
     {
-        private readonly Mock<Context> _contextMock;
-
-        public ScenarioTestTests() => _contextMock = new Mock<Context>();
-
         [Fact]
         public void AllGivenActionsAreExecutedOnce()
         {
-            var scenarioTest = CreateDefaultScenarioTest();
+            var scenarioTest = CreateScenarioWithResultsCheck().Test;
 
             scenarioTest.Run();
 
@@ -25,7 +21,7 @@ namespace ITLIBRIUM.BddToolkit.Tests
         [Fact]
         public void GivenActionsAreNotRequired()
         {
-            var scenarioTest = Bdd.Scenario(_contextMock.Object)
+            var scenarioTest = Bdd.Scenario(ContextMock.Object)
                 .When(c => c.SomethingIsDone())
                 .Then(c => c.Result1IsAsExpected())
                 .Create()
@@ -40,8 +36,8 @@ namespace ITLIBRIUM.BddToolkit.Tests
         public void ExceptionInGivenActionsIsCaught()
         {
             var exception = new InvalidOperationException();
-            GivenActionThrows(exception);
-            var scenarioTest = CreateDefaultScenarioTest();
+            FirstGivenActionThrows(exception);
+            var scenarioTest = CreateScenarioWithResultsCheck().Test;
 
             var testResult = scenarioTest.Run();
 
@@ -53,7 +49,7 @@ namespace ITLIBRIUM.BddToolkit.Tests
         [Fact]
         public void WhenActionIsExecutedOnce()
         {
-            var scenarioTest = CreateDefaultScenarioTest();
+            var scenarioTest = CreateScenarioWithResultsCheck().Test;
 
             scenarioTest.Run();
 
@@ -63,7 +59,7 @@ namespace ITLIBRIUM.BddToolkit.Tests
         [Fact]
         public void AllThenActionsAreExecutedOnce()
         {
-            var scenarioTest = CreateDefaultScenarioTest();
+            var scenarioTest = CreateScenarioWithResultsCheck().Test;
 
             scenarioTest.Run();
 
@@ -75,8 +71,9 @@ namespace ITLIBRIUM.BddToolkit.Tests
         {
             var exception = new InvalidOperationException();
             WhenActionThrows(exception);
+            var scenarioTest = CreateScenarioWithResultsCheck().Test;
 
-            CreateDefaultScenarioTest().Run();
+            scenarioTest.Run();
             
             AllThenActionsShouldBeExecutedOnce();
         }
@@ -86,7 +83,7 @@ namespace ITLIBRIUM.BddToolkit.Tests
         {
             var exception = new AssertionFailedException("Assertion failed");
             FirstThenActionThrows(exception);
-            var scenarioTest = CreateDefaultScenarioTest();
+            var scenarioTest = CreateScenarioWithResultsCheck().Test;
             
             var testResult = scenarioTest.Run();
             
@@ -101,7 +98,7 @@ namespace ITLIBRIUM.BddToolkit.Tests
             FirstThenActionThrows(exception1);
             var exception2 = new AssertionFailedException("Assertion 2 failed");
             SecondThenActionThrows(exception2);
-            var scenarioTest = CreateDefaultScenarioTest();
+            var scenarioTest = CreateScenarioWithResultsCheck().Test;
             
             var testResult = scenarioTest.Run();
             
@@ -115,12 +112,7 @@ namespace ITLIBRIUM.BddToolkit.Tests
             WhenActionThrows(exception0);
             var exception1 = new InvalidOperationException();
             FirstThenActionThrows(exception1);
-            var scenarioTest = Bdd.Scenario(_contextMock.Object)
-                .When(c => c.SomethingIsDone())
-                .Then(c => c.Result1IsAsExpected())
-                .And((c, r) => c.ExceptionIsThrown(r))
-                .Create()
-                .Test;
+            var scenarioTest = CreateScenarioWithResultsAndExceptionCheck().Test;
             
             var testResult = scenarioTest.Run();
             
@@ -132,17 +124,8 @@ namespace ITLIBRIUM.BddToolkit.Tests
         {
             var exception = new InvalidOperationException();
             WhenActionThrows(exception);
-            var firstScenarioTest = Bdd.Scenario(_contextMock.Object)
-                .When(c => c.SomethingIsDone())
-                .Then((c, r) => c.ExceptionIsThrown(r))
-                .Create()
-                .Test;
-            var secondScenarioTest = Bdd.Scenario(_contextMock.Object)
-                .When(c => c.SomethingIsDone())
-                .Then(c => c.Result1IsAsExpected())
-                .And((c, r) => c.ExceptionIsThrown(r))
-                .Create()
-                .Test;
+            var firstScenarioTest = CreateScenarioWithExceptionCheck().Test;
+            var secondScenarioTest = CreateScenarioWithResultsAndExceptionCheck().Test;
             
             var firstTestResult = firstScenarioTest.Run();
             var secondTestResult = secondScenarioTest.Run();
@@ -156,48 +139,27 @@ namespace ITLIBRIUM.BddToolkit.Tests
         {
             var exception = new InvalidOperationException();
             WhenActionThrows(exception);
-            var scenarioTest = CreateDefaultScenarioTest();
+            var scenarioTest = CreateScenarioWithResultsCheck().Test;
             
             var testResult = scenarioTest.Run();
             
             TestShouldFailWithSingleException(testResult, exception);
         }
 
-        private void GivenActionThrows(Exception exception) => 
-            _contextMock.Setup(c => c.FirstFact()).Throws(exception);
-        
-        private void WhenActionThrows(Exception exception) => 
-            _contextMock.Setup(c => c.SomethingIsDone()).Throws(exception);
-        
-        private void FirstThenActionThrows(Exception exception) => 
-            _contextMock.Setup(c => c.Result1IsAsExpected()).Throws(exception);
-        
-        private void SecondThenActionThrows(Exception exception) => 
-            _contextMock.Setup(c => c.Result2IsAsExpected()).Throws(exception);
-
-        private ScenarioTest CreateDefaultScenarioTest() => Bdd.Scenario(_contextMock.Object)
-            .Given(c => c.FirstFact())
-            .And(c => c.SecondFact())
-            .When(c => c.SomethingIsDone())
-            .Then(c => c.Result1IsAsExpected())
-            .And(c => c.Result2IsAsExpected())
-            .Create()
-            .Test;
-        
         private void AllGivenActionsShouldBeExecutedOnce()
         {
-            _contextMock.Verify(c => c.FirstFact(), Times.Once);
-            _contextMock.Verify(c => c.SecondFact(), Times.Once);
+            ContextMock.Verify(c => c.FirstFact(), Times.Once);
+            ContextMock.Verify(c => c.SecondFact(), Times.Once);
         }
         
         private void WhenActionShouldBeExecutedOnce()
         {
-            _contextMock.Verify(c => c.SomethingIsDone(), Times.Once);
+            ContextMock.Verify(c => c.SomethingIsDone(), Times.Once);
         }
         
         private void WhenActionShouldNotBeExecuted()
         {
-            _contextMock.Verify(c => c.SomethingIsDone(), Times.Never);
+            ContextMock.Verify(c => c.SomethingIsDone(), Times.Never);
         }
         
         private static void TestShouldFailWithSingleException(TestResult testResult, Exception exception)
@@ -215,30 +177,18 @@ namespace ITLIBRIUM.BddToolkit.Tests
         
         private void AllThenActionsShouldBeExecutedOnce()
         {
-            _contextMock.Verify(c => c.Result1IsAsExpected(), Times.Once);
-            _contextMock.Verify(c => c.Result2IsAsExpected(), Times.Once);
+            ContextMock.Verify(c => c.Result1IsAsExpected(), Times.Once);
+            ContextMock.Verify(c => c.Result2IsAsExpected(), Times.Once);
         }
         
         private void AllThenActionsShouldNotBeExecuted()
         {
-            _contextMock.Verify(c => c.Result1IsAsExpected(), Times.Never);
-            _contextMock.Verify(c => c.Result2IsAsExpected(), Times.Never);
+            ContextMock.Verify(c => c.Result1IsAsExpected(), Times.Never);
+            ContextMock.Verify(c => c.Result2IsAsExpected(), Times.Never);
         }
         
         private static void TestShouldPass(in TestResult testResult) => testResult.IsSuccessful.Should().BeTrue();
 
-        // ReSharper disable once MemberCanBePrivate.Global - required by Moq
-        public interface Context
-        {
-            void FirstFact();
-            void SecondFact();
-
-            void SomethingIsDone();
-
-            void Result1IsAsExpected();
-            void Result2IsAsExpected();
-
-            void ExceptionIsThrown(Result result);
-        }
+        
     }
 }

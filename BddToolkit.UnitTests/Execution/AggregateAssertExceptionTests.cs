@@ -24,7 +24,7 @@ namespace ITLIBRIUM.BddToolkit.Execution
         }
         
         [Fact]
-        public void MessageIsAggregatedIfMoreThanOneException()
+        public void MessageIsAggregatedForMoreThanOneException()
         {
             var exception1 = new Exception("Custom message 1");
             var exception2 = new Exception("Custom message 2");
@@ -38,7 +38,7 @@ namespace ITLIBRIUM.BddToolkit.Execution
         }
         
         [Fact]
-        public void ToStringIsAggregatedIfMoreThanOneException()
+        public void ToStringIsAggregatedForMoreThanOneException()
         {
             var exception1 = new Exception("Custom message 1");
             var exception2 = new Exception("Custom message 2");
