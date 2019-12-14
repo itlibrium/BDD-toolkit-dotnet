@@ -15,7 +15,7 @@ using JetBrains.Annotations;
 namespace ITLIBRIUM.BddToolkit.Builders
 {
     internal class ScenarioBuilder<TContext> :
-        IScenarioDescriptionBuilder<TContext>,
+        IFeatureAndRuleBuilder<TContext>,
         IGivenContinuationBuilder<TContext>,
         IThenBuilder<TContext>,
         IThenContinuationBuilder<TContext>
@@ -51,26 +51,26 @@ namespace ITLIBRIUM.BddToolkit.Builders
                     $"{nameof(ScenarioBuilder<TContext>)} should create scenario. Call Create or Test method after Then section");
         }
 
-        public IScenarioDescriptionBuilder<TContext> Feature(Feature feature)
+        public INameBuilder<TContext> Feature(Feature feature)
         {
             _feature = feature;
             return this;
         }
 
-        public IScenarioDescriptionBuilder<TContext> Rule(Rule rule)
+        public INameBuilder<TContext> Rule(Rule rule)
         {
             _feature = rule.Feature;
             _rule = rule;
             return this;
         }
 
-        public IScenarioDescriptionBuilder<TContext> Name(string name)
+        public IDescriptionBuilder<TContext> Name(string name)
         {
             _name = name;
             return this;
         }
 
-        public IScenarioDescriptionBuilder<TContext> Description(string description)
+        public IGivenBuilder<TContext> Description(string description)
         {
             _description = description;
             return this;

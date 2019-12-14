@@ -20,18 +20,19 @@ namespace ITLIBRIUM.BddToolkit
         }
         
         [PublicAPI]
-        public static Feature Feature(string name) => new Feature(name, default);
+        public static Feature Feature(string name, string description = null) => new Feature(name, description);
         
         [PublicAPI]
-        public static Rule Rule(Feature feature, string name) => new Rule(feature, name, default);
+        public static Rule Rule(Feature feature, string name, string description = null) => 
+            new Rule(feature, name, description);
         
         [PublicAPI]
-        public static IScenarioDescriptionBuilder<TContext> Scenario<TContext>() 
+        public static IFeatureAndRuleBuilder<TContext> Scenario<TContext>() 
             where TContext : class, new() => 
             new ScenarioBuilder<TContext>(new TContext(), _configuration.DocPublisher);
         
         [PublicAPI]
-        public static IScenarioDescriptionBuilder<TContext> Scenario<TContext>(TContext context) 
+        public static IFeatureAndRuleBuilder<TContext> Scenario<TContext>(TContext context) 
             where TContext : class => 
             new ScenarioBuilder<TContext>(context, _configuration.DocPublisher);
 

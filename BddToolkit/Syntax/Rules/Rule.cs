@@ -22,9 +22,8 @@ namespace ITLIBRIUM.BddToolkit.Syntax.Rules
             Description = description;
         }
 
-        public bool Equals(Rule other) =>
-            (Feature, Name, Description).Equals((other.Feature, other.Name, other.Description));
+        public bool Equals(Rule other) => (Feature, Name).Equals((other.Feature, other.Name));
         public override bool Equals(object obj) => obj is Rule other && Equals(other);
-        public override int GetHashCode() => (Feature, Name, Description).GetHashCode();
+        public override int GetHashCode() => (Feature, Name).GetHashCode();
     }
 }

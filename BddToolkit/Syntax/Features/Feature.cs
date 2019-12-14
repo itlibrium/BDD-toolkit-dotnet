@@ -11,14 +11,14 @@ namespace ITLIBRIUM.BddToolkit.Syntax.Features
         [PublicAPI]
         public string Description { get; }
 
-        public Feature(string name, string description)
+        public Feature([NotNull] string name, string description = null)
         {
-            Name = name;
+            Name = name ?? throw new ArgumentNullException(nameof(name));
             Description = description;
         }
 
-        public bool Equals(Feature other) => (Name, Description).Equals((other.Name, other.Description));
+        public bool Equals(Feature other) => Name == other.Name;
         public override bool Equals(object obj) => obj is Feature other && Equals(other);
-        public override int GetHashCode() => (Name, Description).GetHashCode();
+        public override int GetHashCode() => Name.GetHashCode();
     }
 }
