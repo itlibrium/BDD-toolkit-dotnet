@@ -3,21 +3,22 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Authors>Marcin Markowski</Authors>
-    <Company>ITLibrium</Company>
+    <Company>ITLIBRIUM</Company>
     <Description>Simple BDD syntax for writing domain model tests</Description>
-    <PackageProjectUrl>https://github.com/itlibrium/BDD</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/itlibrium/BDD</RepositoryUrl>
-    <PackageTags>Bdd, Tests, .Net Core</PackageTags>
-    <PackageReleaseNotes>New syntax for defining scenario context</PackageReleaseNotes>
-    <AssemblyVersion>1.2.0</AssemblyVersion>
-    <FileVersion>1.2.0</FileVersion>
-    <PackageVersion>1.2.0</PackageVersion>
+    <PackageProjectUrl>https://github.com/itlibrium/BDD-toolkit-dotnet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/itlibrium/BDD-toolkit-dotnet</RepositoryUrl>
+    <PackageTags>BDD, TDD, tests, .net core</PackageTags>
+    <PackageReleaseNotes>v2</PackageReleaseNotes>
+    <AssemblyVersion>2.0.0</AssemblyVersion>
+    <FileVersion>2.0.0</FileVersion>
+    <PackageVersion>2.0.0</PackageVersion>
     <AssemblyName>ITLIBRIUM.BddToolkit</AssemblyName>
     <RootNamespace>ITLIBRIUM.BddToolkit</RootNamespace>
-    <PackageId>ITLibrium.BDD</PackageId>
-    <Product>ITLibrium.BDD</Product>
+    <PackageId>BDD-toolkit-dotnet</PackageId>
+    <Product>BDD-toolkit-dotnet</Product>
     <Copyright>ITLIBRIUM</Copyright>
     <LangVersion>latest</LangVersion>
+    <Title>BDD-toolkit-dotnet</Title>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Humanizer.Core" Version="2.2.0" />

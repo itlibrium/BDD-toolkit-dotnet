@@ -2,17 +2,23 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Marcin Markowski</Authors>
-    <Company>ITLibrium</Company>
-    <Description>FluentAssertions extensions for ITLibrium.Bdd</Description>
-    <AssemblyVersion>1.0.0</AssemblyVersion>
-    <FileVersion>1.0.0</FileVersion>
+    <Company>ITLIBRIUM</Company>
+    <Description>FluentAssertions extensions for BDD-toolkit-dotnet</Description>
+    <AssemblyVersion>2.0.0</AssemblyVersion>
+    <FileVersion>2.0.0</FileVersion>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <PackageProjectUrl>https://github.com/itlibrium/BDD</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/itlibrium/BDD</RepositoryUrl>
-    <PackageTags>BDD, Tests, FluentAssertions, .Net Core</PackageTags>
+    <PackageProjectUrl>https://github.com/itlibrium/BDD-toolkit-dotnet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/itlibrium/BDD-toolkit-dotnet</RepositoryUrl>
+    <PackageTags>BDD, TDD, tests, FluentAssertions, .net core</PackageTags>
     <AssemblyName>ITLIBRIUM.BddToolkit.FluentAssertions</AssemblyName>
     <RootNamespace>ITLIBRIUM.BddToolkit.FluentAssertions</RootNamespace>
     <LangVersion>latest</LangVersion>
+    <PackageId>BDD-toolkit-dotnet.FluentAssertions</PackageId>
+    <Product>BDD-toolkit-dotnet</Product>
+    <PackageVersion>2.0.0</PackageVersion>
+    <PackageReleaseNotes>v2</PackageReleaseNotes>
+    <Title>BDD-toolkit-dotnet.FluentAssertions</Title>
+    <Copyright>ITLIBRIUM</Copyright>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="5.9.0" />
