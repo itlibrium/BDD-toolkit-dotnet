@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <Company>ITLibrium</Company>
     <Authors>Marcin Markowski</Authors>
     <Description>Tests for ITLibrium.Bdd.Tests</Description>
