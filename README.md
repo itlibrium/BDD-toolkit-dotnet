@@ -288,16 +288,16 @@ A tool for writing BDD test scenarios shouldn't be used *instead* of a testing f
 
 All the below rules are checked by tests present in `ScenarioTestTests`: 
 
-1. AllGivenActionsAreExecutedOnce
-2. ExceptionInGivenActionsIsCaught
-3. WhenActionIsExecutedOnce
-4. AllThenActionsAreExecutedOnce
-5. AllThenActionsAreExecutedEvenIfExceptionWasThrownInWhenAction
-6. SecondThenActionIsInvokedEvenIfFirstAssertFailed
-7. AllExceptionsFromThenActionsAreReportedInTestResult
-8. ExceptionFromWhenActionIsNotReportedForFailedTestsInTestResultWhenExceptionCheckIsMade
-9. TestPassesWhenExceptionIsThrownAndExplicitExceptionCheckIsMade
-10. TestFailsWhenExceptionIsThrownAndNoExplicitExceptionCheckIsMade
+1. All `Given` actions are executed once
+2. Exception in `Given` actions is caught
+3. `When` action is executed once
+4. All `Then` actions are executed once
+5. All `Then` action sare executed even if exceptions were thrown in `When` action
+6. Second `Then` action is invoked even if the first assert failed
+7. All exceptions from `Then` actions are reported din test result
+8. Exception from `When` action is not reported for failed tests in test result when exception check is made.
+9. Test passes when exception is thrown and explicit exception check is made
+10. Test fails when exception is thrown and no explicit exception check is made 
 
 
 ## Roadmap
