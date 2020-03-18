@@ -1,5 +1,5 @@
 using System;
-using ITLIBRIUM.BddToolkit.Execution;
+using ITLIBRIUM.BddToolkit.Tests.Results.Exceptions;
 using Shouldly;
 using Xunit;
 
@@ -39,7 +39,7 @@ namespace ITLIBRIUM.BddToolkit.Shouldly
         [Fact]
         public void AssertFailWhenExceptionTypeIsNotAssignableToExpected()
         {
-            Should.Throw<AggregateAssertException>(() => Bdd.Scenario<Context>()
+            Should.Throw<ExceptionChecksFailed>(() => Bdd.Scenario<Context>()
                 .When(f => f.BusinessRuleWasBroken())
                 .Then().Throws<InvalidOperationException>()
                 .Create()
@@ -50,7 +50,7 @@ namespace ITLIBRIUM.BddToolkit.Shouldly
         [Fact]
         public void AssertFailWhenExceptionTypeIsNotEqualToExpected()
         {
-            Should.Throw<AggregateAssertException>(() => Bdd.Scenario<Context>()
+            Should.Throw<ExceptionChecksFailed>(() => Bdd.Scenario<Context>()
                 .When(f => f.BusinessRuleWasBroken())
                 .Then().ThrowsExactly<Exception>()
                 .Create()

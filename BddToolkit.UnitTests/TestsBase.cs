@@ -22,6 +22,9 @@ namespace ITLIBRIUM.BddToolkit
 
         protected void WhenActionThrows(Exception exception) => 
             ContextMock.Setup(c => c.SomethingIsDone()).Throws(exception);
+        
+        protected void ExceptionCheckThrows(Exception exception) => 
+            ContextMock.Setup(c => c.ExceptionIsThrown(It.IsAny<Result>())).Throws(exception);
 
         protected void FirstThenActionThrows(Exception exception) => 
             ContextMock.Setup(c => c.Result1IsAsExpected()).Throws(exception);

@@ -5,6 +5,7 @@ namespace ITLIBRIUM.BddToolkit
     public readonly struct Result : IEquatable<Result>
     {
         public bool IsSuccessful { get; }
+        public bool Failed => !IsSuccessful;
         public Exception Exception { get; }
 
         public static Result Success() => new Result(true, default);

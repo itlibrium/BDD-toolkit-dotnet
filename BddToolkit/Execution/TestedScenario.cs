@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using ITLIBRIUM.BddToolkit.Docs;
 using ITLIBRIUM.BddToolkit.Syntax.Scenarios;
-using ITLIBRIUM.BddToolkit.Tests;
+using ITLIBRIUM.BddToolkit.Tests.Results;
 using JetBrains.Annotations;
 
 namespace ITLIBRIUM.BddToolkit.Execution
@@ -29,10 +29,7 @@ namespace ITLIBRIUM.BddToolkit.Execution
         }
 
         [PublicAPI]
-        public void ThrowOnErrors()
-        {
-            if (!TestResult.IsSuccessful) throw new AggregateAssertException(TestResult.Exceptions);
-        }
+        public void ThrowOnErrors() => TestResult.ThrowOnErrors();
 
         public bool Equals(TestedScenario other) => (Scenario, TestResult).Equals((other.Scenario, other.TestResult));
         public override bool Equals(object obj) => obj is TestedScenario other && Equals(other);

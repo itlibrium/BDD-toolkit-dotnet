@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Immutable;
 using FluentAssertions;
 using FluentAssertions.Execution;
+using ITLIBRIUM.BddToolkit.Tests.Results;
 using Moq;
 using Xunit;
 
@@ -26,14 +28,14 @@ namespace ITLIBRIUM.BddToolkit.Tests
                 .Then(c => c.Result1IsAsExpected())
                 .Create()
                 .Test;
-            
+
             Action test = () => scenarioTest.Run();
 
             test.Should().NotThrow();
         }
 
         [Fact]
-        public void ExceptionInGivenActionsIsCaught()
+        public void ExceptionInGivenActionsStopsTestExecution()
         {
             var exception = new InvalidOperationException();
             FirstGivenActionThrows(exception);
@@ -41,9 +43,9 @@ namespace ITLIBRIUM.BddToolkit.Tests
 
             var testResult = scenarioTest.Run();
 
-            TestShouldFailWithSingleException(testResult, exception);
+            TestShouldFailDueToExceptionInGivenActions(testResult, exception);
             WhenActionShouldNotBeExecuted();
-            AllThenActionsShouldNotBeExecuted();
+            ThenActionsShouldNotBeExecuted();
         }
 
         [Fact]
@@ -67,15 +69,27 @@ namespace ITLIBRIUM.BddToolkit.Tests
         }
 
         [Fact]
-        public void AllThenActionsAreExecutedEvenIfExceptionWasThrownInWhenAction()
+        public void AllThenActionsAreExecutedIfExceptionWasThrownInWhenActionAndExceptionCheckIsMade()
+        {
+            var exception = new InvalidOperationException();
+            WhenActionThrows(exception);
+            var scenarioTest = CreateScenarioWithResultsAndExceptionCheck().Test;
+
+            scenarioTest.Run();
+
+            AllThenActionsShouldBeExecutedOnce();
+        }
+        
+        [Fact]
+        public void ThenActionsAreNotExecutedIfExceptionWasThrownInWhenActionAndExceptionCheckIsNotMade()
         {
             var exception = new InvalidOperationException();
             WhenActionThrows(exception);
             var scenarioTest = CreateScenarioWithResultsCheck().Test;
 
             scenarioTest.Run();
-            
-            AllThenActionsShouldBeExecutedOnce();
+
+            ThenActionsShouldNotBeExecuted();
         }
 
         [Fact]
@@ -84,10 +98,10 @@ namespace ITLIBRIUM.BddToolkit.Tests
             var exception = new AssertionFailedException("Assertion failed");
             FirstThenActionThrows(exception);
             var scenarioTest = CreateScenarioWithResultsCheck().Test;
-            
+
             var testResult = scenarioTest.Run();
-            
-            TestShouldFailWithSingleException(testResult, exception);
+
+            TestShouldFailWithExceptions(testResult, exception);
             AllThenActionsShouldBeExecutedOnce();
         }
 
@@ -99,12 +113,12 @@ namespace ITLIBRIUM.BddToolkit.Tests
             var exception2 = new AssertionFailedException("Assertion 2 failed");
             SecondThenActionThrows(exception2);
             var scenarioTest = CreateScenarioWithResultsCheck().Test;
-            
+
             var testResult = scenarioTest.Run();
-            
+
             TestShouldFailWithExceptions(testResult, exception1, exception2);
         }
-        
+
         [Fact]
         public void ExceptionFromWhenActionIsNotReportedForFailedTestsInTestResultWhenExceptionCheckIsMade()
         {
@@ -113,20 +127,20 @@ namespace ITLIBRIUM.BddToolkit.Tests
             var exception1 = new InvalidOperationException();
             FirstThenActionThrows(exception1);
             var scenarioTest = CreateScenarioWithResultsAndExceptionCheck().Test;
-            
+
             var testResult = scenarioTest.Run();
-            
-            TestShouldFailWithSingleException(testResult, exception1);
+
+            TestShouldFailWithExceptions(testResult, exception1);
         }
 
         [Fact]
-        public void TestPassesWhenExceptionIsThrownAndExplicitExceptionCheckIsMade()
+        public void TestPassesWhenExceptionIsThrownAndExceptionCheckIsMade()
         {
             var exception = new InvalidOperationException();
             WhenActionThrows(exception);
             var firstScenarioTest = CreateScenarioWithExceptionCheck().Test;
             var secondScenarioTest = CreateScenarioWithResultsAndExceptionCheck().Test;
-            
+
             var firstTestResult = firstScenarioTest.Run();
             var secondTestResult = secondScenarioTest.Run();
 
@@ -135,15 +149,15 @@ namespace ITLIBRIUM.BddToolkit.Tests
         }
 
         [Fact]
-        public void TestFailsWhenExceptionIsThrownAndNoExplicitExceptionCheckIsMade()
+        public void TestFailsWhenExceptionIsThrownAndExceptionCheckIsNotMade()
         {
             var exception = new InvalidOperationException();
             WhenActionThrows(exception);
             var scenarioTest = CreateScenarioWithResultsCheck().Test;
-            
+
             var testResult = scenarioTest.Run();
-            
-            TestShouldFailWithSingleException(testResult, exception);
+
+            TestShouldFailDueToExceptionInWhenAction(testResult, exception);
         }
 
         private void AllGivenActionsShouldBeExecutedOnce()
@@ -151,44 +165,38 @@ namespace ITLIBRIUM.BddToolkit.Tests
             ContextMock.Verify(c => c.FirstFact(), Times.Once);
             ContextMock.Verify(c => c.SecondFact(), Times.Once);
         }
-        
+
         private void WhenActionShouldBeExecutedOnce()
         {
             ContextMock.Verify(c => c.SomethingIsDone(), Times.Once);
         }
-        
+
         private void WhenActionShouldNotBeExecuted()
         {
             ContextMock.Verify(c => c.SomethingIsDone(), Times.Never);
         }
+
+        private static void TestShouldFailDueToExceptionInGivenActions(TestResult testResult, Exception exception) => 
+            testResult.Should().Be(new ExceptionInGivenAction(exception));
         
-        private static void TestShouldFailWithSingleException(TestResult testResult, Exception exception)
-        {
-            testResult.IsSuccessful.Should().BeFalse();
-            testResult.Exceptions.Length.Should().Be(1);
-            testResult.Exceptions[0].Should().Be(exception);
-        }
-        
-        private static void TestShouldFailWithExceptions(TestResult testResult, params Exception[] exceptions)
-        {
-            testResult.IsSuccessful.Should().BeFalse();
-            testResult.Exceptions.Should().BeEquivalentTo(exceptions);
-        }
-        
+        private static void TestShouldFailDueToExceptionInWhenAction(TestResult testResult, Exception exception) => 
+            testResult.Should().Be(new UncheckedExceptionInWhenAction(exception));
+
+        private static void TestShouldFailWithExceptions(TestResult testResult, params Exception[] exceptions) => 
+            testResult.Should().Be(new Failed(exceptions.ToImmutableArray()));
+
         private void AllThenActionsShouldBeExecutedOnce()
         {
             ContextMock.Verify(c => c.Result1IsAsExpected(), Times.Once);
             ContextMock.Verify(c => c.Result2IsAsExpected(), Times.Once);
         }
-        
-        private void AllThenActionsShouldNotBeExecuted()
+
+        private void ThenActionsShouldNotBeExecuted()
         {
             ContextMock.Verify(c => c.Result1IsAsExpected(), Times.Never);
             ContextMock.Verify(c => c.Result2IsAsExpected(), Times.Never);
         }
-        
-        private static void TestShouldPass(in TestResult testResult) => testResult.IsSuccessful.Should().BeTrue();
 
-        
+        private static void TestShouldPass(TestResult testResult) => testResult.Should().Be(Passed.Instance);
     }
 }

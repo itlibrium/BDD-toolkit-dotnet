@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using ITLIBRIUM.BddToolkit.Tests.Results;
 
 namespace ITLIBRIUM.BddToolkit.Tests
 {
@@ -9,7 +10,7 @@ namespace ITLIBRIUM.BddToolkit.Tests
         TestResult Run();
     }
 
-    internal class ScenarioTest<TContext> : ScenarioTest
+    internal partial class ScenarioTest<TContext> : ScenarioTest
     {
         private readonly TContext _context;
         private readonly ImmutableArray<GivenAction<TContext>> _given;
@@ -17,7 +18,7 @@ namespace ITLIBRIUM.BddToolkit.Tests
         private readonly ImmutableArray<ThenAction<TContext>> _then;
         private readonly ImmutableArray<ExceptionCheck<TContext>> _exceptionChecks;
 
-        public ScenarioTest(TContext context, IEnumerable<GivenAction<TContext>> given, WhenAction<TContext> @when, 
+        public ScenarioTest(TContext context, IEnumerable<GivenAction<TContext>> given, WhenAction<TContext> @when,
             IEnumerable<ThenAction<TContext>> then, IEnumerable<ExceptionCheck<TContext>> exceptionChecks)
         {
             _context = context;
@@ -30,17 +31,25 @@ namespace ITLIBRIUM.BddToolkit.Tests
         public TestResult Run()
         {
             var givenActionsResult = ExecuteGivenActions();
-            if (!givenActionsResult.IsSuccessful)
-                return TestResult.Failed(givenActionsResult.Exception);
-                
+            if (givenActionsResult.Failed)
+                return TestResult.ExceptionInGivenAction(givenActionsResult.Exception);
+
             var whenActionResult = ExecuteWhenAction();
-            
-            var exceptions = ImmutableArray.CreateBuilder<Exception>();
-            ExecuteThenActions(exceptions);
-            CheckExceptions(whenActionResult, exceptions);
-            return exceptions.Count == 0
-                ? TestResult.Passed()
-                : TestResult.Failed(exceptions.ToImmutable());
+            if (whenActionResult.Failed)
+            {
+                if (_exceptionChecks.IsEmpty)
+                    return TestResult.UncheckedExceptionInWhenAction(whenActionResult.Exception);
+
+                var exceptionChecks = Assertions.Check(_exceptionChecks, _context, whenActionResult);
+                if (exceptionChecks.Failed)
+                    return TestResult.UnexpectedExceptionInWhenAction(whenActionResult.Exception,
+                        exceptionChecks.Exceptions);
+            }
+
+            var assertions = Assertions.Check(_then, _context);
+            return assertions.Failed
+                ? TestResult.Failed(assertions.Exceptions)
+                : TestResult.Passed();
         }
 
         private Result ExecuteGivenActions()
@@ -56,6 +65,7 @@ namespace ITLIBRIUM.BddToolkit.Tests
                     return Result.Failure(e);
                 }
             }
+
             return Result.Success();
         }
 
@@ -69,43 +79,6 @@ namespace ITLIBRIUM.BddToolkit.Tests
             catch (Exception e)
             {
                 return Result.Failure(e);
-            }
-        }
-
-        private void ExecuteThenActions(ImmutableArray<Exception>.Builder exceptions)
-        {
-            foreach (var action in _then)
-            {
-                try
-                {
-                    action(_context);
-                }
-                catch (Exception e)
-                {
-                    exceptions.Add(e);
-                }
-            }
-        }
-
-        private void CheckExceptions(Result whenActionResult, ImmutableArray<Exception>.Builder exceptions)
-        {
-            if (_exceptionChecks.IsEmpty)
-            {
-                if (!whenActionResult.IsSuccessful) exceptions.Add(whenActionResult.Exception);
-            }
-            else
-            {
-                foreach (var check in _exceptionChecks)
-                {
-                    try
-                    {
-                        check(_context, whenActionResult);
-                    }
-                    catch (Exception e)
-                    {
-                        exceptions.Add(e);
-                    }
-                }
             }
         }
     }

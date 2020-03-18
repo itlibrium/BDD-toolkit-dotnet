@@ -1,6 +1,6 @@
 using System;
 using FluentAssertions;
-using ITLIBRIUM.BddToolkit.Execution;
+using ITLIBRIUM.BddToolkit.Tests.Results.Exceptions;
 using Xunit;
 
 namespace ITLIBRIUM.BddToolkit.FluentAssertions
@@ -48,7 +48,7 @@ namespace ITLIBRIUM.BddToolkit.FluentAssertions
                 .Create()
                 .RunTest()
                 .ThrowOnErrors();
-            test.Should().Throw<AggregateAssertException>();
+            test.Should().Throw<ExceptionChecksFailed>();
         }
 
         [Fact]
@@ -60,7 +60,7 @@ namespace ITLIBRIUM.BddToolkit.FluentAssertions
                 .Create()
                 .RunTest()
                 .ThrowOnErrors();
-            test.Should().Throw<AggregateAssertException>();
+            test.Should().Throw<ExceptionChecksFailed>();
         }
 
         private class Context

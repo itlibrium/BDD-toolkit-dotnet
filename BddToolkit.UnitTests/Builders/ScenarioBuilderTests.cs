@@ -2,9 +2,9 @@ using System;
 using System.Threading;
 using FluentAssertions;
 using ITLIBRIUM.BddToolkit.Docs;
-using ITLIBRIUM.BddToolkit.Execution;
 using ITLIBRIUM.BddToolkit.Syntax.Scenarios;
 using ITLIBRIUM.BddToolkit.Tests;
+using ITLIBRIUM.BddToolkit.Tests.Results.Exceptions;
 using Moq;
 using Xunit;
 
@@ -47,7 +47,7 @@ namespace ITLIBRIUM.BddToolkit.Builders
             
             Action action = TestScenario;
             
-            action.Should().ThrowExactly<AggregateAssertException>();
+            action.Should().ThrowExactly<AssertsFailed>();
         }
 
         private void TestScenario() => Bdd.Scenario(ContextMock.Object)
