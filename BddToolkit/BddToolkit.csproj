@@ -8,10 +8,10 @@
     <PackageProjectUrl>https://github.com/itlibrium/BDD-toolkit-dotnet</PackageProjectUrl>
     <RepositoryUrl>https://github.com/itlibrium/BDD-toolkit-dotnet</RepositoryUrl>
     <PackageTags>BDD, TDD, tests, .net core</PackageTags>
-    <PackageReleaseNotes>v2</PackageReleaseNotes>
-    <AssemblyVersion>2.0.0</AssemblyVersion>
-    <FileVersion>2.0.0</FileVersion>
-    <PackageVersion>2.0.0</PackageVersion>
+    <PackageReleaseNotes>Better exceptions formatting</PackageReleaseNotes>
+    <AssemblyVersion>2.1.0</AssemblyVersion>
+    <FileVersion>2.1.0</FileVersion>
+    <PackageVersion>2.1.0</PackageVersion>
     <AssemblyName>ITLIBRIUM.BddToolkit</AssemblyName>
     <RootNamespace>ITLIBRIUM.BddToolkit</RootNamespace>
     <PackageId>BDD-toolkit-dotnet</PackageId>
