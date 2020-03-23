@@ -8,7 +8,7 @@ namespace ITLIBRIUM.BddToolkit.Docs
 {
     public interface DocPublisher : IDisposable
     {
-        Task Append(Scenario scenario, TestStatus testStatus, CancellationToken cancellationToken);
+        Task Append(in Scenario scenario, TestStatus testStatus, CancellationToken cancellationToken);
         Task Publish(CancellationToken cancellationToken);
     }
 }

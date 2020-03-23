@@ -11,11 +11,11 @@ namespace ITLIBRIUM.BddToolkit.Execution
     {
         [PublicAPI]
         public Scenario Scenario { get; }
-        
+
         [PublicAPI]
         public TestResult TestResult { get; }
 
-        public TestedScenario(Scenario scenario, TestResult testResult)
+        public TestedScenario(in Scenario scenario, TestResult testResult)
         {
             Scenario = scenario;
             TestResult = testResult;

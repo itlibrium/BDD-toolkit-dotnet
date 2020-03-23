@@ -23,7 +23,7 @@ namespace ITLIBRIUM.BddToolkit
         public static Feature Feature(string name, string description = null) => new Feature(name, description);
         
         [PublicAPI]
-        public static Rule Rule(Feature feature, string name, string description = null) => 
+        public static Rule Rule(in Feature feature, string name, string description = null) => 
             new Rule(feature, name, description);
         
         [PublicAPI]

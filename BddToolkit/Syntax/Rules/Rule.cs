@@ -15,7 +15,7 @@ namespace ITLIBRIUM.BddToolkit.Syntax.Rules
         [PublicAPI]
         public string Description { get; }
 
-        public Rule(Feature feature, string name, string description)
+        public Rule(in Feature feature, string name, string description)
         {
             Feature = feature;
             Name = name;

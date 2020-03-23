@@ -12,26 +12,26 @@ namespace ITLIBRIUM.BddToolkit.Syntax.Scenarios
     {
         [PublicAPI]
         public Feature Feature { get; }
-        
+
         [PublicAPI]
         public Rule Rule { get; }
-        
+
         [PublicAPI]
         public string Name { get; }
-        
+
         [PublicAPI]
         public string Description { get; }
-        
+
         [PublicAPI]
         public ImmutableArray<GivenStep> GivenSteps { get; }
-        
+
         [PublicAPI]
         public WhenStep WhenStep { get; }
-        
+
         [PublicAPI]
         public ImmutableArray<ThenStep> ThenSteps { get; }
 
-        public Scenario(Feature feature, Rule rule, string name, string description, IEnumerable<GivenStep> givenSteps, 
+        public Scenario(in Feature feature, in Rule rule, string name, string description, IEnumerable<GivenStep> givenSteps,
             WhenStep whenStep, IEnumerable<ThenStep> thenSteps)
         {
             Feature = feature;
@@ -44,15 +44,17 @@ namespace ITLIBRIUM.BddToolkit.Syntax.Scenarios
         }
 
         public bool Equals(Scenario other) =>
-            Feature.Equals(other.Feature) && 
-            Rule.Equals(other.Rule) && 
-            Name == other.Name && 
-            Description == other.Description && 
+            Feature.Equals(other.Feature) &&
+            Rule.Equals(other.Rule) &&
+            Name == other.Name &&
+            Description == other.Description &&
             GivenSteps.SequenceEqual(other.GivenSteps) &&
             WhenStep.Equals(other.WhenStep) &&
             ThenSteps.SequenceEqual(other.ThenSteps);
+
         public override bool Equals(object obj) => obj is Scenario other && Equals(other);
-        public override int GetHashCode() => 
+
+        public override int GetHashCode() =>
             (Feature, Name, Description, HashCode.Combine(GivenSteps), WhenStep, HashCode.Combine(ThenSteps))
             .GetHashCode();
     }

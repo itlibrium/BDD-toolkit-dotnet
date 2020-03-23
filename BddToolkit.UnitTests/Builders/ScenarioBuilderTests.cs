@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using ITLIBRIUM.BddToolkit.Docs;
 using ITLIBRIUM.BddToolkit.Syntax.Scenarios;
 using ITLIBRIUM.BddToolkit.Tests;
@@ -26,7 +27,7 @@ namespace ITLIBRIUM.BddToolkit.Builders
             TestScenario();
             
             _docPublisherMock.Verify(p => p
-                .Append(It.IsAny<Scenario>(), 
+                .Append(It.Ref<Scenario>.IsAny, 
                     TestStatus.Passed, 
                     It.IsAny<CancellationToken>()),
                 Times.Once);
@@ -43,7 +44,7 @@ namespace ITLIBRIUM.BddToolkit.Builders
         [Fact]
         public void ExceptionIsThrownForFailingTest()
         {
-            FirstThenActionThrows(new InvalidOperationException());
+            FirstThenActionThrows(new AssertionFailedException("error"));
             
             Action action = TestScenario;
             

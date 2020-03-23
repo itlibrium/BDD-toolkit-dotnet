@@ -7,7 +7,7 @@ namespace ITLIBRIUM.BddToolkit.Docs
 {
     public class NullDocPublisher : DocPublisher
     {
-        public Task Append(Scenario scenario, TestStatus testStatus, CancellationToken cancellationToken) => 
+        public Task Append(in Scenario scenario, TestStatus testStatus, CancellationToken cancellationToken) => 
             Task.CompletedTask;
 
         public Task Publish(CancellationToken cancellationToken) => Task.CompletedTask;

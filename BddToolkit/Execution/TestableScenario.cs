@@ -11,11 +11,11 @@ namespace ITLIBRIUM.BddToolkit.Execution
     {
         [PublicAPI]
         public Scenario Scenario { get; }
-        
+
         [PublicAPI]
         public ScenarioTest Test { get; }
 
-        public TestableScenario(Scenario scenario, [NotNull] ScenarioTest test)
+        public TestableScenario(in Scenario scenario, [NotNull] ScenarioTest test)
         {
             Scenario = scenario;
             Test = test ?? throw new ArgumentNullException(nameof(test));
@@ -27,7 +27,7 @@ namespace ITLIBRIUM.BddToolkit.Execution
             var testResult = Test.Run();
             return new TestedScenario(Scenario, testResult);
         }
-        
+
         [PublicAPI]
         public TestableScenario PublishDoc(DocPublisher docPublisher, CancellationToken cancellationToken)
         {

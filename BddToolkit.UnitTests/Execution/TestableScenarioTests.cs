@@ -25,8 +25,9 @@ namespace ITLIBRIUM.BddToolkit.Execution
 
             Publish(testableScenario);
 
+            var expectedScenario = testableScenario.Scenario;
             _docPublisherMock.Verify(p => p
-                    .Append(It.Is<Scenario>(scenario => scenario.Equals(testableScenario.Scenario)),
+                    .Append(in expectedScenario,
                         It.IsAny<TestStatus>(),
                         It.IsAny<CancellationToken>()),
                 Times.Once);
@@ -40,7 +41,7 @@ namespace ITLIBRIUM.BddToolkit.Execution
             Publish(testableScenario);
 
             _docPublisherMock.Verify(p => p
-                    .Append(It.IsAny<Scenario>(),
+                    .Append(It.Ref<Scenario>.IsAny,
                         TestStatus.Unknown,
                         It.IsAny<CancellationToken>()),
                 Times.Once);

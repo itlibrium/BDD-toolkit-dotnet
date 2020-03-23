@@ -51,13 +51,13 @@ namespace ITLIBRIUM.BddToolkit.Builders
                     $"{nameof(ScenarioBuilder<TContext>)} should create scenario. Call Create or Test method after Then section");
         }
 
-        public INameBuilder<TContext> Feature(Feature feature)
+        public INameBuilder<TContext> Feature(in Feature feature)
         {
             _feature = feature;
             return this;
         }
 
-        public INameBuilder<TContext> Rule(Rule rule)
+        public INameBuilder<TContext> Rule(in Rule rule)
         {
             _feature = rule.Feature;
             _rule = rule;

@@ -7,9 +7,9 @@ namespace ITLIBRIUM.BddToolkit.Builders
     public interface IFeatureAndRuleBuilder<TContext> : INameBuilder<TContext>
     {
         [PublicAPI]
-        INameBuilder<TContext> Feature(Feature feature);
+        INameBuilder<TContext> Feature(in Feature feature);
         
         [PublicAPI]
-        INameBuilder<TContext> Rule(Rule rule);
+        INameBuilder<TContext> Rule(in Rule rule);
     }
 }

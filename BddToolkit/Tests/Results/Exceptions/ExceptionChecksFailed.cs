@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Immutable;
 using System.Text;
-using JetBrains.Annotations;
 
 namespace ITLIBRIUM.BddToolkit.Tests.Results.Exceptions
 {
