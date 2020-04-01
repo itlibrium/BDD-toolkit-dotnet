@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using JetBrains.Annotations;
 
-namespace ITLIBRIUM.BddToolkit.Builders
+namespace ITLIBRIUM.BddToolkit.Builders.Scenarios
 {
     public interface IGivenContinuationBuilder<TContext> : IWhenBuilder<TContext>
     {

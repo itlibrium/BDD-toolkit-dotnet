@@ -18,7 +18,7 @@ namespace ITLIBRIUM.BddToolkit.Builders
         public ScenarioBuilderTests()
         {
             _docPublisherMock = new Mock<DocPublisher>();
-            Bdd.Configure(configuration => configuration.DocPublisher = _docPublisherMock.Object);
+            Bdd.Configure(configuration => configuration.Use(_docPublisherMock.Object));
         }
         
         [Fact]

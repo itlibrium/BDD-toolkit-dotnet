@@ -14,7 +14,7 @@ namespace ITLIBRIUM.BddToolkit
         {
             ContextMock = new Mock<Context>();
             DocPublisherMock = new Mock<DocPublisher>();
-            Bdd.Configure(configuration => configuration.DocPublisher = DocPublisherMock.Object);
+            Bdd.Configure(configuration => configuration.Use(DocPublisherMock.Object));
         }
 
         protected void FirstGivenActionThrows(Exception exception) => 

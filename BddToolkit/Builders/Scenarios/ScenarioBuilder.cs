@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using Humanizer;
 using ITLIBRIUM.BddToolkit.Docs;
 using ITLIBRIUM.BddToolkit.Execution;
 using ITLIBRIUM.BddToolkit.Syntax.Features;
@@ -12,7 +14,7 @@ using ITLIBRIUM.BddToolkit.Tests;
 using ITLibrium.Reflection;
 using JetBrains.Annotations;
 
-namespace ITLIBRIUM.BddToolkit.Builders
+namespace ITLIBRIUM.BddToolkit.Builders.Scenarios
 {
     internal class ScenarioBuilder<TContext> :
         IFeatureAndRuleBuilder<TContext>,
@@ -24,10 +26,11 @@ namespace ITLIBRIUM.BddToolkit.Builders
         private readonly TContext _context;
         private readonly DocPublisher _docPublisher;
 
-        private Feature _feature;
-        private Rule _rule;
+        private Feature _feature = Syntax.Features.Feature.Empty();
+        private Rule _rule = Syntax.Rules.Rule.Empty();
         private string _name;
         private string _description;
+        private string[] _tags;
         private readonly List<GivenStep> _givenSteps = new List<GivenStep>();
         private readonly List<GivenAction<TContext>> _givenActions = new List<GivenAction<TContext>>();
         private WhenStep _whenStep;
@@ -35,7 +38,7 @@ namespace ITLIBRIUM.BddToolkit.Builders
         private readonly List<ThenStep> _thenSteps = new List<ThenStep>();
         private readonly List<ThenAction<TContext>> _thenActions = new List<ThenAction<TContext>>();
         private readonly List<ExceptionCheck<TContext>> _exceptionChecks = new List<ExceptionCheck<TContext>>();
-        
+
         private bool _isCompleted;
 
         internal ScenarioBuilder([NotNull] TContext context, [NotNull] DocPublisher docPublisher)
@@ -70,14 +73,20 @@ namespace ITLIBRIUM.BddToolkit.Builders
             return this;
         }
 
-        public IGivenBuilder<TContext> Description(string description)
+        public ITagsBuilder<TContext> Description(string description)
         {
             _description = description;
             return this;
         }
 
-        public IGivenContinuationBuilder<TContext> Given(Expression<Action<TContext>> action) => 
-            Given(action.Compile(), action.GetName());
+        public IGivenBuilder<TContext> Tags(params string[] tags)
+        {
+            _tags = tags;
+            return this;
+        }
+
+        public IGivenContinuationBuilder<TContext> Given(Expression<Action<TContext>> action) =>
+            Given(action.Compile(), action.GetName().Humanize(LetterCasing.LowerCase));
 
         public IGivenContinuationBuilder<TContext> Given(Action<TContext> action, string name)
         {
@@ -94,8 +103,8 @@ namespace ITLIBRIUM.BddToolkit.Builders
             Action<TContext> action, string name) =>
             Given(action, name);
 
-        public IThenBuilder<TContext> When(Expression<Action<TContext>> action) => 
-            When(action.Compile(), action.GetName());
+        public IThenBuilder<TContext> When(Expression<Action<TContext>> action) =>
+            When(action.Compile(), action.GetName().Humanize(LetterCasing.LowerCase));
 
         public IThenBuilder<TContext> When(Action<TContext> action, string name)
         {
@@ -104,8 +113,8 @@ namespace ITLIBRIUM.BddToolkit.Builders
             return this;
         }
 
-        public IThenContinuationBuilder<TContext> Then(Expression<Action<TContext>> action) => 
-            Then(action.Compile(), action.GetName());
+        public IThenContinuationBuilder<TContext> Then(Expression<Action<TContext>> action) =>
+            Then(action.Compile(), action.GetName().Humanize(LetterCasing.LowerCase));
 
         public IThenContinuationBuilder<TContext> Then(Action<TContext> thenAction, string name)
         {
@@ -114,8 +123,8 @@ namespace ITLIBRIUM.BddToolkit.Builders
             return this;
         }
 
-        public IThenContinuationBuilder<TContext> Then(Expression<Action<TContext, Result>> exceptionCheck) => 
-            Then(exceptionCheck.Compile(), exceptionCheck.GetName());
+        public IThenContinuationBuilder<TContext> Then(Expression<Action<TContext, Result>> exceptionCheck) =>
+            Then(exceptionCheck.Compile(), exceptionCheck.GetName().Humanize(LetterCasing.LowerCase));
 
         public IThenContinuationBuilder<TContext> Then(Action<TContext, Result> exceptionCheck, string name)
         {
@@ -136,7 +145,7 @@ namespace ITLIBRIUM.BddToolkit.Builders
             Expression<Action<TContext, Result>> exceptionCheck) =>
             Then(exceptionCheck);
 
-        public IThenContinuationBuilder<TContext> And(Action<TContext, Result> exceptionCheck, string name) => 
+        public IThenContinuationBuilder<TContext> And(Action<TContext, Result> exceptionCheck, string name) =>
             Then(exceptionCheck, name);
 
         public IThenContinuationBuilder<TContext> GetContinuationBuilder() => this;
@@ -148,13 +157,27 @@ namespace ITLIBRIUM.BddToolkit.Builders
             .PublishDoc(_docPublisher, CancellationToken.None)
             .ThrowOnErrors();
 
-        private TestableScenario CreateTestableScenario(string defaultName)
+        private TestableScenario CreateTestableScenario(string reflectedName)
         {
             _isCompleted = true;
             return new TestableScenario(
-                new Scenario(_feature, _rule, _name ?? defaultName, _description, _givenSteps, _whenStep, _thenSteps),
+                new Scenario(_feature, _rule,
+                    GetScenarioName(reflectedName), _description,
+                    _tags ?? Enumerable.Empty<string>(),
+                    _givenSteps, _whenStep, _thenSteps),
                 new ScenarioTest<TContext>(_context, _givenActions, _whenAction, _thenActions, _exceptionChecks)
             );
+        }
+
+        private string GetScenarioName(string reflectedName)
+        {
+            if (_name != null)
+                return _name;
+
+            if (reflectedName != null)
+                return reflectedName.Humanize();
+
+            throw new InvalidOperationException("Scenario name is missing.");
         }
     }
 }

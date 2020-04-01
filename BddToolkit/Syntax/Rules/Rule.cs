@@ -8,14 +8,25 @@ namespace ITLIBRIUM.BddToolkit.Syntax.Rules
     {
         [PublicAPI]
         public Feature Feature { get; }
-        
+
         [PublicAPI]
         public string Name { get; }
-        
+
         [PublicAPI]
         public string Description { get; }
 
-        public Rule(in Feature feature, string name, string description)
+        internal bool IsEmpty => string.IsNullOrWhiteSpace(Name);
+
+        public static Rule Empty() => new Rule(Feature.Empty(), default, default);
+
+        public static Rule New(Feature feature, [NotNull] string name, string description)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentNullException(nameof(name));
+            return new Rule(feature, name, description);
+        }
+
+        private Rule(in Feature feature, string name, string description)
         {
             Feature = feature;
             Name = name;

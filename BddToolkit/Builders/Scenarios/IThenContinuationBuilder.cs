@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using ITLIBRIUM.BddToolkit.Execution;
 using JetBrains.Annotations;
 
-namespace ITLIBRIUM.BddToolkit.Builders
+namespace ITLIBRIUM.BddToolkit.Builders.Scenarios
 {
     public interface IThenContinuationBuilder<TContext>
     {

@@ -2,7 +2,7 @@
 using ITLIBRIUM.BddToolkit.Syntax.Rules;
 using JetBrains.Annotations;
 
-namespace ITLIBRIUM.BddToolkit.Builders
+namespace ITLIBRIUM.BddToolkit.Builders.Scenarios
 {
     public interface IFeatureAndRuleBuilder<TContext> : INameBuilder<TContext>
     {
