@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 using ITLIBRIUM.BddToolkit.Builders.Features;
 using ITLIBRIUM.BddToolkit.Builders.Rules;
 using ITLIBRIUM.BddToolkit.Builders.Scenarios;
@@ -12,23 +13,17 @@ namespace ITLIBRIUM.BddToolkit
     public static class Bdd
     {
         private static readonly Configuration Configuration;
-        private static bool _isDisposed;
 
-        static Bdd()
-        {
-            Configuration = Configuration.Default();
-            AppDomain.CurrentDomain.ProcessExit += OnExit;
-            AppDomain.CurrentDomain.DomainUnload += OnExit;
-        }
+        static Bdd() => Configuration = Configuration.Default();
 
         [PublicAPI]
         public static FeatureBuilder Feature([NotNull] string name) => new FeatureBuilder(name);
-        
+
         [PublicAPI]
         [Obsolete("Use overload with name only and add description through fluent api")]
         public static FeatureBuilder Feature([NotNull] string name, string description) => new FeatureBuilder(name)
             .Description(description);
-        
+
         [PublicAPI]
         public static RuleBuilder Rule([NotNull] string name) => new RuleBuilder(name);
 
@@ -50,15 +45,14 @@ namespace ITLIBRIUM.BddToolkit
         [PublicAPI]
         public static void Configure(Action<Configuration> setup) => setup(Configuration);
 
-        private static void OnExit(object sender, EventArgs e)
+        [PublicAPI]
+        public static Task PublishDocs() => PublishDocs(CancellationToken.None);
+
+        [PublicAPI]
+        public static async Task PublishDocs(CancellationToken cancellationToken)
         {
-            lock (Configuration)
-            {
-                if (_isDisposed) return;
-                Configuration.DocPublisher.Publish(CancellationToken.None).Wait();
-                Configuration.DocPublisher.Dispose();
-                _isDisposed = true;
-            }
+            await Configuration.DocPublisher.Publish(cancellationToken);
+            Configuration.DocPublisher.Dispose();
         }
     }
 }

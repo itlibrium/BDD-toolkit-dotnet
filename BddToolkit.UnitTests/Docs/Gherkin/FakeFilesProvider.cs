@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ITLIBRIUM.BddToolkit.Docs.Gherkin
 {
@@ -9,7 +10,9 @@ namespace ITLIBRIUM.BddToolkit.Docs.Gherkin
         private readonly List<string> _streamsContent = new List<string>();
         public IReadOnlyList<string> StreamsContent => _streamsContent;
 
-        public Stream Create(string path) => new StreamWrapper(this);
+        public Task CreateDirectory(string path) => Task.CompletedTask;
+
+        public Task<Stream> CreateFile(string path) => Task.FromResult<Stream>(new StreamWrapper(this));
 
         private void AddStreamContent(string streamContent) => _streamsContent.Add(streamContent);
 

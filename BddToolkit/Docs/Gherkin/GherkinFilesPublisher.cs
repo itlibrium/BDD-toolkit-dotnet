@@ -49,7 +49,11 @@ namespace ITLIBRIUM.BddToolkit.Docs.Gherkin
             return Task.CompletedTask;
         }
 
-        public Task Publish(CancellationToken cancellationToken) => Task.WhenAll(WriteAllFeatureFiles());
+        public async Task Publish(CancellationToken cancellationToken)
+        {
+            await _filesProvider.CreateDirectory(_basePath);
+            await Task.WhenAll(WriteAllFeatureFiles());
+        }
 
         private IEnumerable<Task> WriteAllFeatureFiles()
         {
@@ -66,7 +70,7 @@ namespace ITLIBRIUM.BddToolkit.Docs.Gherkin
         private async Task WriteFeatureFile(Feature feature, Scenarios scenarios)
         {
             var path = Path.Combine(_basePath, feature.IsEmpty ? "Unspecified.feature" : $"{feature.Name}.feature");
-            using var stream = _filesProvider.Create(path);
+            using var stream = await _filesProvider.CreateFile(path);
             using var file = await GherkinFile.For(feature, stream);
             await scenarios.WriteTo(file);
         }
