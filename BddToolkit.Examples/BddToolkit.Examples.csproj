@@ -16,6 +16,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\BddToolkit.FluentAssertions\BddToolkit.FluentAssertions.csproj" />
+      <ProjectReference Include="..\BddToolkit.xUnit\BddToolkit.xUnit.csproj" />      
       <ProjectReference Include="..\BddToolkit\BddToolkit.csproj" />
     </ItemGroup>
 

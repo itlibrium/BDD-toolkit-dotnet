@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <AssemblyName>ITLIBRIUM.BddToolkit.xUnit</AssemblyName>
+        <RootNamespace>ITLIBRIUM.BddToolkit.xUnit</RootNamespace>        
+        <LangVersion>default</LangVersion>
+
+        <IsPackable>true</IsPackable>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageId>BDD-toolkit-dotnet.xUnit</PackageId>
+        <Title>BDD-toolkit-dotnet.xUnit</Title>
+        <Description>xUnit integration for BDD-toolkit-dotnet</Description>
+        <Product>BDD-toolkit-dotnet</Product>
+        <Authors>Marcin Markowski</Authors>
+        <Company>ITLIBRIUM</Company>
+        <Copyright>ITLIBRIUM</Copyright>
+        <PackageProjectUrl>https://github.com/itlibrium/BDD-toolkit-dotnet</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/itlibrium/BDD-toolkit-dotnet</RepositoryUrl>
+        <PackageTags>BDD, TDD, tests, .net core, xUnit</PackageTags>
+        <PackageReleaseNotes>Custom XunitTestFramework for publishing docs after all tests are executed</PackageReleaseNotes>
+        
+        <AssemblyVersion>1.0.0</AssemblyVersion>
+        <FileVersion>1.0.0</FileVersion>
+        <PackageVersion>1.0.0</PackageVersion>                
+    </PropertyGroup>
+
+    <ItemGroup>        
+      <PackageReference Include="xunit" Version="2.4.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BddToolkit\BddToolkit.csproj" />
+    </ItemGroup>
+    
+</Project>
