@@ -11,7 +11,7 @@ using ITLIBRIUM.BddToolkit.Syntax.Features;
 using ITLIBRIUM.BddToolkit.Syntax.Rules;
 using ITLIBRIUM.BddToolkit.Syntax.Scenarios;
 using ITLIBRIUM.BddToolkit.Tests;
-using ITLibrium.Reflection;
+using ITLIBRIUM.ReflectionToolkit;
 using JetBrains.Annotations;
 
 namespace ITLIBRIUM.BddToolkit.Builders.Scenarios
@@ -86,7 +86,7 @@ namespace ITLIBRIUM.BddToolkit.Builders.Scenarios
         }
 
         public IGivenContinuationBuilder<TContext> Given(Expression<Action<TContext>> action) =>
-            Given(action.Compile(), action.GetName().Humanize(LetterCasing.LowerCase));
+            Given(action.Compile(), GetName(action));
 
         public IGivenContinuationBuilder<TContext> Given(Action<TContext> action, string name)
         {
@@ -104,7 +104,7 @@ namespace ITLIBRIUM.BddToolkit.Builders.Scenarios
             Given(action, name);
 
         public IThenBuilder<TContext> When(Expression<Action<TContext>> action) =>
-            When(action.Compile(), action.GetName().Humanize(LetterCasing.LowerCase));
+            When(action.Compile(), GetName(action));
 
         public IThenBuilder<TContext> When(Action<TContext> action, string name)
         {
@@ -114,7 +114,7 @@ namespace ITLIBRIUM.BddToolkit.Builders.Scenarios
         }
 
         public IThenContinuationBuilder<TContext> Then(Expression<Action<TContext>> action) =>
-            Then(action.Compile(), action.GetName().Humanize(LetterCasing.LowerCase));
+            Then(action.Compile(), GetName(action));
 
         public IThenContinuationBuilder<TContext> Then(Action<TContext> thenAction, string name)
         {
@@ -157,6 +157,13 @@ namespace ITLIBRIUM.BddToolkit.Builders.Scenarios
             .PublishDoc(_docPublisher, CancellationToken.None)
             .ThrowOnErrors();
 
+        private static string GetName(LambdaExpression lambdaExp)
+        {
+            var name = lambdaExp.GetName().Humanize(LetterCasing.LowerCase);
+            var parameterValues = lambdaExp.GetParameterValues();
+            return parameterValues.Aggregate(name, (s, o) => $"{s} {o}");
+        }
+        
         private TestableScenario CreateTestableScenario(string reflectedName)
         {
             _isCompleted = true;
