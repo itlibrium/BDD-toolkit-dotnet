@@ -1,6 +1,6 @@
 using System;
 
-namespace BddToolkit.Examples.Domain
+namespace ITLIBRIUM.BddToolkit.Examples
 {
     public class DomainException : Exception
     {

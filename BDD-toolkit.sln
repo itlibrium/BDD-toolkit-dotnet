@@ -15,9 +15,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BddToolkit.FluentAssertions
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BddToolkit.FluentAssertions.UnitTests", "BddToolkit.FluentAssertions.UnitTests\BddToolkit.FluentAssertions.UnitTests.csproj", "{49A7692E-751B-418B-9B37-6AFE0098A590}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BddToolkit.Examples", "BddToolkit.Examples\BddToolkit.Examples.csproj", "{0E1BC7B7-4970-4E6B-8C0C-2BA49FB4FA74}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BddToolkit.Examples.xUnit", "BddToolkit.Examples.xUnit\BddToolkit.Examples.xUnit.csproj", "{0E1BC7B7-4970-4E6B-8C0C-2BA49FB4FA74}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BddToolkit.xUnit", "BddToolkit.xUnit\BddToolkit.xUnit.csproj", "{ECA8260B-6F14-4674-B1B3-8960DDF89206}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BddToolkit.Examples.NUnit", "BddToolkit.Examples.NUnit\BddToolkit.Examples.NUnit.csproj", "{31ED6BAA-2EF9-40B2-8E46-71E95105AB7F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BddToolkit.Examples.Domain", "BddToolkit.Examples.Domain\BddToolkit.Examples.Domain.csproj", "{A9146487-090C-4A4A-B583-25333F0833F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +61,14 @@ Global
 		{ECA8260B-6F14-4674-B1B3-8960DDF89206}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECA8260B-6F14-4674-B1B3-8960DDF89206}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ECA8260B-6F14-4674-B1B3-8960DDF89206}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31ED6BAA-2EF9-40B2-8E46-71E95105AB7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31ED6BAA-2EF9-40B2-8E46-71E95105AB7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31ED6BAA-2EF9-40B2-8E46-71E95105AB7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31ED6BAA-2EF9-40B2-8E46-71E95105AB7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9146487-090C-4A4A-B583-25333F0833F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9146487-090C-4A4A-B583-25333F0833F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9146487-090C-4A4A-B583-25333F0833F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9146487-090C-4A4A-B583-25333F0833F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

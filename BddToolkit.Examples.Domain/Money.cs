@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 
-namespace BddToolkit.Examples.Domain
+namespace ITLIBRIUM.BddToolkit.Examples
 {
     public readonly struct Money : IEquatable<Money>
     {

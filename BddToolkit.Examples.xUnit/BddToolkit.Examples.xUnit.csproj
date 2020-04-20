@@ -2,6 +2,8 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
+        <RootNamespace>ITLIBRIUM.BddToolkit.Examples</RootNamespace>
+        <AssemblyName>ITLIBRIUM.BddToolkit.Examples.xUnit</AssemblyName>
 
         <IsPackable>false</IsPackable>
     </PropertyGroup>
@@ -15,6 +17,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\BddToolkit.Examples.Domain\BddToolkit.Examples.Domain.csproj" />
       <ProjectReference Include="..\BddToolkit.FluentAssertions\BddToolkit.FluentAssertions.csproj" />
       <ProjectReference Include="..\BddToolkit.xUnit\BddToolkit.xUnit.csproj" />      
       <ProjectReference Include="..\BddToolkit\BddToolkit.csproj" />

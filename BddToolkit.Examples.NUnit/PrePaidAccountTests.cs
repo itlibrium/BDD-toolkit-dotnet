@@ -1,24 +1,22 @@
-using BddToolkit.Examples.Domain;
 using FluentAssertions;
-using ITLIBRIUM.BddToolkit;
 using ITLIBRIUM.BddToolkit.FluentAssertions;
 using ITLIBRIUM.BddToolkit.Syntax.Features;
 using ITLIBRIUM.BddToolkit.Syntax.Rules;
-using Xunit;
+using NUnit.Framework;
 
-namespace BddToolkit.Examples.Scenarios
+namespace ITLIBRIUM.BddToolkit.Examples
 {
     public class PrePaidAccountTests
     {
         //Given section is optional.
-        [Fact]
+        [Test]
         public void NewAccountHasNoAmountAvailable() => Bdd.Scenario<Context>()
             .When(c => c.NewAccountIsCreated(Currency.PLN))
             .Then(c => c.AmountAvailableIs(0, Currency.PLN))
             .Test();
 
         //Given and Then sections can have single element.
-        [Fact]
+        [Test]
         public void CanPayUpToAmountAvailable() => Bdd.Scenario<Context>()
             .Given(c => c.AmountAvailableWas(100, Currency.PLN))
             .When(c => c.AccountIsCharged(10, Currency.PLN))
@@ -26,7 +24,7 @@ namespace BddToolkit.Examples.Scenarios
             .Test();
 
         //Given and Then sections can have multiple elements.
-        [Fact]
+        [Test]
         public void CanPayUpToSumOfAmountAvailableAndDebtLimit() => Bdd.Scenario<Context>()
             .Given(c => c.AmountAvailableWas(10, Currency.PLN))
             .And(c => c.DebtLimitWas(100, Currency.PLN))
@@ -37,7 +35,7 @@ namespace BddToolkit.Examples.Scenarios
             .Test();
 
         //Exceptions can be checked using Result argument in lambda expression passed to Then method.
-        [Fact]
+        [Test]
         public void CanNotPayOverAmountAvailable() => Bdd.Scenario<Context>()
             .Given(c => c.AmountAvailableWas(100, Currency.PLN))
             .And(c => c.DebtLimitWas(0, Currency.PLN))
@@ -47,7 +45,7 @@ namespace BddToolkit.Examples.Scenarios
 
         //Exceptions can be checked using Then() method and Throws<T>() or ThrowsExactly<T>() extension.
         //Reference to BddToolkit.FluentAssertion or BddToolkit.Shouldly is required.
-        [Fact]
+        [Test]
         public void CanNotPayOverDebtLimit() => Bdd.Scenario<Context>()
             .Given(c => c.AmountAvailableWas(0, Currency.PLN))
             .And(c => c.DebtLimitWas(100, Currency.PLN))
@@ -57,7 +55,7 @@ namespace BddToolkit.Examples.Scenarios
             .Test();
 
         //Error checks and normal assertions can be mixed.
-        [Fact]
+        [Test]
         public void AmountIsUnchangedIfPaymentIsRefused() => Bdd.Scenario<Context>()
             .Given(c => c.AmountAvailableWas(100, Currency.PLN))
             .And(c => c.DebtLimitWas(0, Currency.PLN))
@@ -69,7 +67,7 @@ namespace BddToolkit.Examples.Scenarios
         //Name of the scenario can be passed explicitly. In default behaviour it's taken from test method name.
         //Also additional description can be added. Adding name is not required to add description.
         //Scenario can by tagged. Adding name or description is not required to add tags.
-        [Fact]
+        [Test]
         public void DebtIsUnchangedIfPaymentIsRefused() => Bdd.Scenario<Context>()
             .Name("Name of the scenario other then test method name")
             .Description("Additional description if something more than the name is needed")
@@ -89,7 +87,7 @@ namespace BddToolkit.Examples.Scenarios
             .Tags("tag1", "tag2");
 
         //Feature can be passed to the scenario.
-        [Fact]
+        [Test]
         public void RechargingIncreasesAmountAvailable() => Bdd.Scenario<Context>()
             .Feature(RechargingPrePaidAccount)
             .Given(c => c.AmountAvailableWas(100, Currency.PLN))
@@ -105,7 +103,7 @@ namespace BddToolkit.Examples.Scenarios
 
         //Rule can be passed to the scenario.
         //If rule is passed then feature can't be passed because it's taken from the rule.
-        [Fact]
+        [Test]
         public void DebtIsRepaidBeforeAmountAvailableIsIncreased() => Bdd.Scenario<Context>()
             .Rule(DebtIsAlwaysRepaidInTheFirstPlace)
             .Given(c => c.AmountAvailableWas(0, Currency.PLN))
@@ -117,7 +115,7 @@ namespace BddToolkit.Examples.Scenarios
             .Test();
 
         //The same rule can be passed to multiple scenarios.
-        [Fact]
+        [Test]
         public void IfDebtCanBeFullyRepaidThenAmountAvailableIsIncreased() => Bdd.Scenario<Context>()
             .Rule(DebtIsAlwaysRepaidInTheFirstPlace)
             .Given(c => c.AmountAvailableWas(0, Currency.PLN))

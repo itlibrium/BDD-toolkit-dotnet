@@ -1,11 +1,10 @@
-using ITLIBRIUM.BddToolkit;
 using ITLIBRIUM.BddToolkit.Docs;
 using ITLIBRIUM.BddToolkit.xUnit;
 using JetBrains.Annotations;
 
 [assembly: UseBddToolkitTestFramework]
 
-namespace BddToolkit.Examples
+namespace ITLIBRIUM.BddToolkit.Examples
 {
     [UsedImplicitly]
     public class Startup : IBddToolkitStartup
