@@ -1,4 +1,5 @@
 using FluentAssertions;
+using Humanizer;
 using ITLIBRIUM.BddToolkit.FluentAssertions;
 using ITLIBRIUM.BddToolkit.Syntax.Features;
 using ITLIBRIUM.BddToolkit.Syntax.Rules;
@@ -82,7 +83,8 @@ namespace ITLIBRIUM.BddToolkit.Examples
 
         //Features can be declared to group scenarios and put feature names into the code.
         //Feature can be tagged. Adding description is not required to add tags.
-        private static readonly Feature RechargingPrePaidAccount = Bdd.Feature(nameof(RechargingPrePaidAccount))
+        private static readonly Feature RechargingPrePaidAccount = Bdd
+            .Feature(nameof(RechargingPrePaidAccount).Humanize())
             .Description("Optional description")
             .Tags("tag1", "tag2");
 
@@ -97,7 +99,7 @@ namespace ITLIBRIUM.BddToolkit.Examples
 
         //Rules can be declared to group scenarios inside feature and put rule names into the code. 
         private static readonly Rule DebtIsAlwaysRepaidInTheFirstPlace = Bdd
-            .Rule(nameof(DebtIsAlwaysRepaidInTheFirstPlace))
+            .Rule(nameof(DebtIsAlwaysRepaidInTheFirstPlace).Humanize())
             .Feature(RechargingPrePaidAccount)
             .Description("Optional description");
 
@@ -106,6 +108,7 @@ namespace ITLIBRIUM.BddToolkit.Examples
         [Fact]
         public void DebtIsRepaidBeforeAmountAvailableIsIncreased() => Bdd.Scenario<Context>()
             .Rule(DebtIsAlwaysRepaidInTheFirstPlace)
+            .Tags("tag3", "tag4")
             .Given(c => c.AmountAvailableWas(0, Currency.PLN))
             .And(c => c.DebtLimitWas(100, Currency.PLN))
             .And(c => c.DebtWas(20, Currency.PLN))
