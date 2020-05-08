@@ -2,40 +2,28 @@
 
 ## About
 
-BDD toolkit is a lightweight .NET library for implementing BDD scenarios in pure C#. No regular expresions. No strict conventions. Thanks to that you can focus on the domain you test and get instantly productive.
+**BDD toolkit** is a lightweight .NET library for implementing BDD scenarios in pure C#. No enforcement of regular expressions. No strict conventions. Instead - close integration with C# syntax and maximum usage of its expressiveness. Thanks to that you can get instantly productive and  focus on the domain you test.
 
 ## Why BDD toolkit?
 
 [Here you can read more about our approach.](#our-approach)
 
 - Fluent syntax to write tests in Given - When - Then style
-- Correct exceptions handling -  all of assertions are checked even when an exception is thrown ([more info here](#testing-rules)) 
+- Correct exceptions handling -  all of assertions are checked even when an exception was thrown ([more info here](#testing-rules)) 
 - Can be used with any test framework (xUnit, NUnit, MSTest)
-- [Coming soon] Generation of readable test scenarios in text form directly from tests code (check [roadmap](#roadmap) for more info)
+- Generation of readable test scenarios directly from tests code (no semicolons, parentheses - only **pure text** - [more info here](#generating-docs))
 
 ## Quick Start
 
 ### Installation
 
-Install [NuGet package](https://www.nuget.org/packages/BDD-toolkit-dotnet/) in your test projects.
-
-```powershell
-Install-Package BDD-toolkit-dotnet -Version 2.0.0
-```
-
-```
-dotnet add package BDD-toolkit-dotnet --version 2.0.0
-```
-
-```
-<PackageReference Include="BDD-toolkit-dotnet" Version="2.0.0" />
-```
+Install [BDD-toolkit-dotnet NuGet package](https://www.nuget.org/packages/BDD-toolkit-dotnet/) in your test projects.
 
 ### Add class for tests
 
-First step is to create a test class for your component, feature or any other unit. In our examples it would be `PrePaidAccountTests`
+The first step is to create a test class for your component, feature or any other unit. In our examples it would be `PrePaidAccountTests`
 
-Next you need to create a class for the calls to your domain code responsible for implementing  scenario steps. It could be a private nested class inside the test class created above. In our example it will be named `Context` (but it can have any other name)
+Next, you need to create a class to call your domain code when running scenario steps. It could be a private nested class inside the test class created before. In our example it will be named `Context` (but it can have any other name)
 
 ```c#
 public class PrePaidAccountTests
@@ -55,7 +43,7 @@ public class PrePaidAccountTests
 
 ### Adding a first test
 
-**BDD** is a true **TDD**. When test scenarios are created with business in advance they are defined before any line of code is written and even before we have any top-level design of code!
+**BDD** is a true **TDD**. We support and recommend writing test scenarios in advance, together with business people, even before the first line of code is written. More! Very often it is good to know them even before we have any top-level design of code!
 
 **BDD toolkit** fully supports such **TDD**-oriented approach allowing you to write tests even when no implementation is present. To start doing that just type `Bdd` and follow the fluent API like in the following example:  
 
@@ -71,7 +59,10 @@ public void CanPayUpToSumOfAmountAvailableAndDebtLimit() => Bdd.Scenario<Context
     .Test();
 ```
 
-Method names should represent steps from the previously created scenarios. The easiest way to define them is to first write a scenario step description in the test itself (getting the feeling of using natural language) and after use your IDE to generate the missing methods. They will be created in the class named `Context` passed to the method `Bdd.Scenario<Context>()`
+Method names should represent steps from the previously created scenarios. The easiest way to define them is to: 
+
+1. First write your new method name in your test scenario as if it existed ( it will be marked in red, but you'll get the feeling of writing in natural language). 
+1. Use your IDE to generate the missing methods. They will be created in the class named `Context` passed to the method `Bdd.Scenario<Context>()`
 
 Do we need implementation of these methods? Not at this stage!
 
@@ -94,13 +85,13 @@ private class Context
 
 ### Add more tests
 
-For now there is not implementation for the defined scenarios so your tests *will* fail. However we have defined our business requirements *directly in code* which is a big win already. Now it is enough to follow the **TDD** approach i.e. implement the model and connect it to scenario by completing the methods inside the `Context` class. 
+For now there is no implementation for the defined scenarios so your tests *will* fail. However we have defined our business requirements *directly in code* which is already a big win. Now it is enough to follow the **TDD** approach i.e. implement the model and connect it to scenario by completing the methods inside the `Context` class. 
 
-Thanks to that we get a form of **Living Documentation** Tests written this way are always up-to date with the current business requirements.
+Thanks to that we get a form of **Living Documentation**. Tests written this way should be *always* up-to date with the current business requirements.
 
 ### Add domain model's types and methods
 
-The next step is preparing the actual design of our  **domain model**. We can start with types and method headers. In our case we will need a class called `PrePaidAccount`. Its model could look like that: 
+The next step is preparing the actual design of our  **domain model**. We can start with types and methods' headers. In our case we will need a class called `PrePaidAccount`. Its model could look like that: 
 
 ```c#
 public class PrePaidAccount
@@ -144,7 +135,7 @@ public class PrePaidAccount
 }
 ```
 
-### Joining tests and domain model together
+### Connecting the tests and the domain model
 
 A prepared **domain model** can be used in test in the following way:
 
@@ -184,7 +175,7 @@ private class Context
 
 The test  won't pass because in the **domain model** we still have only headers and types without the actual implementation. Time to fix that. 
 
-### Implementing behaviors inside domain model
+### Implementing behaviors inside the domain model
 
 The final implementation of `PrePaidAccount` could look like that:
 
@@ -246,30 +237,38 @@ public class PrePaidAccount
 }
 ```
 
-While implementing the behaviors fo the domain model, one by one, your test scenarios will start to pass. When they are all green your model is complete.
+While implementing the behaviors in the domain model you should see your test scenarios starting to pass, one by one. When they are all green your model is complete.
 
-### More examples
+### More features and examples
 
-More examples of using the **Bdd toolkit** in practice can be found in the following project:  `BddToolkit.Examples`.
+More examples of using the **BDD toolkit**  in practice can be found in the following project:  `BddToolkit.Examples.xUnit` or `BddToolkit.Examples.NUnit`.
+
+**BDD toolkit** supports:
+
+- Grouping scenarios by **Feature**
+- Grouping scenarios by **Rule** when grouping by *Feature* is not enough
+- **Tagging** of *Features* and *Scenarios*
+- Adding a **Description** to every *Feature*, *Rule* and *Scenario*
 
 ## Our approach
 
 ### Why not Cucumber?
 
-Cucumber makes a promise that the scenarios language is so easy and non-technical that the tests can be written by business people. In reality however this happens really rarely. Usually the tests are written by someone from IT. 
+Cucumber makes a promise that the scenarios language is so easy and non-technical, that the tests can be written by business people. In reality this happens really rarely and our practice shows that usually the tests are written by someone from IT. 
 
-Creating scenarios is a part of domain exploration and the best results are acheived when it is a *collaborative* effort of both business people and IT people. Scenarios shouldn't be treated like unquestionable, waterfall requirements coming from an upstream team and thoughtlessly implemented. Because of that it is not desired to encourge business to create scenarios which will automatically become tests. 
+Creating scenarios is a part of domain exploration and the best results are achieved when it is a *collaborative* effort of both business and IT people. Scenarios shouldn't be treated like unquestionable, waterfall requirements coming from an upstream team and thoughtlessly implemented. Because of that it is not desired to encourage business to create scenarios which will automatically become tests. 
 
-**A tool designed for creating scenarios should focus on the best developer experience not a business person experience**.
+**A tool designed for creating scenarios should focus on the best developer experience not on a business person experience**.
 
-For developers it is far more natural to write tests using a programming language which they use on daily basis than to translate some specific text files to some method calls. Automation and scenarios generation rarely works perfectly and additional effort is required to fix the generated mappings.
+For developers it is far more natural to write tests with a programming language which they use on daily basis than to translate specific text files to some  calls. Automation and scenarios generation rarely works perfectly and additional effort is required to fix the generated mappings.
 
-In addition, writing a scenario is only the beginning. On the course of time, the scenarios will probably evolve and would have to be maintained. It is far easier to maintain pure code than to maintain the mappings between code and text files.
+In addition, writing a scenario is only the beginning. On the course of time, the scenarios will probably evolve and would have to be changed. It is far easier to maintain pure code than to maintain the mappings between code and text files.
 
-If needed, a document which is readable and understandable for business can be always generated using the tests code. It is often perfectly sufficient artifact for any further discussions with business. The difference is that it is generated only when necessary and not required as a source of *any* test. 
+If needed, a document which is readable and understandable for business can be always generated using the tests code. It is often perfectly sufficient artifact for any further discussions with business. The difference is that it is generated only when necessary and not strictly required as a prerequisite for *any* test. 
 
-Such a generated document can use Gherkin as a format which makes it easy to integrate with many existing tools for scenarios visualisation. Of course any other format can be used as well. 
+**BDD toolkit** allows you to generate this document in a fully automated way, every time your test suite is run. This way you are sure that what you read is in a perfect sync with the real code. 
 
+Such a generated document can use, for example, widely known Gherkin format which makes it easy to integrate **BDD toolkit** with the existing tools for scenarios visualization. Of course any other format can be used as well.
 
 ### No magic
 
@@ -278,33 +277,175 @@ We think that testing library should be maximally simple and transparent with a 
 1. Reduce the amount of false positive tests
 2. Make the tests **Living Documentation** which can be used to discover the business rules
 
-It can be achieved by avoiding any "magical" solutions or conventions (like enforcing certain method names, directories structure etc). Instead we prefer to make the compiler verify the test correctness. We also see that avoiding such "magic" make the tests much easier to read and understand. 
+It can be achieved by avoiding any "magical" solutions or conventions (like enforcing certain method names, directories structure etc). Instead we prefer to make compiler verify the test correctness. We also see that avoiding such "magic" make tests much easier to read and understand. 
 
 ### Separation of concerns 
 
 A tool for writing BDD test scenarios shouldn't be used *instead* of a testing framework. These are two separate responsibilities, and mixing them brings absolutely no benefit. Test scenarios should work equally well regardless if we use xUnit, NUnit or MsTests. These are two separate concerns which have different architectural drivers. For example - the choice of the test framework could depend on the infrastructure you use in your CI/CD pipeline.
 
+
+
+## Generating Docs
+
+**BDD toolkit** makes it easy to generate documentation which is readable even for a non-technical person. We call this process documentation publishing. The publication is done directly from the code of your tests. Such a documentation can be used for communication with business experts, analysts and testers. The published scenarios can be used in any **Living Documentation** tool. 
+
+### Configuration
+
+To configure the documentation publishing it is enough to pass an appropriate instance of `DocPublisher` to the `BDD.Configure` method. For example: 
+
+```c#
+public void Setup() => Bdd.Configure(configuration => configuration
+        .Use(DocPublishers.GherkinFiles("path")));
+```
+In the `DocPublisher` class you can find ready-to use implementations which come together with the **BDD toolkit**. It is also possible to write your own implementation if needed. 
+
+**Important!** By default the documentation is not  published. You need to explicitly trigger publication. The next section - [Publishing docs](#publishing-docs) - will show you how to do it in various test frameworks.
+
+### Publishing docs
+
+**BDD toolkit** allows to publish documentation of already completed tests even when the whole test suite is still running. Every time the the `BDD.Publish` method is called the publication happens. Here's an example code:
+
+```c#
+public void PublishDocs() => Bdd.PublishDocs(CancellationToken.None);
+```
+
+It is recommended to publish documentation after every test *project* finishes to run. Here you can find examples on that in [xUnit](#xunit) and [NUnit](#nunit).
+
+
+### Gherkin
+
+For now **BDD toolkit** supports generating documentation files in **Gherkin** format.
+
+#### Grouping 
+
+**Test scenarios** can be grouped using **Features** and **Rules**. You can independently group scenarios by **Feature**  or **Rule** (or not group them at all), but if you'll use both of them,  **Rule** should be used for grouping of lower granularity (Feature can contain multiple Rules, every Rule contains multiple Scenarios) Both groupings (by Feature and by Rule) are meant to be used when your feature is more complex and contains multiple logical "rules". 
+
+Here's a diagram showing different relationships between grouping methods.
+
+```
+
+FEATURE ----< SCENARIO
+
+RULE    ----< SCENARIO
+
+FEATURE ----< RULE ----< SCENARIO
+
+```
+#### Tagging, Descriptions and Results
+
+In BDD toolkit every *Feature* and *Scenario* can have **Tags**  which are going to be reflected using syntax of Gherkin.
+
+Also **Description** which can be added to every *Feature*, *Rule* or *Scenario* will be reflected using syntax of Gherkin.  
+
+**Every test result** (*Passed*, *Failed*, *Undefined*) is added to a Gherkin scenario using comment. 
+
+Here is an example code: 
+
+```c#
+private static readonly Feature RechargingPrePaidAccount = Bdd
+    .Feature(nameof(RechargingPrePaidAccount).Humanize())
+    .Description("Optional description")
+    .Tags("tag1", "tag2");
+
+private static readonly Rule DebtIsAlwaysRepaidInTheFirstPlace = Bdd
+    .Rule(nameof(DebtIsAlwaysRepaidInTheFirstPlace).Humanize())
+    .Feature(RechargingPrePaidAccount)
+    .Description("Optional description");
+
+[Fact]
+public void DebtIsRepaidBeforeAmountAvailableIsIncreased() => Bdd.Scenario<Context>()
+    .Rule(DebtIsAlwaysRepaidInTheFirstPlace)
+    .Tags("tag3", "tag4")
+    .Given(c => c.AmountAvailableWas(0, Currency.PLN))
+    .And(c => c.DebtLimitWas(100, Currency.PLN))
+    .And(c => c.DebtWas(20, Currency.PLN))
+    .When(c => c.AccountIsRecharged(10, Currency.PLN))
+    .Then(c => c.AmountAvailableIs(0, Currency.PLN))
+    .And(c => c.DebtIs(10, Currency.PLN))
+    .Test();
+```
+
+will be converted to:
+
+```gherkin
+@tag1 @tag2
+Feature: Recharging pre paid account  
+
+  Rule: Debt is always repaid in the first place
+
+    Optional description
+
+    # Status: Passed
+    @tag3 @tag4
+    Scenario: Debt is repaid before amount available is increased
+      Given amount available was 0 PLN
+      And debt limit was 100 PLN
+      And debt was 20 PLN
+      When account is recharged 10 PLN
+      Then amount available is 0 PLN
+      And debt is 10 PLN
+```
+
+### xUnit
+
+Install [BDD-toolkit-dotnet.xUnit NuGet package](https://www.nuget.org/packages/BDD-toolkit-dotnet.xUnit/) in your test projects.
+
+Add assembly attribute:
+
+```c#
+[assembly: UseBddToolkitTestFramework]
+```
+
+Add class that implements `IBddToolkitStartup`:
+
+```c#
+public class Startup : IBddToolkitStartup
+{
+    public void Setup(Configuration configuration) => configuration
+        .Use(DocPublishers.GherkinFiles());
+}
+```
+
+Sample implementation you can find in `BddToolkit.Examples.xUnit` project.
+
+### NUnit
+
+Add `SetUpFixture` in root namespace of your tests projects:
+
+```c#
+[SetUpFixture]
+public class Startup
+{
+    [OneTimeSetUp]
+    public void Setup() => Bdd.Configure(configuration => configuration
+        .Use(DocPublishers.GherkinFiles()));
+
+    [OneTimeTearDown]
+    public void PublishDocs() => Bdd.PublishDocs(CancellationToken.None);
+}
+```
+
+Sample implementation you can find in `BddToolkit.Examples.NUnit` project.
+
 ## Testing rules
 
-All the below rules are checked by tests present in `ScenarioTestTests`: 
+Here are a few useful details of the way **BDD Toolkit** runs the tests. You can find here a list of rules which are checked every time you run a test scenario (for example the one from `ScenarioTestTests`) We recommend to read through them to see again that there is no magic in how the **BDD Toolkit** works. Here's what is checked: 
 
 1. All `Given` actions are executed once
-2. Exception in `Given` actions is caught
+2. Exception in `Given` action is caught
 3. `When` action is executed once
 4. All `Then` actions are executed once
-5. All `Then` action sare executed even if exceptions were thrown in `When` action
+5. All `Then` actions are executed even if exceptions were thrown in `When` action
 6. Second `Then` action is invoked even if the first assert failed
-7. All exceptions from `Then` actions are reported din test result
-8. Exception from `When` action is not reported for failed tests in test result when exception check is made.
+7. All exceptions from `Then` actions are reported in test result
+8. Exception from `When` action is not reported for failed tests when exception check is made.
 9. Test passes when exception is thrown and explicit exception check is made
 10. Test fails when exception is thrown and no explicit exception check is made 
 
-
 ## Roadmap
 
-1. Automated Gherking docs generation out from scenarios
+1. Extending the syntax to make it possible to skip "When" in test
 
-2. Extending the syntax to make it possible to skip "When" in test
 3. Passing Name, Description, Feature i Role using attributes
 
 ## License
