@@ -1,3 +1,4 @@
+using System;
 using FluentAssertions;
 using Humanizer;
 using ITLIBRIUM.BddToolkit.FluentAssertions;
@@ -131,6 +132,7 @@ namespace ITLIBRIUM.BddToolkit.Examples
 
         private class Context
         {
+            private readonly Guid _id = Guid.NewGuid();
             private Money _amountAvailable;
             private Money _debtLimit;
             private Money _debt;
@@ -147,13 +149,15 @@ namespace ITLIBRIUM.BddToolkit.Examples
 
             public void AccountIsCharged(decimal value, Currency currency)
             {
-                _account = PrePaidAccount.Restore(new PrePaidAccount.Snapshot(_amountAvailable, _debtLimit, _debt));
+                _account = PrePaidAccount.Restore(
+                    new PrePaidAccount.Snapshot(_id, _amountAvailable, _debtLimit, _debt));
                 _account.Charge(Money.Of(value, currency));
             }
 
             public void AccountIsRecharged(decimal value, Currency currency)
             {
-                _account = PrePaidAccount.Restore(new PrePaidAccount.Snapshot(_amountAvailable, _debtLimit, _debt));
+                _account = PrePaidAccount.Restore(
+                    new PrePaidAccount.Snapshot(_id, _amountAvailable, _debtLimit, _debt));
                 _account.Recharge(Money.Of(value, currency));
             }
 

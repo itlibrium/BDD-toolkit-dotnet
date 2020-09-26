@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 using ITLIBRIUM.BddToolkit.Docs;
 using ITLIBRIUM.BddToolkit.Syntax.Scenarios;
 using ITLIBRIUM.BddToolkit.Tests;
@@ -25,6 +26,12 @@ namespace ITLIBRIUM.BddToolkit.Execution
         public TestedScenario RunTest()
         {
             var testResult = Test.Run();
+            return new TestedScenario(Scenario, testResult);
+        }
+        
+        public async Task<TestedScenario> RunTestAsync()
+        {
+            var testResult = await Test.RunAsync();
             return new TestedScenario(Scenario, testResult);
         }
 

@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <AssemblyName>ITLIBRIUM.BddToolkit.Examples.UseCases</AssemblyName>
+        <RootNamespace>ITLIBRIUM.BddToolkit.Examples</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BddToolkit.Examples.Domain\BddToolkit.Examples.Domain.csproj" />
+    </ItemGroup>
+
+</Project>

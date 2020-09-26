@@ -15,13 +15,25 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BddToolkit.FluentAssertions
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BddToolkit.FluentAssertions.UnitTests", "BddToolkit.FluentAssertions.UnitTests\BddToolkit.FluentAssertions.UnitTests.csproj", "{49A7692E-751B-418B-9B37-6AFE0098A590}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BddToolkit.Examples.xUnit", "BddToolkit.Examples.xUnit\BddToolkit.Examples.xUnit.csproj", "{0E1BC7B7-4970-4E6B-8C0C-2BA49FB4FA74}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BddToolkit.Examples.Domain.xUnitTests", "BddToolkit.Examples.Domain.xUnitTests\BddToolkit.Examples.Domain.xUnitTests.csproj", "{0E1BC7B7-4970-4E6B-8C0C-2BA49FB4FA74}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BddToolkit.xUnit", "BddToolkit.xUnit\BddToolkit.xUnit.csproj", "{ECA8260B-6F14-4674-B1B3-8960DDF89206}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BddToolkit.Examples.NUnit", "BddToolkit.Examples.NUnit\BddToolkit.Examples.NUnit.csproj", "{31ED6BAA-2EF9-40B2-8E46-71E95105AB7F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BddToolkit.Examples.Domain.NUnitTests", "BddToolkit.Examples.Domain.NUnitTests\BddToolkit.Examples.Domain.NUnitTests.csproj", "{31ED6BAA-2EF9-40B2-8E46-71E95105AB7F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BddToolkit.Examples.Domain", "BddToolkit.Examples.Domain\BddToolkit.Examples.Domain.csproj", "{A9146487-090C-4A4A-B583-25333F0833F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BddToolkit.Examples.UseCases", "BddToolkit.Examples.UseCases\BddToolkit.Examples.UseCases.csproj", "{80392BAA-2382-4E64-866B-D9F11CBB2D95}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BddToolkit.Examples.Startup", "BddToolkit.Examples.Startup\BddToolkit.Examples.Startup.csproj", "{0ACB4908-F3F9-4DF5-9C12-A279B4AB7539}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BddToolkit.Examples.UseCases.xUnitTests", "BddToolkit.Examples.UseCases.xUnitTests\BddToolkit.Examples.UseCases.xUnitTests.csproj", "{63114B1B-8014-4E1A-9403-9D5DEAE85DAA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BddToolkit.Examples.UseCases.NUnitTests", "BddToolkit.Examples.UseCases.NUnitTests\BddToolkit.Examples.UseCases.NUnitTests.csproj", "{2DF81118-52CB-43EE-8CE0-FAA3EB0CB328}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{9004096F-2DA6-4A8D-9C53-2FA48F3ED214}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BddToolkit.Examples.Adapters", "BddToolkit.Examples.Adapters\BddToolkit.Examples.Adapters.csproj", "{C5D00B1C-8AD4-4138-9B2F-EF9E8291ACC4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,11 +81,41 @@ Global
 		{A9146487-090C-4A4A-B583-25333F0833F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9146487-090C-4A4A-B583-25333F0833F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9146487-090C-4A4A-B583-25333F0833F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80392BAA-2382-4E64-866B-D9F11CBB2D95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80392BAA-2382-4E64-866B-D9F11CBB2D95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80392BAA-2382-4E64-866B-D9F11CBB2D95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80392BAA-2382-4E64-866B-D9F11CBB2D95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0ACB4908-F3F9-4DF5-9C12-A279B4AB7539}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0ACB4908-F3F9-4DF5-9C12-A279B4AB7539}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0ACB4908-F3F9-4DF5-9C12-A279B4AB7539}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0ACB4908-F3F9-4DF5-9C12-A279B4AB7539}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63114B1B-8014-4E1A-9403-9D5DEAE85DAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63114B1B-8014-4E1A-9403-9D5DEAE85DAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63114B1B-8014-4E1A-9403-9D5DEAE85DAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63114B1B-8014-4E1A-9403-9D5DEAE85DAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DF81118-52CB-43EE-8CE0-FAA3EB0CB328}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DF81118-52CB-43EE-8CE0-FAA3EB0CB328}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DF81118-52CB-43EE-8CE0-FAA3EB0CB328}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DF81118-52CB-43EE-8CE0-FAA3EB0CB328}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5D00B1C-8AD4-4138-9B2F-EF9E8291ACC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5D00B1C-8AD4-4138-9B2F-EF9E8291ACC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5D00B1C-8AD4-4138-9B2F-EF9E8291ACC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5D00B1C-8AD4-4138-9B2F-EF9E8291ACC4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3F9EC8DD-1D3D-4220-BF90-7510B002CAAF}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A9146487-090C-4A4A-B583-25333F0833F9} = {9004096F-2DA6-4A8D-9C53-2FA48F3ED214}
+		{31ED6BAA-2EF9-40B2-8E46-71E95105AB7F} = {9004096F-2DA6-4A8D-9C53-2FA48F3ED214}
+		{0E1BC7B7-4970-4E6B-8C0C-2BA49FB4FA74} = {9004096F-2DA6-4A8D-9C53-2FA48F3ED214}
+		{0ACB4908-F3F9-4DF5-9C12-A279B4AB7539} = {9004096F-2DA6-4A8D-9C53-2FA48F3ED214}
+		{80392BAA-2382-4E64-866B-D9F11CBB2D95} = {9004096F-2DA6-4A8D-9C53-2FA48F3ED214}
+		{2DF81118-52CB-43EE-8CE0-FAA3EB0CB328} = {9004096F-2DA6-4A8D-9C53-2FA48F3ED214}
+		{63114B1B-8014-4E1A-9403-9D5DEAE85DAA} = {9004096F-2DA6-4A8D-9C53-2FA48F3ED214}
+		{C5D00B1C-8AD4-4138-9B2F-EF9E8291ACC4} = {9004096F-2DA6-4A8D-9C53-2FA48F3ED214}
 	EndGlobalSection
 EndGlobal

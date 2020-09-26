@@ -1,4 +1,6 @@
-﻿namespace ITLIBRIUM.BddToolkit.Tests
+﻿using System.Threading.Tasks;
+
+namespace ITLIBRIUM.BddToolkit.Tests
 {
-    internal delegate void GivenAction<in TContext>(TContext context);
+    internal delegate Task GivenAction<in TContext>(TContext context);
 }

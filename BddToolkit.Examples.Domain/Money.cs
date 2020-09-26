@@ -26,6 +26,8 @@ namespace ITLIBRIUM.BddToolkit.Examples
             return new Money(calculate(x.Value, y.Value), x.Currency);
         }
         
+        public static Money operator *(Money x, decimal y) => Money.Of(x.Value * y, x.Currency);
+        
         public static bool operator ==(Money x, Money y) => x.Equals(y);
         public static bool operator !=(Money x, Money y) => !x.Equals(y);
         public static bool operator >(Money x, Money y) => Compare(x, y, (a, b) => a > b);

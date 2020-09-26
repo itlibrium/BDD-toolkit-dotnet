@@ -1,4 +1,6 @@
-﻿namespace ITLIBRIUM.BddToolkit.Tests
+﻿using System.Threading.Tasks;
+
+namespace ITLIBRIUM.BddToolkit.Tests
 {
-    public delegate void WhenAction<in TContext>(TContext context);
+    public delegate Task WhenAction<in TContext>(TContext context);
 }

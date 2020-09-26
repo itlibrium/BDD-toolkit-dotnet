@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Threading.Tasks;
 using ITLIBRIUM.BddToolkit.Tests.Results;
 
 namespace ITLIBRIUM.BddToolkit.Tests
@@ -8,6 +9,7 @@ namespace ITLIBRIUM.BddToolkit.Tests
     public interface ScenarioTest
     {
         TestResult Run();
+        Task<TestResult> RunAsync();
     }
 
     internal partial class ScenarioTest<TContext> : ScenarioTest
@@ -28,37 +30,39 @@ namespace ITLIBRIUM.BddToolkit.Tests
             _exceptionChecks = exceptionChecks.ToImmutableArray();
         }
 
-        public TestResult Run()
+        public TestResult Run() => RunAsync().GetAwaiter().GetResult();
+
+        public async Task<TestResult> RunAsync()
         {
-            var givenActionsResult = ExecuteGivenActions();
+            var givenActionsResult = await ExecuteGivenActions();
             if (givenActionsResult.Failed)
                 return TestResult.ExceptionInGivenAction(givenActionsResult.Exception);
 
-            var whenActionResult = ExecuteWhenAction();
+            var whenActionResult = await ExecuteWhenAction();
             if (whenActionResult.Failed)
             {
                 if (_exceptionChecks.IsEmpty)
                     return TestResult.UncheckedExceptionInWhenAction(whenActionResult.Exception);
 
-                var exceptionChecks = Assertions.Check(_exceptionChecks, _context, whenActionResult);
+                var exceptionChecks = await Assertions.Check(_exceptionChecks, _context, whenActionResult);
                 if (exceptionChecks.Failed)
                     return TestResult.UnexpectedExceptionInWhenAction(whenActionResult.Exception,
                         exceptionChecks.Exceptions);
             }
 
-            var assertions = Assertions.Check(_then, _context);
+            var assertions = await Assertions.Check(_then, _context);
             return assertions.Failed
                 ? TestResult.Failed(assertions.Exceptions)
                 : TestResult.Passed();
         }
 
-        private Result ExecuteGivenActions()
+        private async Task<Result> ExecuteGivenActions()
         {
             foreach (var action in _given)
             {
                 try
                 {
-                    action(_context);
+                    await action(_context);
                 }
                 catch (Exception e)
                 {
@@ -69,11 +73,11 @@ namespace ITLIBRIUM.BddToolkit.Tests
             return Result.Success();
         }
 
-        private Result ExecuteWhenAction()
+        private async Task<Result> ExecuteWhenAction()
         {
             try
             {
-                _when(_context);
+                await _when(_context);
                 return Result.Success();
             }
             catch (Exception e)

@@ -1,23 +1,30 @@
+using System;
+
 namespace ITLIBRIUM.BddToolkit.Examples
 {
     public class PrePaidAccount
     {
+        public PrePaidAccountId Id { get; } 
+        
         private Money _amountAvailable;
         private Money _debtLimit;
         private Money _debt;
         
         public static PrePaidAccount New(Currency currency) => new PrePaidAccount(
+            PrePaidAccountId.New(), 
             Money.Of(0, currency),
             Money.Of(0, currency),
             Money.Of(0, currency));
         
         public static PrePaidAccount Restore(Snapshot snapshot) => new PrePaidAccount(
+            PrePaidAccountId.Of(snapshot.Id), 
             snapshot.AmountAvailable,
             snapshot.DebtLimit,
             snapshot.Debt);
 
-        private PrePaidAccount(Money amountAvailable, Money debtLimit, Money debt)
+        private PrePaidAccount(PrePaidAccountId id, Money amountAvailable, Money debtLimit, Money debt)
         {
+            Id = id;
             _amountAvailable = amountAvailable;
             _debtLimit = debtLimit;
             _debt = debt;
@@ -56,16 +63,18 @@ namespace ITLIBRIUM.BddToolkit.Examples
 
         public void GrantDebtLimit(Money debtLimit) => _debtLimit = debtLimit;
         
-        public Snapshot GetSnapshot() => new Snapshot(_amountAvailable, _debtLimit, _debt);
+        public Snapshot GetSnapshot() => new Snapshot(Id.Value, _amountAvailable, _debtLimit, _debt);
         
         public readonly struct Snapshot
         {
+            public Guid Id { get; }
             public Money AmountAvailable { get; }
             public Money DebtLimit { get; }
             public Money Debt { get; }
 
-            public Snapshot(Money amountAvailable, Money debtLimit, Money debt)
+            public Snapshot(Guid id, Money amountAvailable, Money debtLimit, Money debt)
             {
+                Id = id;
                 AmountAvailable = amountAvailable;
                 DebtLimit = debtLimit;
                 Debt = debt;

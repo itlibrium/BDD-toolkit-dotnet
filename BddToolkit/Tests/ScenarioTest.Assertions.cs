@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.Threading.Tasks;
 
 namespace ITLIBRIUM.BddToolkit.Tests
 {
@@ -12,7 +13,7 @@ namespace ITLIBRIUM.BddToolkit.Tests
 
             private Assertions(ImmutableArray<Exception> exceptions) => Exceptions = exceptions;
 
-            public static Assertions Check(ImmutableArray<ExceptionCheck<TContext>> actions, TContext context,
+            public static async Task<Assertions> Check(ImmutableArray<ExceptionCheck<TContext>> actions, TContext context,
                 Result whenActionResult)
             {
                 var exceptions = ImmutableArray.CreateBuilder<Exception>();
@@ -20,7 +21,7 @@ namespace ITLIBRIUM.BddToolkit.Tests
                 {
                     try
                     {
-                        action(context, whenActionResult);
+                        await action(context, whenActionResult);
                     }
                     catch (Exception exception)
                     {
@@ -30,14 +31,14 @@ namespace ITLIBRIUM.BddToolkit.Tests
                 return new Assertions(exceptions.ToImmutable());
             }
 
-            public static Assertions Check(ImmutableArray<ThenAction<TContext>> actions, TContext context)
+            public static async Task<Assertions> Check(ImmutableArray<ThenAction<TContext>> actions, TContext context)
             {
                 var exceptions = ImmutableArray.CreateBuilder<Exception>();
                 foreach (var action in actions)
                 {
                     try
                     {
-                        action(context);
+                        await action(context);
                     }
                     catch (Exception exception)
                     {

@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <RootNamespace>ITLIBRIUM.BddToolkit.Examples</RootNamespace>
+        <AssemblyName>ITLIBRIUM.BddToolkit.Examples.Startup</AssemblyName>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BddToolkit.Examples.Adapters\BddToolkit.Examples.Adapters.csproj" />
+      <ProjectReference Include="..\BddToolkit.Examples.Domain\BddToolkit.Examples.Domain.csproj" />
+      <ProjectReference Include="..\BddToolkit.Examples.UseCases\BddToolkit.Examples.UseCases.csproj" />
+    </ItemGroup>
+
+</Project>
