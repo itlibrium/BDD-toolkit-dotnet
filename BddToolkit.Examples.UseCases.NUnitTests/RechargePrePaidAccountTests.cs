@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace ITLIBRIUM.BddToolkit.Examples
 {
-    public class RechargePrePaidAccountTests : IDisposable
+    public class RechargePrePaidAccountTests
     {
         private Context CurrentContext { get; set; }
 
@@ -22,6 +22,9 @@ namespace ITLIBRIUM.BddToolkit.Examples
                 .Services;
             CurrentContext = new Context(serviceProvider);
         }
+
+        [TearDown]
+        public void TearDown() => CurrentContext.Dispose();
 
         [Test]
         public Task VipRechargePolicyIsAppliedOnRecharge() => Bdd.Scenario(CurrentContext)
@@ -66,7 +69,5 @@ namespace ITLIBRIUM.BddToolkit.Examples
 
             public void Dispose() => _scope?.Dispose();
         }
-
-        public void Dispose() => CurrentContext?.Dispose();
     }
 }
