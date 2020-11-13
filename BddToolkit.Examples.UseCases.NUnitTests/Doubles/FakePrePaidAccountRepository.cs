@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ITLIBRIUM.BddToolkit.Examples
+namespace ITLIBRIUM.BddToolkit.Examples.Doubles
 {
     public class FakePrePaidAccountRepository : PrePaidAccountRepository
     {

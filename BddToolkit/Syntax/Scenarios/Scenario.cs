@@ -29,13 +29,13 @@ namespace ITLIBRIUM.BddToolkit.Syntax.Scenarios
         public ImmutableArray<GivenStep> GivenSteps { get; }
         
         [PublicAPI]
-        public WhenStep WhenStep { get; }
+        public WhenStep? WhenStep { get; }
         
         [PublicAPI]
         public ImmutableArray<ThenStep> ThenSteps { get; }
 
         public Scenario(in Feature feature, in Rule rule, string name, string description, IEnumerable<string> tags, 
-            IEnumerable<GivenStep> givenSteps, WhenStep whenStep, IEnumerable<ThenStep> thenSteps)
+            IEnumerable<GivenStep> givenSteps, WhenStep? whenStep, IEnumerable<ThenStep> thenSteps)
         {
             if (!rule.IsEmpty && !feature.Equals(rule.Feature))
                 throw new ArgumentException(
@@ -56,7 +56,7 @@ namespace ITLIBRIUM.BddToolkit.Syntax.Scenarios
             Name == other.Name && 
             Description == other.Description && 
             GivenSteps.SequenceEqual(other.GivenSteps) &&
-            WhenStep.Equals(other.WhenStep) &&
+            WhenStep.HasValue && other.WhenStep.HasValue && WhenStep.Value.Equals(other.WhenStep.Value) &&
             ThenSteps.SequenceEqual(other.ThenSteps);
 
         public override bool Equals(object obj) => obj is Scenario other && Equals(other);

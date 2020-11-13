@@ -7,11 +7,16 @@ namespace ITLIBRIUM.BddToolkit.Examples
     {
         private readonly PrePaidAccountRepository _repository;
         private readonly RechargePolicy _rechargePolicy;
+        private readonly PrePaidAccountHistoryDao _historyDao;
+        private readonly Clock _clock;
 
-        public RechargeHandler(PrePaidAccountRepository repository, RechargePolicy rechargePolicy)
+        public RechargeHandler(PrePaidAccountRepository repository, RechargePolicy rechargePolicy,
+            PrePaidAccountHistoryDao historyDao, Clock clock)
         {
             _repository = repository;
             _rechargePolicy = rechargePolicy;
+            _historyDao = historyDao;
+            _clock = clock;
         }
 
         public async Task<Recharged> Handle(Recharge command)
@@ -21,12 +26,13 @@ namespace ITLIBRIUM.BddToolkit.Examples
             var prePaidAccount = await _repository.GetBy(id);
             prePaidAccount.Recharge(amount);
             await _repository.Save(prePaidAccount);
-            return new Recharged(id.Value, amount.Value, amount.Currency.ToString());
+            var recharged = new Recharged(id.Value, _clock.Now, amount.Value, amount.Currency.ToString());
+            await _historyDao.Append(recharged);
+            return recharged;
         }
 
         private static (PrePaidAccountId, Money) CreateDomainModelFrom(Recharge command) => (
             PrePaidAccountId.Of(command.PrePaidAccountId),
             Money.Of(command.Value, Enum.Parse<Currency>(command.CurrencyCode, true)));
-
     }
 }

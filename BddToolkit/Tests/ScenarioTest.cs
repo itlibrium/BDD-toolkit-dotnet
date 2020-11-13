@@ -75,6 +75,8 @@ namespace ITLIBRIUM.BddToolkit.Tests
 
         private async Task<Result> ExecuteWhenAction()
         {
+            if (_when is null)
+                return Result.Success();
             try
             {
                 await _when(_context);

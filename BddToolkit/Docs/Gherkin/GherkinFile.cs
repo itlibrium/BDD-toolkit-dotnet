@@ -32,12 +32,13 @@ namespace ITLIBRIUM.BddToolkit.Docs.Gherkin
             return file;
         }
 
-        private GherkinFile(Stream stream) => _writer = new StreamWriter(stream, Encoding.UTF8, bufferSize: 4 * 1024, leaveOpen: true);
+        private GherkinFile(Stream stream) =>
+            _writer = new StreamWriter(stream, Encoding.UTF8, bufferSize: 4 * 1024, leaveOpen: true);
 
         private async Task Write(Feature feature)
         {
             await WriteTags(feature.Tags, 0);
-            await WriteKeyword(Feature,  feature.IsEmpty ? "Unspecified" : feature.Name, 0);
+            await WriteKeyword(Feature, feature.IsEmpty ? "Unspecified" : feature.Name, 0);
             if (!string.IsNullOrWhiteSpace(feature.Description))
             {
                 await WriteEmptyLine();
@@ -77,7 +78,8 @@ namespace ITLIBRIUM.BddToolkit.Docs.Gherkin
                 await WriteEmptyLine();
             }
             await WriteSteps(Given, scenario.GivenSteps, indentationLevel + 1);
-            await WriteStep(When, scenario.WhenStep.Name, indentationLevel + 1);
+            if (scenario.WhenStep.HasValue)
+                await WriteStep(When, scenario.WhenStep.Value, indentationLevel + 1);
             await WriteSteps(Then, scenario.ThenSteps, indentationLevel + 1);
         }
 
@@ -123,15 +125,16 @@ namespace ITLIBRIUM.BddToolkit.Docs.Gherkin
             if (count == 0)
                 return;
 
-            await WriteStep(keyword, steps[0].Name, indentationLevel);
-            for (var i = 1; i < steps.Length; i++) 
-                await WriteStep(And, steps[i].Name, indentationLevel);
+            await WriteStep(keyword, steps[0], indentationLevel);
+            for (var i = 1; i < steps.Length; i++)
+                await WriteStep(And, steps[i], indentationLevel);
         }
-        
-        private async Task WriteStep(string keyword, string value, int indentationLevel)
+
+        private async Task WriteStep<TStep>(string keyword, TStep step, int indentationLevel)
+            where TStep : struct, ScenarioStep
         {
             await _writer.WriteAsync(Indentation(indentationLevel));
-            await _writer.WriteLineAsync($"{keyword} {value}");
+            await _writer.WriteLineAsync($"{keyword} {step.Name}");
         }
 
         private Task WriteEmptyLine() => _writer.WriteLineAsync();
@@ -139,7 +142,7 @@ namespace ITLIBRIUM.BddToolkit.Docs.Gherkin
         private static string Indentation(int level) => new string(' ', level * 2);
 
         public Task Flush() => _writer.FlushAsync();
-        
+
         public void Dispose() => _writer.Dispose();
 
         private enum Entry

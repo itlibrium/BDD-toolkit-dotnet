@@ -47,6 +47,20 @@ namespace ITLIBRIUM.BddToolkit.Tests
             WhenActionShouldNotBeExecuted();
             ThenActionsShouldNotBeExecuted();
         }
+        
+        [Fact]
+        public void WhenActionsAreNotRequired()
+        {
+            var scenarioTest = Bdd.Scenario(ContextMock.Object)
+                .Given(c => c.FirstFact())
+                .Then(c => c.Result1IsAsExpected())
+                .Create()
+                .Test;
+
+            Action test = () => scenarioTest.Run();
+
+            test.Should().NotThrow();
+        }
 
         [Fact]
         public void WhenActionIsExecutedOnce()

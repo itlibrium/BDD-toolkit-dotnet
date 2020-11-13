@@ -20,7 +20,6 @@ namespace ITLIBRIUM.BddToolkit.Builders.Scenarios
     internal class ScenarioBuilder<TContext> :
         IFeatureAndRuleBuilder<TContext>,
         IGivenContinuationBuilder<TContext>,
-        IThenBuilder<TContext>,
         IThenContinuationBuilder<TContext>
         where TContext : class
     {
@@ -34,7 +33,7 @@ namespace ITLIBRIUM.BddToolkit.Builders.Scenarios
         private string[] _tags;
         private readonly List<GivenStep> _givenSteps = new List<GivenStep>();
         private readonly List<GivenAction<TContext>> _givenActions = new List<GivenAction<TContext>>();
-        private WhenStep _whenStep;
+        private WhenStep? _whenStep;
         private WhenAction<TContext> _whenAction;
         private readonly List<ThenStep> _thenSteps = new List<ThenStep>();
         private readonly List<ThenAction<TContext>> _thenActions = new List<ThenAction<TContext>>();

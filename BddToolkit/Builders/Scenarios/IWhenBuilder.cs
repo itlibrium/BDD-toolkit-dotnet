@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 
 namespace ITLIBRIUM.BddToolkit.Builders.Scenarios
 {
-    public interface IWhenBuilder<TContext>
+    public interface IWhenBuilder<TContext> : IThenBuilder<TContext>
     {
         [PublicAPI]
         IThenBuilder<TContext> When(Expression<Action<TContext>> action);

@@ -8,10 +8,10 @@
     <PackageProjectUrl>https://github.com/itlibrium/BDD-toolkit-dotnet</PackageProjectUrl>
     <RepositoryUrl>https://github.com/itlibrium/BDD-toolkit-dotnet</RepositoryUrl>
     <PackageTags>BDD, TDD, tests, .net core</PackageTags>
-    <PackageReleaseNotes>Support for async scenario tests</PackageReleaseNotes>
-    <AssemblyVersion>2.2.0</AssemblyVersion>
-    <FileVersion>2.2.0</FileVersion>
-    <PackageVersion>2.2.0</PackageVersion>
+    <PackageReleaseNotes>Support for scenarios without When sesction</PackageReleaseNotes>
+    <AssemblyVersion>2.3.0</AssemblyVersion>
+    <FileVersion>2.3.0</FileVersion>
+    <PackageVersion>2.3.0</PackageVersion>
     <AssemblyName>ITLIBRIUM.BddToolkit</AssemblyName>
     <RootNamespace>ITLIBRIUM.BddToolkit</RootNamespace>
     <PackageId>BDD-toolkit-dotnet</PackageId>
