@@ -11,47 +11,75 @@ namespace ITLIBRIUM.BddToolkit.Tests.Results.Exceptions
         [Fact]
         public void MessageIsAggregatedForExceptionFromWhenActionAndExceptionChecks()
         {
-            var exception1 = GetCaughtException();
-            var exception2 = GetCaughtAssertException("Check 1 failed");
-            var exception3 = GetCaughtAssertException("Check 2 failed");
-            var exceptionChecksFailed = new ExceptionChecksFailed(exception1,
-                ImmutableArray.Create(exception2, exception3));
+            var exception0 = GetCaughtException();
+            var exception1 = GetCaughtAssertException("Check 1 failed");
+            var exception2 = GetCaughtAssertException("Check 2 failed");
+            var exceptionChecksFailed = new ExceptionChecksFailed(exception0,
+                ImmutableArray.Create(exception1, exception2));
             exceptionChecksFailed.Message.Should().Be(
                 $"{Environment.NewLine}" +
                 $"Unexpected exception was thrown in When action:{Environment.NewLine}" +
                 $"{Environment.NewLine}" +
-                $"{exception1.Message}{Environment.NewLine}" +
-                $"{exception1.StackTrace}{Environment.NewLine}" +
+                $"{exception0.Message}{Environment.NewLine}" +
+                $"{exception0.StackTrace}{Environment.NewLine}" +
                 $"{Environment.NewLine}" +
                 $"{Environment.NewLine}" +
                 $"Failed exception checks:{Environment.NewLine}" +
                 $"{Environment.NewLine}" +
-                $"1) {exception2.Message}{Environment.NewLine}" +
+                $"1) {exception1.Message}{Environment.NewLine}" +
                 $"{Environment.NewLine}" +
-                $"2) {exception3.Message}{Environment.NewLine}");
+                $"2) {exception2.Message}{Environment.NewLine}");
         }
 
         [Fact]
         public void ToStringIsAggregatedForExceptionFromWhenActionAndExceptionChecks()
         {
-            var exception1 = GetCaughtException();
-            var exception2 = GetCaughtAssertException("Check 1 failed");
-            var exception3 = GetCaughtAssertException("Check 2 failed");
-            var exceptionChecksFailed = new ExceptionChecksFailed(exception1,
-                ImmutableArray.Create(exception2, exception3));
+            var exception0 = GetCaughtException();
+            var exception1 = GetCaughtAssertException("Check 1 failed");
+            var exception2 = GetCaughtAssertException("Check 2 failed");
+            var exceptionChecksFailed = new ExceptionChecksFailed(exception0,
+                ImmutableArray.Create(exception1, exception2));
             exceptionChecksFailed.ToString().Should().Be(
                 $"{Environment.NewLine}" +
                 $"Unexpected exception was thrown in When action:{Environment.NewLine}" +
                 $"{Environment.NewLine}" +
-                $"{exception1.Message}{Environment.NewLine}" +
-                $"{exception1.StackTrace}{Environment.NewLine}" +
+                $"{exception0.Message}{Environment.NewLine}" +
+                $"{exception0.StackTrace}{Environment.NewLine}" +
                 $"{Environment.NewLine}" +
                 $"{Environment.NewLine}" +
                 $"Failed exception checks:{Environment.NewLine}" +
                 $"{Environment.NewLine}" +
-                $"1) {exception2.Message}{Environment.NewLine}" +
+                $"1) {exception1.Message}{Environment.NewLine}" +
                 $"{Environment.NewLine}" +
-                $"2) {exception3.Message}{Environment.NewLine}");
+                $"2) {exception2.Message}{Environment.NewLine}");
+        }
+        
+        [Fact]
+        public void ExceptionFromWhenActionIsOptional()
+        {
+            var exception1 = GetCaughtAssertException("Check 1 failed");
+            var exception2 = GetCaughtAssertException("Check 2 failed");
+            var exceptionChecksFailed = new ExceptionChecksFailed(ImmutableArray.Create(exception1, exception2));
+            exceptionChecksFailed.Message.Should().Be(
+                $"{Environment.NewLine}" +
+                $"No exception was thrown in When action.{Environment.NewLine}" +
+                $"{Environment.NewLine}" +
+                $"{Environment.NewLine}" +
+                $"Failed exception checks:{Environment.NewLine}" +
+                $"{Environment.NewLine}" +
+                $"1) {exception1.Message}{Environment.NewLine}" +
+                $"{Environment.NewLine}" +
+                $"2) {exception2.Message}{Environment.NewLine}");
+            exceptionChecksFailed.ToString().Should().Be(
+                $"{Environment.NewLine}" +
+                $"No exception was thrown in When action.{Environment.NewLine}" +
+                $"{Environment.NewLine}" +
+                $"{Environment.NewLine}" +
+                $"Failed exception checks:{Environment.NewLine}" +
+                $"{Environment.NewLine}" +
+                $"1) {exception1.Message}{Environment.NewLine}" +
+                $"{Environment.NewLine}" +
+                $"2) {exception2.Message}{Environment.NewLine}");
         }
 
         [Fact]

@@ -47,7 +47,7 @@ namespace ITLIBRIUM.BddToolkit.Tests
             WhenActionShouldNotBeExecuted();
             ThenActionsShouldNotBeExecuted();
         }
-        
+
         [Fact]
         public void WhenActionsAreNotRequired()
         {
@@ -93,7 +93,7 @@ namespace ITLIBRIUM.BddToolkit.Tests
 
             AllThenActionsShouldBeExecutedOnce();
         }
-        
+
         [Fact]
         public void ThenActionsAreNotExecutedIfExceptionWasThrownInWhenActionAndExceptionCheckIsNotMade()
         {
@@ -104,6 +104,16 @@ namespace ITLIBRIUM.BddToolkit.Tests
             scenarioTest.Run();
 
             ThenActionsShouldNotBeExecuted();
+        }
+
+        [Fact]
+        public void ExceptionChecksAreExecutedIfExceptionWasNotThrownInWhenAction()
+        {
+            var scenarioTest = CreateScenarioWithResultsAndExceptionCheck().Test;
+
+            scenarioTest.Run();
+
+            ExceptionChecksShouldBeExecutedOnce();
         }
 
         [Fact]
@@ -171,7 +181,7 @@ namespace ITLIBRIUM.BddToolkit.Tests
 
             var testResult = scenarioTest.Run();
 
-            TestShouldFailDueToExceptionInWhenAction(testResult, exception);
+            TestShouldFailDueToUncheckedExceptionInWhenAction(testResult, exception);
         }
 
         private void AllGivenActionsShouldBeExecutedOnce()
@@ -190,13 +200,14 @@ namespace ITLIBRIUM.BddToolkit.Tests
             ContextMock.Verify(c => c.SomethingIsDone(), Times.Never);
         }
 
-        private static void TestShouldFailDueToExceptionInGivenActions(TestResult testResult, Exception exception) => 
+        private static void TestShouldFailDueToExceptionInGivenActions(TestResult testResult, Exception exception) =>
             testResult.Should().Be(new ExceptionInGivenAction(exception));
-        
-        private static void TestShouldFailDueToExceptionInWhenAction(TestResult testResult, Exception exception) => 
+
+        private static void TestShouldFailDueToUncheckedExceptionInWhenAction(TestResult testResult,
+            Exception exception) =>
             testResult.Should().Be(new UncheckedExceptionInWhenAction(exception));
 
-        private static void TestShouldFailWithExceptions(TestResult testResult, params Exception[] exceptions) => 
+        private static void TestShouldFailWithExceptions(TestResult testResult, params Exception[] exceptions) =>
             testResult.Should().Be(new Failed(exceptions.ToImmutableArray()));
 
         private void AllThenActionsShouldBeExecutedOnce()
@@ -210,6 +221,9 @@ namespace ITLIBRIUM.BddToolkit.Tests
             ContextMock.Verify(c => c.Result1IsAsExpected(), Times.Never);
             ContextMock.Verify(c => c.Result2IsAsExpected(), Times.Never);
         }
+
+        private void ExceptionChecksShouldBeExecutedOnce() =>
+            ContextMock.Verify(c => c.ExceptionIsThrown(It.IsAny<Result>()), Times.Once);
 
         private static void TestShouldPass(TestResult testResult) => testResult.Should().Be(Passed.Instance);
     }

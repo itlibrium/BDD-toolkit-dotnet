@@ -57,10 +57,22 @@ namespace ITLIBRIUM.BddToolkit.Shouldly
                 .RunTest()
                 .ThrowOnErrors());
         }
+        
+        [Fact]
+        public void AssertFailWhenExceptionWasNotThrown()
+        {
+            Should.Throw<ExceptionChecksFailed>(() => Bdd.Scenario<Context>()
+                .When(f => f.BusinessRuleWasNotBroken())
+                .Then().Throws<BusinessException>()
+                .Create()
+                .RunTest()
+                .ThrowOnErrors());
+        }
 
         private class Context
         {
             public void BusinessRuleWasBroken() => throw new BusinessException();
+            public void BusinessRuleWasNotBroken() { }
         }
 
         private class BusinessException : Exception

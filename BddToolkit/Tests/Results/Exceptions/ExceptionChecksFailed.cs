@@ -14,6 +14,13 @@ namespace ITLIBRIUM.BddToolkit.Tests.Results.Exceptions
         
         public override string StackTrace => $"Stack trace of {nameof(ExceptionChecksFailed)} is omitted.";
 
+        internal ExceptionChecksFailed(ImmutableArray<Exception> failedExceptionChecks)
+        {
+            if (failedExceptionChecks.Length == 0)
+                throw new ArgumentException("Exceptions collection can not be empty.", nameof(failedExceptionChecks));
+            FailedExceptionChecks = failedExceptionChecks;
+        }
+        
         internal ExceptionChecksFailed(Exception exceptionFromWhenAction,
             ImmutableArray<Exception> failedExceptionChecks)
         {
@@ -30,10 +37,17 @@ namespace ITLIBRIUM.BddToolkit.Tests.Results.Exceptions
         {
             var builder = new StringBuilder();
             builder.AppendLine();
-            builder.AppendLine("Unexpected exception was thrown in When action:");
-            builder.AppendLine();
-            builder.AppendLine(ExceptionFromWhenAction.Message);
-            builder.AppendLine(ExceptionFromWhenAction.StackTrace);
+            if (ExceptionFromWhenAction is null)
+            {
+                builder.AppendLine("No exception was thrown in When action.");
+            }
+            else
+            {
+                builder.AppendLine("Unexpected exception was thrown in When action:");
+                builder.AppendLine();
+                builder.AppendLine(ExceptionFromWhenAction.Message);
+                builder.AppendLine(ExceptionFromWhenAction.StackTrace);
+            }
             builder.AppendLine();
             builder.AppendLine();
             builder.AppendLine("Failed exception checks:");

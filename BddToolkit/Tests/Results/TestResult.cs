@@ -18,6 +18,9 @@ namespace ITLIBRIUM.BddToolkit.Tests.Results
         public static TestResult UnexpectedExceptionInWhenAction(Exception exceptionFromWhenAction, 
             ImmutableArray<Exception> failedExceptionChecks) =>
             new UnexpectedExceptionInWhenAction(exceptionFromWhenAction, failedExceptionChecks);
+        
+        public static TestResult NoExpectedExceptionInWhenAction(ImmutableArray<Exception> failedExceptionChecks) => 
+            new NoExpectedExceptionInWhenAction(failedExceptionChecks);
 
         public static TestResult Failed(ImmutableArray<Exception> exceptionsFromThenActions) =>
             new Failed(exceptionsFromThenActions);

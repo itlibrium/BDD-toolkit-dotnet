@@ -62,10 +62,23 @@ namespace ITLIBRIUM.BddToolkit.FluentAssertions
                 .ThrowOnErrors();
             test.Should().Throw<ExceptionChecksFailed>();
         }
+        
+        [Fact]
+        public void AssertFailWhenExceptionWasNotThrown()
+        {
+            Action test = () => Bdd.Scenario<Context>()
+                .When(f => f.BusinessRuleWasNotBroken())
+                .Then().Throws<BusinessException>()
+                .Create()
+                .RunTest()
+                .ThrowOnErrors();
+            test.Should().Throw<ExceptionChecksFailed>();
+        }
 
         private class Context
         {
             public void BusinessRuleWasBroken() => throw new BusinessException();
+            public void BusinessRuleWasNotBroken() { }
         }
 
         private class BusinessException : Exception

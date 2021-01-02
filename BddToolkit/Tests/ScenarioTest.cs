@@ -39,15 +39,18 @@ namespace ITLIBRIUM.BddToolkit.Tests
                 return TestResult.ExceptionInGivenAction(givenActionsResult.Exception);
 
             var whenActionResult = await ExecuteWhenAction();
-            if (whenActionResult.Failed)
-            {
-                if (_exceptionChecks.IsEmpty)
-                    return TestResult.UncheckedExceptionInWhenAction(whenActionResult.Exception);
+            if (whenActionResult.Failed && _exceptionChecks.IsEmpty)
+                return TestResult.UncheckedExceptionInWhenAction(whenActionResult.Exception);
 
-                var exceptionChecks = await Assertions.Check(_exceptionChecks, _context, whenActionResult);
-                if (exceptionChecks.Failed)
-                    return TestResult.UnexpectedExceptionInWhenAction(whenActionResult.Exception,
-                        exceptionChecks.Exceptions);
+            var exceptionChecks = await Assertions.Check(_exceptionChecks, _context, whenActionResult);
+            if (exceptionChecks.Failed)
+            {
+                if (whenActionResult.IsSuccessful)
+                {
+                    return TestResult.NoExpectedExceptionInWhenAction(exceptionChecks.Exceptions);
+                }
+                return TestResult.UnexpectedExceptionInWhenAction(whenActionResult.Exception,
+                    exceptionChecks.Exceptions);
             }
 
             var assertions = await Assertions.Check(_then, _context);
