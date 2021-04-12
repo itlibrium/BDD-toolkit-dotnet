@@ -68,7 +68,7 @@ namespace ITLIBRIUM.BddToolkit.Docs.Gherkin
                 _ => throw new ArgumentOutOfRangeException(nameof(_lastEntry))
             };
             await WriteEmptyLine();
-            await WriteKeyword(Comment, $"Status: {testStatus}", indentationLevel, false);
+            await WriteKeyword(Comment, $"Status: {testStatus}", indentationLevel);
             await WriteTags(scenario.Tags, indentationLevel);
             await WriteKeyword(Scenario, scenario.Name, indentationLevel);
             if (!string.IsNullOrWhiteSpace(scenario.Description))
@@ -101,12 +101,12 @@ namespace ITLIBRIUM.BddToolkit.Docs.Gherkin
             await _writer.WriteLineAsync();
         }
 
-        private async Task WriteKeyword(string keyword, string value, int indentationLevel, bool humanize = true)
+        private async Task WriteKeyword(string keyword, string value, int indentationLevel)
         {
             await _writer.WriteAsync(Indentation(indentationLevel));
             await _writer.WriteAsync(keyword);
             await _writer.WriteAsync(' ');
-            await _writer.WriteLineAsync(humanize ? value : value);
+            await _writer.WriteLineAsync(value);
         }
 
         private async Task WriteDescription(string description, int indentationLevel)

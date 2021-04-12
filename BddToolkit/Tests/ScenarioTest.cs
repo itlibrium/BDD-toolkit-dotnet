@@ -20,7 +20,7 @@ namespace ITLIBRIUM.BddToolkit.Tests
         private readonly ImmutableArray<ThenAction<TContext>> _then;
         private readonly ImmutableArray<ExceptionCheck<TContext>> _exceptionChecks;
 
-        public ScenarioTest(TContext context, IEnumerable<GivenAction<TContext>> given, WhenAction<TContext> @when,
+        public ScenarioTest(TContext context, IEnumerable<GivenAction<TContext>> given, WhenAction<TContext> when,
             IEnumerable<ThenAction<TContext>> then, IEnumerable<ExceptionCheck<TContext>> exceptionChecks)
         {
             _context = context;
