@@ -149,11 +149,11 @@ namespace ITLIBRIUM.BddToolkit.Builders.Scenarios
             return this;
         }
 
-        public IThenContinuationBuilder<TContext> Then(Expression<Action<TContext, Result>> exceptionCheck) =>
-            Then(exceptionCheck.Compile(), exceptionCheck.GetName().Humanize(LetterCasing.LowerCase));
+        public IThenContinuationBuilder<TContext> Then(Expression<Action<TContext, Result>> exceptionCheck) => 
+            Then(exceptionCheck.Compile(), GetName(exceptionCheck));
 
-        public IThenContinuationBuilder<TContext> Then(Expression<Func<TContext, Result, Task>> exceptionCheck) =>
-            Then(exceptionCheck.Compile(), exceptionCheck.GetName().Humanize(LetterCasing.LowerCase));
+        public IThenContinuationBuilder<TContext> Then(Expression<Func<TContext, Result, Task>> exceptionCheck) => 
+            Then(exceptionCheck.Compile(), GetName(exceptionCheck));
 
         public IThenContinuationBuilder<TContext> Then(Action<TContext, Result> exceptionCheck, string name) =>
             Then(ToAsyncAction(exceptionCheck), name);
@@ -228,8 +228,9 @@ namespace ITLIBRIUM.BddToolkit.Builders.Scenarios
         private static string GetName(LambdaExpression lambdaExp)
         {
             var name = lambdaExp.GetName().Humanize(LetterCasing.LowerCase);
-            var parameterValues = lambdaExp.GetParameterValues();
-            return parameterValues.Aggregate(name, (s, o) => $"{s} {o}");
+            if (lambdaExp.TryGetParameterValues(out var parameterValues))
+                name = parameterValues.Aggregate(name, (n, p) => $"{n} {p}");
+            return name;
         }
 
         private TestableScenario CreateTestableScenario(string reflectedName)
