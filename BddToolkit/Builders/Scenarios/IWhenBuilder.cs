@@ -14,9 +14,17 @@ namespace ITLIBRIUM.BddToolkit.Builders.Scenarios
         IThenBuilder<TContext> When(Expression<Func<TContext, Task>> action);
         
         [PublicAPI]
+        [Obsolete("Use overload with name as a first argument.")]
         IThenBuilder<TContext> When(Action<TContext> action, string name);
         
         [PublicAPI]
+        IThenBuilder<TContext> When(string name, Action<TContext> action);
+        
+        [PublicAPI]
+        [Obsolete("Use overload with name as a first argument.")]
         IThenBuilder<TContext> When(Func<TContext, Task> action, string name);
+        
+        [PublicAPI]
+        IThenBuilder<TContext> When(string name, Func<TContext, Task> action);
     }
 }

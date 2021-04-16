@@ -14,9 +14,17 @@ namespace ITLIBRIUM.BddToolkit.Builders.Scenarios
         IGivenContinuationBuilder<TContext> Given(Expression<Func<TContext, Task>> action);
         
         [PublicAPI]
+        [Obsolete("Use overload with name as a first argument.")]
         IGivenContinuationBuilder<TContext> Given(Action<TContext> action, string name);
         
         [PublicAPI]
+        IGivenContinuationBuilder<TContext> Given(string name, Action<TContext> action);
+        
+        [PublicAPI]
+        [Obsolete("Use overload with name as a first argument.")]
         IGivenContinuationBuilder<TContext> Given(Func<TContext, Task> action, string name);
+        
+        [PublicAPI]
+        IGivenContinuationBuilder<TContext> Given(string name, Func<TContext, Task> action);
     }
 }

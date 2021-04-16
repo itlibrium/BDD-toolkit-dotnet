@@ -86,15 +86,23 @@ namespace ITLIBRIUM.BddToolkit.Builders.Scenarios
         }
 
         public IGivenContinuationBuilder<TContext> Given(Expression<Action<TContext>> action) =>
-            Given(action.Compile(), GetName(action));
+            Given(GetName(action), action.Compile());
 
         public IGivenContinuationBuilder<TContext> Given(Expression<Func<TContext, Task>> action) =>
-            Given(action.Compile(), GetName(action));
+            Given(GetName(action), action.Compile());
 
+        [Obsolete]
         public IGivenContinuationBuilder<TContext> Given(Action<TContext> action, string name) =>
-            Given(ToAsyncAction(action), name);
+            Given(name, ToAsyncAction(action));
+        
+        public IGivenContinuationBuilder<TContext> Given(string name, Action<TContext> action) =>
+            Given(name, ToAsyncAction(action));
 
-        public IGivenContinuationBuilder<TContext> Given(Func<TContext, Task> action, string name)
+        [Obsolete]
+        public IGivenContinuationBuilder<TContext> Given(Func<TContext, Task> action, string name) =>
+            Given(name, action);
+        
+        public IGivenContinuationBuilder<TContext> Given(string name, Func<TContext, Task> action)
         {
             _givenSteps.Add(new GivenStep(name));
             _givenActions.Add(new GivenAction<TContext>(action));
@@ -109,24 +117,42 @@ namespace ITLIBRIUM.BddToolkit.Builders.Scenarios
             Expression<Func<TContext, Task>> action) =>
             Given(action);
 
+        [Obsolete]
         IGivenContinuationBuilder<TContext> IGivenContinuationBuilder<TContext>.And(
             Action<TContext> action, string name) =>
-            Given(action, name);
+            Given(name, action);
+        
+        IGivenContinuationBuilder<TContext> IGivenContinuationBuilder<TContext>.And(
+            string name, Action<TContext> action) =>
+            Given(name, action);
 
+        [Obsolete]
         IGivenContinuationBuilder<TContext> IGivenContinuationBuilder<TContext>.And(
             Func<TContext, Task> action, string name) =>
-            Given(action, name);
+            Given(name, action);
+        
+        IGivenContinuationBuilder<TContext> IGivenContinuationBuilder<TContext>.And(
+            string name, Func<TContext, Task> action) =>
+            Given(name, action);
 
         public IThenBuilder<TContext> When(Expression<Action<TContext>> action) =>
-            When(action.Compile(), GetName(action));
+            When(GetName(action), action.Compile());
 
         public IThenBuilder<TContext> When(Expression<Func<TContext, Task>> action) =>
-            When(action.Compile(), GetName(action));
+            When(GetName(action), action.Compile());
 
+        [Obsolete]
         public IThenBuilder<TContext> When(Action<TContext> action, string name) =>
-            When(ToAsyncAction(action), name);
+            When(name, ToAsyncAction(action));
+        
+        public IThenBuilder<TContext> When(string name, Action<TContext> action) =>
+            When(name, ToAsyncAction(action));
 
-        public IThenBuilder<TContext> When(Func<TContext, Task> action, string name)
+        [Obsolete]
+        public IThenBuilder<TContext> When(Func<TContext, Task> action, string name) =>
+            When(name, action);
+        
+        public IThenBuilder<TContext> When(string name, Func<TContext, Task> action)
         {
             _whenStep = new WhenStep(name);
             _whenAction = new WhenAction<TContext>(action);
@@ -134,31 +160,47 @@ namespace ITLIBRIUM.BddToolkit.Builders.Scenarios
         }
 
         public IThenContinuationBuilder<TContext> Then(Expression<Action<TContext>> action) =>
-            Then(action.Compile(), GetName(action));
+            Then(GetName(action), action.Compile());
 
         public IThenContinuationBuilder<TContext> Then(Expression<Func<TContext, Task>> action) =>
-            Then(action.Compile(), GetName(action));
+            Then(GetName(action), action.Compile());
 
+        [Obsolete]
         public IThenContinuationBuilder<TContext> Then(Action<TContext> thenAction, string name) =>
-            Then(ToAsyncAction(thenAction), name);
+            Then(name, ToAsyncAction(thenAction));
+        
+        public IThenContinuationBuilder<TContext> Then(string name, Action<TContext> thenAction) =>
+            Then(name, ToAsyncAction(thenAction));
 
-        public IThenContinuationBuilder<TContext> Then(Func<TContext, Task> thenAction, string name)
+        [Obsolete]
+        public IThenContinuationBuilder<TContext> Then(Func<TContext, Task> thenAction, string name) =>
+            Then(name, thenAction);
+        
+        public IThenContinuationBuilder<TContext> Then(string name, Func<TContext, Task> thenAction)
         {
             _thenSteps.Add(new ThenStep(name));
             _thenActions.Add(new ThenAction<TContext>(thenAction));
             return this;
         }
 
-        public IThenContinuationBuilder<TContext> Then(Expression<Action<TContext, Result>> exceptionCheck) => 
-            Then(exceptionCheck.Compile(), GetName(exceptionCheck));
+        public IThenContinuationBuilder<TContext> Then(Expression<Action<TContext, Result>> exceptionCheck) =>
+            Then(GetName(exceptionCheck), exceptionCheck.Compile());
 
-        public IThenContinuationBuilder<TContext> Then(Expression<Func<TContext, Result, Task>> exceptionCheck) => 
-            Then(exceptionCheck.Compile(), GetName(exceptionCheck));
+        public IThenContinuationBuilder<TContext> Then(Expression<Func<TContext, Result, Task>> exceptionCheck) =>
+            Then(GetName(exceptionCheck), exceptionCheck.Compile());
 
+        [Obsolete]
         public IThenContinuationBuilder<TContext> Then(Action<TContext, Result> exceptionCheck, string name) =>
-            Then(ToAsyncAction(exceptionCheck), name);
+            Then(name, ToAsyncAction(exceptionCheck));
+        
+        public IThenContinuationBuilder<TContext> Then(string name, Action<TContext, Result> exceptionCheck) =>
+            Then(name, ToAsyncAction(exceptionCheck));
 
-        public IThenContinuationBuilder<TContext> Then(Func<TContext, Result, Task> exceptionCheck, string name)
+        [Obsolete]
+        public IThenContinuationBuilder<TContext> Then(Func<TContext, Result, Task> exceptionCheck, string name) =>
+            Then(name, exceptionCheck);
+        
+        public IThenContinuationBuilder<TContext> Then(string name, Func<TContext, Result, Task> exceptionCheck)
         {
             _thenSteps.Add(new ThenStep(name));
             _exceptionChecks.Add(new ExceptionCheck<TContext>(exceptionCheck));
@@ -173,13 +215,23 @@ namespace ITLIBRIUM.BddToolkit.Builders.Scenarios
             Expression<Func<TContext, Task>> thenAction) =>
             Then(thenAction);
 
+        [Obsolete]
         IThenContinuationBuilder<TContext> IThenContinuationBuilder<TContext>.And(
             Action<TContext> thenAction, string name) =>
-            Then(thenAction, name);
+            Then(name, thenAction);
+        
+        IThenContinuationBuilder<TContext> IThenContinuationBuilder<TContext>.And(
+            string name, Action<TContext> thenAction) =>
+            Then(name, thenAction);
 
+        [Obsolete]
         IThenContinuationBuilder<TContext> IThenContinuationBuilder<TContext>.And(
             Func<TContext, Task> thenAction, string name) =>
-            Then(thenAction, name);
+            Then(name, thenAction);
+        
+        IThenContinuationBuilder<TContext> IThenContinuationBuilder<TContext>.And(
+            string name, Func<TContext, Task> thenAction) =>
+            Then(name, thenAction);
 
         IThenContinuationBuilder<TContext> IThenContinuationBuilder<TContext>.And(
             Expression<Action<TContext, Result>> exceptionCheck) =>
@@ -189,11 +241,19 @@ namespace ITLIBRIUM.BddToolkit.Builders.Scenarios
             Expression<Func<TContext, Result, Task>> exceptionCheck) =>
             Then(exceptionCheck);
 
+        [Obsolete]
         public IThenContinuationBuilder<TContext> And(Action<TContext, Result> exceptionCheck, string name) =>
-            Then(exceptionCheck, name);
+            Then(name, exceptionCheck);
+        
+        public IThenContinuationBuilder<TContext> And(string name, Action<TContext, Result> exceptionCheck) =>
+            Then(name, exceptionCheck);
 
+        [Obsolete]
         public IThenContinuationBuilder<TContext> And(Func<TContext, Result, Task> exceptionCheck, string name) =>
-            Then(exceptionCheck, name);
+            Then(name, exceptionCheck);
+        
+        public IThenContinuationBuilder<TContext> And(string name, Func<TContext, Result, Task> exceptionCheck) =>
+            Then(name, exceptionCheck);
 
         public IThenContinuationBuilder<TContext> GetContinuationBuilder() => this;
 

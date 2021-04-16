@@ -293,11 +293,11 @@ Second line of scenario description
 Last line of scenario description")
             .Given(c => c.FirstFact())
             .And(c => c.SecondFact())
-            .And(c => c.ThirdFact(), "Custom Fact")
+            .And("Custom Fact", c => c.ThirdFact())
             .When(c => c.SomethingIsDone())
             .Then(c => c.Result1IsAsExpected())
             .And(c => c.Result2IsAsExpected())
-            .And(c => c.Result3IsAsExpected(), "Custom Result")
+            .And("Custom Result", c => c.Result3IsAsExpected())
             .Create()
             .Scenario;
 

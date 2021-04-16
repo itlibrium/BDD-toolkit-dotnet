@@ -36,12 +36,12 @@ namespace ITLIBRIUM.BddToolkit.Examples
             .Given(c => c.NewAccountWasCreatedForCurrency(Currency.PLN))
             .And(c => c.AccountWasRechargedWith(120, Currency.PLN, "2020-11-13 13:13"))
             .And(c => c.AccountWasRechargedWith(240, Currency.PLN, "2020-11-14 14:14"))
-            .Then(c => c.HistoryContainsOperations(
-                    ("Recharged", 120, Currency.PLN, DateTime.Parse("2020-11-13 13:13")),
-                    ("Recharged", 240, Currency.PLN, DateTime.Parse("2020-11-14 14:14"))),
-                @"history contains operations: 
+            .Then(@"history contains operations: 
     1) Recharged 120.00 PLN on 2020-11-13:13:13
-    2) Recharged 240.00 PLN on 2020-11-14:14:14")
+    2) Recharged 240.00 PLN on 2020-11-14:14:14",
+                c => c.HistoryContainsOperations(
+                    ("Recharged", 120, Currency.PLN, DateTime.Parse("2020-11-13 13:13")),
+                    ("Recharged", 240, Currency.PLN, DateTime.Parse("2020-11-14 14:14"))))
             .TestAsync();
 
         private class Context : IDisposable

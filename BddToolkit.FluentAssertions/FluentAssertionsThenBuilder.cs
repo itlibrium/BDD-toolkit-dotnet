@@ -1,4 +1,3 @@
-using System;
 using FluentAssertions;
 using ITLIBRIUM.BddToolkit.Builders.Scenarios;
 using JetBrains.Annotations;
@@ -17,20 +16,20 @@ namespace ITLIBRIUM.BddToolkit.FluentAssertions
 
         [PublicAPI]
         public IThenContinuationBuilder<TContext> Throws<TException>() =>
-            _thenContinuationBuilder.And((context, result) =>
+            _thenContinuationBuilder.And($"Exception type is assignable to {typeof(TException).Name}",
+                (_, result) =>
                 {
                     result.IsSuccessful.Should().BeFalse();
                     result.Exception.Should().BeAssignableTo<TException>();
-                },
-                $"Exception type is assignable to {typeof(TException).Name}");
+                });
 
         [PublicAPI]
         public IThenContinuationBuilder<TContext> ThrowsExactly<TException>() =>
-            _thenContinuationBuilder.And((context, result) =>
+            _thenContinuationBuilder.And($"Exception type is exactly {typeof(TException).Name}",
+                (_, result) =>
                 {
                     result.IsSuccessful.Should().BeFalse();
                     result.Exception.Should().BeOfType<TException>();
-                },
-                $"Exception type is exactly {typeof(TException).Name}");
+                });
     }
 }
