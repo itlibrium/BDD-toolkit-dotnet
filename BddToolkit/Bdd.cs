@@ -33,6 +33,9 @@ namespace ITLIBRIUM.BddToolkit
             Syntax.Rules.Rule.New(feature, name, description);
 
         [PublicAPI]
+        public static IFeatureAndRuleBuilder<EmptyContext> Scenario() => Scenario<EmptyContext>();
+        
+        [PublicAPI]
         public static IFeatureAndRuleBuilder<TContext> Scenario<TContext>()
             where TContext : class, new() =>
             new ScenarioBuilder<TContext>(new TContext(), Configuration.DocPublisher);
