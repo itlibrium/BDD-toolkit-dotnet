@@ -8,10 +8,10 @@
     <PackageProjectUrl>https://github.com/itlibrium/BDD-toolkit-dotnet</PackageProjectUrl>
     <RepositoryUrl>https://github.com/itlibrium/BDD-toolkit-dotnet</RepositoryUrl>
     <PackageTags>BDD, TDD, tests, .net core</PackageTags>
-    <PackageReleaseNotes>Fix for scenarios when exception in When action is expected but no exception was thrown</PackageReleaseNotes>
-    <AssemblyVersion>2.3.1</AssemblyVersion>
-    <FileVersion>2.3.1</FileVersion>
-    <PackageVersion>2.3.1</PackageVersion>
+    <PackageReleaseNotes>Scenarios without context class; Passing action name as a first argument</PackageReleaseNotes>
+    <AssemblyVersion>2.4.0</AssemblyVersion>
+    <FileVersion>2.4.0</FileVersion>
+    <PackageVersion>2.4.0</PackageVersion>
     <AssemblyName>ITLIBRIUM.BddToolkit</AssemblyName>
     <RootNamespace>ITLIBRIUM.BddToolkit</RootNamespace>
     <PackageId>BDD-toolkit-dotnet</PackageId>

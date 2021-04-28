@@ -5,9 +5,9 @@
     <Authors>Marcin Markowski</Authors>
     <Company>ITLIBRIUM</Company>
     <Description>Shouldly extensions for BDD-toolkit-dotnet</Description>
-    <AssemblyVersion>2.2.1</AssemblyVersion>
-    <FileVersion>2.2.1</FileVersion>
-    <PackageVersion>2.2.1</PackageVersion>
+    <AssemblyVersion>2.3.0</AssemblyVersion>
+    <FileVersion>2.3.0</FileVersion>
+    <PackageVersion>2.3.0</PackageVersion>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/itlibrium/BDD-toolkit-dotnet</PackageProjectUrl>
     <RepositoryUrl>https://github.com/itlibrium/BDD-toolkit-dotnet</RepositoryUrl>
@@ -19,7 +19,7 @@
     <Product>BDD-toolkit-dotnet</Product>    
     <Title>BDD-toolkit-dotnet.Shouldly</Title>
     <Copyright>ITLIBRIUM</Copyright>
-    <PackageReleaseNotes>Fix for scenarios when exception in When action is expected but no exception was thrown</PackageReleaseNotes>
+    <PackageReleaseNotes>Passing action name as a first argument</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
